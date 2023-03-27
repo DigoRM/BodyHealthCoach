@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>Gerenciar Aluno</h3>
+            <hr>
+            <form action="{% url 'gerenciar_aluno' aluno.id %}" method="POST">
+                {% csrf_token %}
+                {{form.as_p}}
+            
+                <button type="submit" class="btn-success">ok</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

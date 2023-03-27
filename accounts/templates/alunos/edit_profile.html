@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if user.aluno %}
+<form action="{% url 'edit_profile' %}" method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">ok</button>
+</form>
+{% elif user.coach %}
+<form action="{% url 'edit_profile' %}" method="POST">
+    {% csrf_token %}
+    {{form2.as_p}}
+    <button type="submit">ok</button>
+</form>
+{% endif %}
+
+{% endblock %}
+
+

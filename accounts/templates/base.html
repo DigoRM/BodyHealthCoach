@@ -41,38 +41,56 @@
           <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  My Job
+                  Feedbacks
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="#">Tasks</a>
-                  <a class="dropdown-item" href="#">Solutions</a>
+                  <a class="dropdown-item" href="{% url 'novo_feedback' %}">Novo</a>
+                  <a class="dropdown-item" href="{% url 'meus_feedbacks' %}">Meus Feedbacks</a>
+                  {% if request.user.coach %}
+                  <a class="dropdown-item" href="{% url 'feedbacks_pendentes' %}">Feedbacks Pendentes</a>
+                  {% endif %}
+
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Teamwork
+                  Minha Conta
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="#">Tasks</a>
-                  <a class="dropdown-item" href="#">Solutions</a>
+                  <a class="dropdown-item" href="{% url 'edit_profile' %}">Atualizar Perfil</a>
+                  <a class="dropdown-item" href="#">Trocar a senha</a>
               </li>
 
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Partners
+                    Retornos
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">List</a>
-                    {% for top_parceiro in top_parceiros %}
-                        <a class="dropdown-item" href="#">{{ top_parceiro.name }}</a>
-                    {% endfor %}
+                    <a class="dropdown-item" href="#">Pendentes</a>
+                    <a class="dropdown-item" href="#">Enviados</a>
                 </div>
             </li>
             
-            <li class="nav-item">
-              <a class="nav-link " href="# " >Members</a>
-            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Protocolos
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="{% url 'meus_protocolos' %}">Meus protocolos</a>
+              </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Alunos
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{% url 'home' %}">Todos Alunos</a>
+                <a class="dropdown-item" href="{% url 'meus_alunos' %}">Ativos</a>
+                <a class="dropdown-item" href="{% url 'novos_alunos' %}">Novos</a>
+
+            </div>
+        </li>
               <li class="nav-item">
-                  <a class="nav-link" href="# ">Upload CSV</a>
+                  <a class="nav-link" href="{% url 'home' %} ">Alunos</a>
               </li>
 
               <li class="nav-item dropdown">
@@ -81,7 +99,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item" href="#">Team</a>
-                  <a class="dropdown-item" href="{#">Partners</a>
+                  <a class="dropdown-item" href="#">Partners</a>
                   <div class="dropdown-divider">option</div>
                     <a class="dropdown-item" href="#">Task Sent to CI</a>
 

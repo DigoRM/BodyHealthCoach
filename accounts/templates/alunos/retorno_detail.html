@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block title %} Feedback {% endblock %}
+
+
+{% block content %}
+
+<h2>Retorno {{retorno.feedback.aluno.nome}} | Coach: retorno.feedback.aluno.coach </h2>
+<h6>{{retorno.cadastrado_em}} </h6>
+<div class="container">
+    <div class="row">
+        <div class="col">
+
+            <h5>Dieta: {{retorno.feedback.get_dieta_display }}</h5>
+            <p>Comentário: {{retorno.dieta_comentario}}</p>
+
+            <h5>Suplemento: {{retorno.feedback.get_suplemento_display }}</h5>
+            <p>Comentário: {{retorno.suplemento_comentario}}</p>
+        
+            <h5>Treino: {{retorno.feedback.get_treino_display}}</h5>
+            <p>Comentário: {{retorno.treino_comentario}}</p>
+        
+            <h5>Aeróbico: {{retorno.feedback.get_aerobico_display}}</h5>
+            <p>Comentário: {{retorno.aerobico_comentario}}</p>
+        
+            <h5>O que melhorou:</h5>
+            <p>{{retorno.feedback.melhorou}}</p>
+            <h5>Ainda pode melhorar:</h5>
+            <p>{{retorno.feedback.pode_melhorar}}</p>
+            <h5>Comentário: {{retorno.melhorias_comentario}}</h5>
+
+            <h5>Sugestões: {{retorno.feedback.sugestoes}}</h5>
+            <p>Comentário: {{retorno.sugestoes_comentario}}</p>
+
+            <h5>Orientações e Comentários Finais:</h5>
+            <p>{{retorno.comentarios_finais}} </p>
+        </div>
+    
+        <div class="col">
+            <h5>Peso Atual: {{retorno.feedback.peso_atual}}</h5>
+            <p>Comentário: {{retorno.peso_comentario}}</p>            
+            
+            <h5>Foto Frente:</h5>
+            <img src="{{retorno.feedback.foto_frente.url}}" alt="">
+    
+            <h5>Foto Lado:</h5>
+            <img src="{{retorno.feedback.foto_lado.url}}" alt="">
+        
+            <h5>Foto Verso:</h5>
+            <img src="{{retorno.feedback.foto_verso.url}}" alt="">
+            <p>Comentário: {{retorno.fotos_comentario}}</p>            
+
+            {% if feedback.video %}
+            <h5>Vídeo</h5>
+            <p><a href="{{retorno.feedback.video}}">{{feedback.video}} </a></p>
+            <p>Comentário: {{retorno.video_comentario}}</p>            
+
+            {% endif %}
+
+            <h5>Comprometimento: {{retorno.feedback.comprometimento}}</h5>
+
+            <h5>Avaliação Coach: {{retorno.feedback.avalia_coach}}</h5>
+        
+            <h5>Sugestões: {{retorno.feedback.sugestoes}}</h5>
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="col">
+                {% if request.user.is_staff %}
+                <button><a href="{% url 'nova_replica' retorno.id %}">Responder</a></button>
+                {% else %}
+                <button><a href="{% url 'nova_replica' retorno.id %}">Tenho Dúvida</a></button>
+                {% endif %}
+
+                {% if replicas %}
+                {% for replica in replicas %}
+                <div class="card">
+                    <div class="card-header">
+                        <h3>{{replica.author}} </h3> <span>{{replica.cadastrado_em}} </span>
+                        <hr>
+
+                    </div>
+                    <div class="card-body">
+                        <h5>Dieta: {{replica.dieta }}</h5>
+    
+                        <h5>Suplemento: {{replica.suplemento }}</h5>
+                    
+                        <h5>Treino: {{replica.treino}}</h5>
+                    
+                        <h5>Aeróbico: {{replica.aerobico}}</h5>
+        
+                        <h5>Demais assuntos: {{replica.demais_assuntos}}</h5>
+        
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+               <p>Sem replicas no momento.</p> 
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<hr><br>
+{% if replicas %}
+<h3>Replicas</h3>
+<div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
+    <table class="table table-striped table-bordered">
+        <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
+            <tr>
+                <th>Cadastro</th>
+                <th>Aluno</th>
+                <th>Protocolo</th>
+                <th>Carbohidrato</th>
+                <th>Proteína</th>
+                <th>Gordura</th>
+                <th>Treino</th>
+                <th>Atualizado</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td>{{retorno.cadastrado_em|date:"d/m/Y"}} </td>
+                        <td>{{ retorno.feedback.aluno.nome }}{{feedback.aluno.sobrenome}} </td>
+                        <td>{{ retorno.feedback.protocolo.protocolo }}</td>
+                        <td>{{ retorno.feedback.protocolo.carbo }}</td>
+                        <td>{{ retorno.feedback.protocolo.prot }}</td>
+                        <td>{{ retorno.feedback.protocolo.fat }}</td>
+                        <td>{{ retorno.feedback.protocolo.treino }}</td>
+
+                    </tr>
+            </tbody>
+        </table>
+</div>
+{% else %}
+<p style="text-align: center;">Ainda sem Retorno para esse feedback.</p>
+
+{% endif %}
+
+{% endblock %}

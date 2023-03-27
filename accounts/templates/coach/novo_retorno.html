@@ -3,10 +3,11 @@
 {% block content %}
 
 
-<form action="{% url 'novo_feedback' %}" method="POST">
+<form action="{% url 'novo_retorno' feedback.id %}" method="POST">
     {% csrf_token %}
-    {{form.as_p}}
 
+    <h3>Retorno</h3>
+    {{form2.as_p}}
 
     <button type="submit">ok</button>
 </form>
