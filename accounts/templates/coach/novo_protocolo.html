@@ -2,12 +2,20 @@
 
 {% block content %}
 
+<div class="container">
+    <h3 style="text-align: center;">Novo Protocolo</h3>
+    <hr>
+    <div class="row">
+        <div class="col">
+            <form action="{% url 'novo_protocolo' aluno.id %}" method="POST">
+                {% csrf_token %}
+                {{form.as_p}}
+            
+                <button type="submit">ok</button>
+            </form>
+        </div>
+    </div>
+</div>
 
-<form action="{% url 'novo_protocolo' %}" method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-
-    <button type="submit">ok</button>
-</form>
 
 {% endblock %}

@@ -15,6 +15,7 @@
                                 <th>Gerenciar Aluno</th>
                                 <th>Plano</th>
                                 <th>Vencimento do Plano</th>
+                                <th>Novo Protocolo</th>
 
                             </tr>
                         </thead>
@@ -27,6 +28,8 @@
                                     <td><button class="btn-warning"><a href="{% url 'gerenciar_aluno' ativo.pk %}">Gerenciar</a></button></td>
                                     <td style="vertical-align:middle">{{ativo.plano}} </td>                                    
                                     <td>{{ ativo.vencimento_plano }}</td>
+                                    <td><a href="{% url 'novo_protocolo' pk=ativo.pk %}"><button class="btn-success">Criar</button></a>
+                                    </td>
                                 </tr>
                         </tbody>
                     </table>

@@ -73,7 +73,7 @@ class NovoProtocolo(forms.ModelForm):
     class Meta:
         model = Protocolo
         fields="__all__"
-        exclude = ['aluno','atualizado_em','cadastrado_em',]
+        exclude = ['coach','aluno','atualizado_em','cadastrado_em',]
         
         
         

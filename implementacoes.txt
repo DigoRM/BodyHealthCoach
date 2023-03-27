@@ -1,0 +1,7 @@
+
+
+- feedbacks_protocolo - mostrar feedbacks de um determinado protocolo
+
+- novo_feedbackV1 (já está pronta, precisa substituir pela atual apenas)
+
+- protocolo_detail- Avaliar se será necessario, visto que os protocolos são modelos simples que carregam um arquivo com todos os detalhes.

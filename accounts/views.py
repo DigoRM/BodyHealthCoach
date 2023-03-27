@@ -8,6 +8,8 @@ from decimal import Decimal
 from django.db.models.functions import ExtractWeekDay, ExtractMonth, ExtractDay, ExtractWeek
 from datetime import datetime
 from django.http import Http404
+from .decorators import staff_required
+
 
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -77,7 +79,8 @@ def register(request):
                    }
         
         return render(request, 'registration/register.html', context)
-    
+
+
 def home(request):
     alunos_ativos = Aluno.objects.filter(pago=True).order_by('-atualizado_em')
     alunos_inativos = Aluno.objects.filter(pago=False).order_by('-atualizado_em')
@@ -88,6 +91,18 @@ def home(request):
     }
 
     return render(request, 'home.html', context)
+
+@staff_required
+def todos_alunos(request):
+    alunos_ativos = Aluno.objects.filter(pago=True).order_by('-atualizado_em')
+    alunos_inativos = Aluno.objects.filter(pago=False).order_by('-atualizado_em')
+    
+    context = {
+        'alunos_ativos':alunos_ativos,
+        'alunos_inativos':alunos_inativos,
+    }
+
+    return render(request, 'coach/todos_alunos.html', context)
 
 
 def marcar_pago(request, pk):
@@ -290,6 +305,7 @@ def gerenciar_aluno(request, pk=None):
     return render(request, 'coach/gerenciar_aluno.html',context)
 
 # Protocolo
+@staff_required
 @login_required(login_url='login')
 def novo_protocolo(request, pk):
     aluno = get_object_or_404(Aluno, pk=pk)
@@ -299,7 +315,7 @@ def novo_protocolo(request, pk):
         
         if form.is_valid():
             protocolo = form.save()
-            protocolo.coach = user
+            protocolo.coach = user.coach
             protocolo.aluno = aluno
             protocolo.save()
             messages.success(request, 'Protocolo criado!')
@@ -307,7 +323,7 @@ def novo_protocolo(request, pk):
     else:
         form = NovoProtocolo()
         
-    return render(request, 'coach/novo_protocolo.html', {'form':form, 'user':user})
+    return render(request, 'coach/novo_protocolo.html', {'form':form, 'user':user, 'aluno':aluno,})
 
 def meus_protocolos(request):
     user = request.user

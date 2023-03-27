@@ -50,7 +50,7 @@
                     <th>Proteína</th>
                     <th>Gordura</th>
                     <th>Treino</th>
-                    <th>Atualizado</th>
+                    <th>Feedbacks</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -63,7 +63,7 @@
                             <td>{{ protocolo.prot }}</td>
                             <td>{{ protocolo.fat }}</td>
                             <td>{{ protocolo.treino }}</td>
-
+                            <td>{{ protocolo.feedback.count }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
