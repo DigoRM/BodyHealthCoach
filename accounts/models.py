@@ -126,7 +126,7 @@ class Feedback(models.Model):
 class Retorno(models.Model):
 
     feedback = models.OneToOneField(Feedback, related_name='feedback', on_delete=models.SET_NULL, null=True)
-    protocolo = models.ForeignKey(Feedback, related_name='retorno_protocolo', on_delete=models.SET_NULL, null=True,blank=True)
+    protocolo = models.ForeignKey(Protocolo, related_name='retorno_protocolo', on_delete=models.SET_NULL, null=True,blank=True)
     peso_comentario = models.CharField(max_length=255)
     dieta_comentario = models.TextField(blank=True, null=True)
     suplemento_comentario = models.TextField(blank=True, null=True)

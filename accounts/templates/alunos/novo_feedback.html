@@ -3,7 +3,7 @@
 {% block content %}
 
 
-<form action="{% url 'novo_feedback' %}" method="POST">
+<form action="{% url 'novo_feedbackV1' protocolo.id %}" method="POST">
     {% csrf_token %}
     {{form.as_p}}
 
