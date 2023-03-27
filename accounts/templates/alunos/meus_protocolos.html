@@ -22,7 +22,7 @@
                 <tbody>
                     {% for protocolo in protocolos_aluno %}
                         <tr>
-                            <td>{{protocolo.cadastrado_em|date:"d/m/Y"}} </td>
+                            <td><a href="{% url 'feedbacks_protocolo' protocolo.id %} ">{{protocolo.cadastrado_em|date:"d/m/Y"}} </a></td>
                             <td>{{ protocolo.aluno.nome }}{{protocolo.aluno.sobrenome}} </td>
                             <td>{{ protocolo.protocolo }}</td>
                             <td>{{ protocolo.carbo }}</td>
@@ -56,7 +56,7 @@
                 <tbody>
                     {% for protocolo in protocolos_coach %}
                         <tr>
-                            <td>{{protocolo.cadastrado_em|date:"d/m/Y"}} </td>
+                            <td><a href="{% url 'feedbacks_protocolo' protocolo.id %} ">{{protocolo.cadastrado_em|date:"d/m/Y"}} </a></td>
                             <td>{{ protocolo.aluno.nome }}{{protocolo.aluno.sobrenome}} </td>
                             <td>{{ protocolo.protocolo }}</td>
                             <td>{{ protocolo.carbo }}</td>

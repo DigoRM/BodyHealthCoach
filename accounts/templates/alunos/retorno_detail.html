@@ -40,18 +40,31 @@
             <p>Comentário: {{retorno.peso_comentario}}</p>            
             
             <h5>Foto Frente:</h5>
+            {% if retorno.feedback.foto_frente %}
             <img src="{{retorno.feedback.foto_frente.url}}" alt="">
+            {% else %}
+            <p>Sem foto</p>
+            {% endif %}
     
             <h5>Foto Lado:</h5>
+            {% if retorno.feedback.foto_lado %}
             <img src="{{retorno.feedback.foto_lado.url}}" alt="">
-        
+            {% else %}
+            <p>Sem foto</p>
+            {% endif %}
+
             <h5>Foto Verso:</h5>
+            {% if retorno.feedback.foto_verso %}
             <img src="{{retorno.feedback.foto_verso.url}}" alt="">
+            {% else %}
+            <p>Sem foto</p>
+            {% endif %}
+
             <p>Comentário: {{retorno.fotos_comentario}}</p>            
 
-            {% if feedback.video %}
+            {% if retorno.feedback.video %}
             <h5>Vídeo</h5>
-            <p><a href="{{retorno.feedback.video}}">{{feedback.video}} </a></p>
+            <p><a href="{{retorno.feedback.video}}">{{retorno.feedback.video}} </a></p>
             <p>Comentário: {{retorno.video_comentario}}</p>            
 
             {% endif %}
@@ -63,79 +76,48 @@
             <h5>Sugestões: {{retorno.feedback.sugestoes}}</h5>
         </div>
         <br><br>
-        <div class="row">
-            <div class="col">
-                {% if request.user.is_staff %}
-                <button><a href="{% url 'nova_replica' retorno.id %}">Responder</a></button>
-                {% else %}
-                <button><a href="{% url 'nova_replica' retorno.id %}">Tenho Dúvida</a></button>
-                {% endif %}
-
-                {% if replicas %}
-                {% for replica in replicas %}
-                <div class="card">
-                    <div class="card-header">
-                        <h3>{{replica.author}} </h3> <span>{{replica.cadastrado_em}} </span>
-                        <hr>
-
-                    </div>
-                    <div class="card-body">
-                        <h5>Dieta: {{replica.dieta }}</h5>
-    
-                        <h5>Suplemento: {{replica.suplemento }}</h5>
-                    
-                        <h5>Treino: {{replica.treino}}</h5>
-                    
-                        <h5>Aeróbico: {{replica.aerobico}}</h5>
-        
-                        <h5>Demais assuntos: {{replica.demais_assuntos}}</h5>
-        
-                    </div>
-                </div>
-                {% endfor %}
-                {% else %}
-               <p>Sem replicas no momento.</p> 
-                {% endif %}
-            </div>
-        </div>
-
     </div>
 
 </div>
 <hr><br>
-{% if replicas %}
-<h3>Replicas</h3>
-<div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
-    <table class="table table-striped table-bordered">
-        <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
-            <tr>
-                <th>Cadastro</th>
-                <th>Aluno</th>
-                <th>Protocolo</th>
-                <th>Carbohidrato</th>
-                <th>Proteína</th>
-                <th>Gordura</th>
-                <th>Treino</th>
-                <th>Atualizado</th>
-                </tr>
-            </thead>
-            <tbody>
-                    <tr>
-                        <td>{{retorno.cadastrado_em|date:"d/m/Y"}} </td>
-                        <td>{{ retorno.feedback.aluno.nome }}{{feedback.aluno.sobrenome}} </td>
-                        <td>{{ retorno.feedback.protocolo.protocolo }}</td>
-                        <td>{{ retorno.feedback.protocolo.carbo }}</td>
-                        <td>{{ retorno.feedback.protocolo.prot }}</td>
-                        <td>{{ retorno.feedback.protocolo.fat }}</td>
-                        <td>{{ retorno.feedback.protocolo.treino }}</td>
+<div class="row">
+    <div class="col" style="text-align: center;">
+        <h3>Replicas</h3>
 
-                    </tr>
-            </tbody>
-        </table>
+
+
+        {% if replicas %}
+        {% for replica in replicas %}
+        <div class="card">
+            <div class="card-header">
+                <h3>{{replica.author}} </h3> <span>{{replica.cadastrado_em}} </span>
+                <hr>
+
+            </div>
+            <div class="card-body">
+                <h5>Dieta: {{replica.dieta }}</h5>
+
+                <h5>Suplemento: {{replica.suplemento }}</h5>
+            
+                <h5>Treino: {{replica.treino}}</h5>
+            
+                <h5>Aeróbico: {{replica.aerobico}}</h5>
+
+                <h5>Demais assuntos: {{replica.demais_assuntos}}</h5>
+
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+       <p>Sem replicas no momento.</p> 
+        {% endif %}
+        {% if request.user.is_staff %}
+        <button><a href="{% url 'nova_replica' retorno.id %}">Responder</a></button>
+        {% else %}
+        <button><a href="{% url 'nova_replica' retorno.id %}">Tenho Dúvida</a></button>
+        {% endif %}
+    </div>
 </div>
-{% else %}
-<p style="text-align: center;">Ainda sem Retorno para esse feedback.</p>
 
-{% endif %}
 
 {% endblock %}

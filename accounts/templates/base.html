@@ -40,6 +40,23 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Minha Conta
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{% url 'edit_profile' %}">Atualizar Perfil</a>
+                <a class="dropdown-item" href="#">Trocar a senha</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Protocolos
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="{% url 'meus_protocolos' %}">Meus protocolos</a>
+              </div>
+          </li>
+            <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Feedbacks
                 </a>
@@ -51,14 +68,7 @@
                   {% endif %}
 
               </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Minha Conta
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="{% url 'edit_profile' %}">Atualizar Perfil</a>
-                  <a class="dropdown-item" href="#">Trocar a senha</a>
-              </li>
+
 
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -70,42 +80,18 @@
                 </div>
             </li>
             
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Protocolos
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="{% url 'meus_protocolos' %}">Meus protocolos</a>
-              </div>
-          </li>
+
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Alunos
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{% url 'todos_alunos' %}">Todos Alunos</a>
                 <a class="dropdown-item" href="{% url 'meus_alunos' %}">Ativos</a>
                 <a class="dropdown-item" href="{% url 'novos_alunos' %}">Novos</a>
+                <a class="dropdown-item" href="{% url 'todos_alunos' %}">Todos Alunos</a>
 
             </div>
         </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="{% url 'home' %} ">Alunos</a>
-              </li>
-
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Reports
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="#">Team</a>
-                  <a class="dropdown-item" href="#">Partners</a>
-                  <div class="dropdown-divider">option</div>
-                    <a class="dropdown-item" href="#">Task Sent to CI</a>
-
-                  </div>
-                </div>
-              </li>
 
           </ul>
           <div class="ml-auto">

@@ -69,8 +69,6 @@ class Protocolo(models.Model):
     cadastrado_em = models.DateTimeField(auto_now=True)
     atualizado_em = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     
-    def __str__(self):
-        return self.aluno.email
 
 class Feedback(models.Model):
     TOTALMENTE = 1
@@ -147,7 +145,7 @@ class Retorno(models.Model):
     
 class Replica(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    retorno = models.ForeignKey(Feedback, related_name='retorno', on_delete=models.SET_NULL, null=True)
+    retorno = models.ForeignKey(Retorno, related_name='retorno', on_delete=models.SET_NULL, null=True)
     dieta = models.TextField(null=True, blank=True)
     suplemento = models.TextField(null=True, blank=True)
     treino = models.TextField(null=True, blank=True) 

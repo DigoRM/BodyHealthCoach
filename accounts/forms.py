@@ -82,7 +82,7 @@ class NovoFeedback(forms.ModelForm):
     class Meta:
         model = Feedback
         fields="__all__"
-        exclude = ['coach','aluno','atualizado_em','cadastrado_em','atendido',]
+        exclude = ['coach','aluno','atualizado_em','cadastrado_em','atendido','protocolo',]
         
         
 class NovoRetorno(forms.ModelForm):
@@ -90,7 +90,7 @@ class NovoRetorno(forms.ModelForm):
     class Meta:
         model = Retorno
         fields="__all__"
-        exclude = ['atualizado_em','cadastrado_em',]
+        exclude = ['atualizado_em','cadastrado_em','feedback','protocolo']
         
 class NovaReplica(forms.ModelForm):
 

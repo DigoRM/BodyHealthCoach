@@ -8,6 +8,7 @@ from decimal import Decimal
 from django.db.models.functions import ExtractWeekDay, ExtractMonth, ExtractDay, ExtractWeek
 from datetime import datetime
 from django.http import Http404
+from matplotlib.pyplot import get
 from .decorators import staff_required
 
 
@@ -232,16 +233,20 @@ def meus_feedbacks(request):
     
     return render(request, 'alunos/meus_feedbacks.html', context)
 
+@staff_required
 @login_required
 def feedbacks_pendentes(request):
     user = request.user
     coach = user.coach
     feedbacks = Feedback.objects.filter(coach=coach, atendido=False)
+    retornos = []
+    for feedback in feedbacks:
+        retornos += list(Retorno.objects.filter(feedback=feedback))
 
-
-    context = {'user': user,'coach':coach,'feedbacks':feedbacks,}
+    context = {'user': user,'coach':coach,'feedbacks':feedbacks,'retornos':retornos}
     
     return render(request, 'coach/feedbacks_pendentes.html', context)
+
 
 
 @login_required
@@ -341,13 +346,26 @@ def meus_protocolos(request):
     return render(request, 'alunos/meus_protocolos.html', context)
 
 
+@login_required
+def feedbacks_protocolo(request, pk):
+    user = request.user
+    protocolo = get_object_or_404(Protocolo, pk=pk)
+    feedbacks = Feedback.objects.filter(protocolo=protocolo)
+    retornos = []
+    for feedback in feedbacks:
+        retornos += list(Retorno.objects.filter(feedback=feedback))
+
+    context = {'user': user,'feedbacks':feedbacks,'retornos':retornos, 'protocolo':protocolo}
+    
+    return render(request, 'alunos/feedbacks_protocolo.html', context)
+
 
 @login_required(login_url='login')
 def novo_retorno(request, pk):
     feedback = get_object_or_404(Feedback, pk=pk)
+    #protocolo = get_object_or_404(Protocolo, feedback=feedback)
     user = request.user    
     if request.method == "POST":
-        form = NovoProtocolo(request.POST, request.FILES)
         form2 = NovoRetorno(request.POST, request.FILES)
         
         if form2.is_valid():
@@ -362,10 +380,9 @@ def novo_retorno(request, pk):
             messages.success(request, 'Retorno finalizado!')
             return redirect('feedbacks_pendentes')
     else:
-        form = NovoProtocolo()
         form2 = NovoRetorno()
         
-    context = {'form':form, 'user':user, 'form2':form2,'feedback':feedback,}
+    context = {'user':user, 'form2':form2,'feedback':feedback,}
     return render(request, 'coach/novo_retorno.html', context)
 
 

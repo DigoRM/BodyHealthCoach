@@ -29,6 +29,8 @@ urlpatterns = [
 
     path('meus_feedbacks/', views.meus_feedbacks, name='meus_feedbacks'),
     path('feedbacks_pendentes/', views.feedbacks_pendentes, name='feedbacks_pendentes'),
+    path('feedbacks/<int:pk>/protocolo/', views.feedbacks_protocolo, name='feedbacks_protocolo'),
+
 
     path('feedback/<int:pk>/detail/', views.feedback_detail, name='feedback_detail'),
     path('aluno/<int:pk>/gerenciar/', views.gerenciar_aluno, name='gerenciar_aluno'),
@@ -39,6 +41,7 @@ urlpatterns = [
 
     path('meus_retornos/', views.meus_retornos, name='meus_retornos'),
     path('retorno/<int:pk>/detail/', views.retorno_detail, name='retorno_detail'),
+    path('replica/<int:pk>/nova/', views.nova_replica, name='nova_replica'),
 
 
 ]

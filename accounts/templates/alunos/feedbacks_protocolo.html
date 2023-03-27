@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Meus Protocolos ({{protocolos_coach.count}}) </h2>
+
+<h2>Protocolo {{protocolo.cadastrado_em|date:"d/m/Y"}}  </h2>
 <div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
     <table class="table table-striped table-bordered">
         <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
             <tr>
-                <th>Cadastro</th>
                 <th>Aluno</th>
                 <th>Protocolo</th>
                 <th>Carbohidrato</th>
@@ -17,9 +17,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for protocolo in protocolos_coach %}
                     <tr>
-                        <td><a href="{% url 'feedbacks_protocolo' protocolo.id %} ">{{protocolo.cadastrado_em|date:"d/m/Y"}} </a></td>
                         <td>{{ protocolo.aluno.nome }}{{protocolo.aluno.sobrenome}} </td>
                         <td>{{ protocolo.protocolo }}</td>
                         <td>{{ protocolo.carbo }}</td>
@@ -28,12 +26,12 @@
                         <td>{{ protocolo.treino }}</td>
                         <td>{{ protocolo.feedback.count }}</td>
                     </tr>
-                {% endfor %}
             </tbody>
         </table>
     </div>
+
+<h3>Feedbacks deste Protocolo</h3>
 {% if feedbacks %}
-<h2>Feedbacks Pendentes ({{feedbacks.count}}) </h2>
 <div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
     <table class="table table-striped table-bordered">
         <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
@@ -72,5 +70,7 @@
 {% else %}
 <h5>Sem Feedbacks no momento</h5>
 {% endif %}
-
+{% if not user.is_staff %}
+<a href="{% url 'novo_feedbackV1' protocolo.id %} "><button class="btn-warning">Novo Feedback</button></a>
+{% endif %}
 {% endblock %}
