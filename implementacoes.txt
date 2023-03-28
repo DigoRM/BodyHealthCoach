@@ -1,8 +1,19 @@
 
 
 Feedbacks_protocolo:
-- Esconder ou mostrar o botão de criar NOVO retorno para determinado feedback, tendo em vista que:
     * Cada Feedback poderá ter 1 Retorno
     * Cada Retorno poderá ter 2 Réplicas
 
+
+Construir a home page:
+    * Aluno:
+        - Objetivos do Aluno -> mindset
+        - Acompanhamento em tempo real do progresso com a consultoria, comparando os dados inciais com os atuais
+        - Fotos Antes e Depois
+        - Informações sobre o plano e a data de vencimento
+
+    * Coach:
+        - Informações do Perfil
+        - Quantidade de alunos ativos, inativos, por plano, receita bruta estimada do mês
+        - Gráficos de alunos por mês, por plano, receita bruta estimada
  

@@ -57,12 +57,14 @@
                         <td>{{ feedback.treino }}</td>
                         <td>{{ feedback.aerobico }}</td>
                         <td>{{ feedback.comprometimento }}</td>
-                        {% if request.user.coach and not retorno.feedback %}
+                        {% if request.user.coach and not feedback.atendido %}
                         <td><a href="{% url 'novo_retorno' feedback.id %}"><button class="btn-success">NOVO</button> </a> </td>
-                        {% elif request.user.aluno and not retorno.feedback %}
+                        {% elif request.user.aluno and not feedback.atendido %}
                         <td>Sem Retorno</td>
-                        {% elif retorno.feedback %}
-                        <td><a href="{% url 'retorno_detail' feedback.retorno.id %}"><button class="btn-warning">ABRIR</button></a></td>
+                        {% elif feedback.atendido %}
+                        {% for retorno in retornos %}
+                        <td><a href="{% url 'retorno_detail' retorno.id %}"><button class="btn-warning">ABRIR</button></a></td>
+                        {% endfor %}
                         {% endif %}
 
 
