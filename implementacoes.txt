@@ -1,3 +1,8 @@
 
 
-- feedbacks_protocolo - mostrar feedbacks de um determinado protocolo. Cada Feedback terá um Retorno, e cada Retorno poderá ter 1 Réplica
+Feedbacks_protocolo:
+- Esconder ou mostrar o botão de criar NOVO retorno para determinado feedback, tendo em vista que:
+    * Cada Feedback poderá ter 1 Retorno
+    * Cada Retorno poderá ter 2 Réplicas
+
+ 
