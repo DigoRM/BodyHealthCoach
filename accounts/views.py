@@ -8,7 +8,6 @@ from decimal import Decimal
 from django.db.models.functions import ExtractWeekDay, ExtractMonth, ExtractDay, ExtractWeek
 from datetime import datetime
 from django.http import Http404
-from matplotlib.pyplot import get
 from .decorators import staff_required
 
 
