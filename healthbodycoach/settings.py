@@ -26,7 +26,10 @@ SECRET_KEY = 'django-insecure-8n1$nxj%(q2!2%nvf3*yqnl-lfdo97h-g@=nr@nfy2xh#^d27#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+CSRF_TRUSTED_ORIGINS = ['sennateam.up.railway.app']
+
 
 
 # Application definition
