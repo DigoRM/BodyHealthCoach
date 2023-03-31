@@ -40,12 +40,12 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="{% url 'home' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Minha Conta
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="{% url 'edit_profile' %}">Atualizar Perfil</a>
-                <a class="dropdown-item" href="#">Trocar a senha</a>
+                <a class="dropdown-item" href="{% url 'reset_password' %}">Trocar a senha</a>
             </li>
 
             <li class="nav-item dropdown">
@@ -89,7 +89,7 @@
             {% if request.user.is_authenticated %}
                 <ul class="navbar-nav">
                     <li class="navbar-item">
-                        <a class="nav-link">Welcome, {{request.user}}!</a>
+                        <a class="nav-link">Bem vindo, {{request.user}}!</a>
                     </li>
                     <li>
                         <a class="nav-link" href="{% url 'logout' %}"><div class="tag is-danger">Logout</div></a>
