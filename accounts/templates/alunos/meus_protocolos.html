@@ -16,20 +16,22 @@
                     <th>Proteína</th>
                     <th>Gordura</th>
                     <th>Treino</th>
-                    <th>Novo Feedback</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for protocolo in protocolos_aluno %}
                         <tr>
                             <td><a href="{% url 'feedbacks_protocolo' protocolo.id %} ">{{protocolo.cadastrado_em|date:"d/m/Y"}} </a></td>
-                            <td>{{ protocolo.aluno.nome }}{{protocolo.aluno.sobrenome}} </td>
-                            <td>{{ protocolo.protocolo }}</td>
+                            <td>{{ protocolo.aluno.nome }} {{protocolo.aluno.sobrenome}} </td>
+                            {% if protocolo.protocolo %}
+                            <td style="text-align: center;"><a href="{{ protocolo.protocolo.url }}"><i class="fas fa-file-pdf"></i></a></td>
+                            {% else %}
+                            <td>Sem arquivo</td>
+                            {% endif %}                            
                             <td>{{ protocolo.carbo }}</td>
                             <td>{{ protocolo.prot }}</td>
                             <td>{{ protocolo.fat }}</td>
                             <td>{{ protocolo.treino }}</td>
-                            <td><button class="btn-warning"><a href="{% url 'novo_feedbackV1' protocolo.id %}">CRIAR</a></button> </td>
 
                         </tr>
                     {% endfor %}
@@ -50,20 +52,22 @@
                     <th>Proteína</th>
                     <th>Gordura</th>
                     <th>Treino</th>
-                    <th>Feedbacks</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for protocolo in protocolos_coach %}
                         <tr>
                             <td><a href="{% url 'feedbacks_protocolo' protocolo.id %} ">{{protocolo.cadastrado_em|date:"d/m/Y"}} </a></td>
-                            <td>{{ protocolo.aluno.nome }}{{protocolo.aluno.sobrenome}} </td>
-                            <td>{{ protocolo.protocolo }}</td>
+                            <td><a href="{% url 'perfil_aluno' protocolo.aluno.id %} ">{{ protocolo.aluno.nome }} {{protocolo.aluno.sobrenome}} </a></td>
+                            {% if protocolo.protocolo %}
+                            <td style="text-align: center;"><a href="{{ protocolo.protocolo.url }}"><i class="fas fa-file-pdf"></i></a></td>
+                            {% else %}
+                            <td>Sem arquivo</td>
+                            {% endif %}   
                             <td>{{ protocolo.carbo }}</td>
                             <td>{{ protocolo.prot }}</td>
                             <td>{{ protocolo.fat }}</td>
                             <td>{{ protocolo.treino }}</td>
-                            <td>{{ protocolo.feedback.count }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

@@ -2,13 +2,19 @@
 
 {% block content %}
 
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form action="{% url 'novo_feedbackV1' protocolo.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.as_p}}
+            
+            
+                <button type="submit">ok</button>
+            </form>
+        </div>
+    </div>
+</div>
 
-<form action="{% url 'novo_feedbackV1' protocolo.id %}" method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-
-
-    <button type="submit">ok</button>
-</form>
 
 {% endblock %}

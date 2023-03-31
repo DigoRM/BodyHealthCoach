@@ -18,7 +18,7 @@ class Coach(models.Model):
     altura = models.DecimalField(max_digits=2, decimal_places=2,blank=True, null=True)
     peso = models.DecimalField(max_digits=3, decimal_places=2,blank=True, null=True)
     conquistas = models.TextField(blank=True, null=True)
-    foto_frente = models.ImageField(upload_to='coach/foto_perfil',blank=True, null=True)
+    foto_perfil = models.ImageField(upload_to='coach/foto_perfil',blank=True, null=True)
     foto_certificado = models.ImageField(upload_to='coach/certificado',blank=True, null=True)
 
 
@@ -28,6 +28,20 @@ class Coach(models.Model):
 
 
 class Aluno(models.Model):
+
+    BASIC = 1
+    SILVER =2
+    GOLD = 3
+    ATLETA = 4
+    
+    CHOICE = (
+        (BASIC, 'BASIC'),
+        (SILVER, 'SILVER'),
+        (GOLD, 'GOLD'),
+        (ATLETA, 'ATLETA'),
+
+    )
+
     user = models.OneToOneField(User, related_name='aluno', on_delete=models.CASCADE)
     coach = models.OneToOneField(Coach, related_name='aluno_coach', on_delete=models.CASCADE, blank=True,null=True)
     nome = models.CharField(max_length=255,blank=True, null=True)
@@ -38,18 +52,21 @@ class Aluno(models.Model):
     data_nascimento = models.DateField(blank=True, null=True)
     altura = models.DecimalField(max_digits=3, decimal_places=2,blank=True, null=True)
     peso = models.DecimalField(max_digits=4, decimal_places=2,blank=True, null=True)
+    peso_atual = models.DecimalField(max_digits=4, decimal_places=2,blank=True, null=True)
     enfermidades = models.CharField(max_length=255,blank=True, null=True)
     medicamentos = models.CharField(max_length=255,blank=True, null=True)
     lesao = models.CharField(max_length=255,blank=True, null=True)
-    objetivo_curto = models.CharField(max_length=255)
-    objetivo_longo = models.CharField(max_length=255)
+    objetivo_curto = models.CharField(max_length=155)
+    objetivo_longo = models.CharField(max_length=155)
+    avatar = models.ImageField(upload_to='alunos/avatar',blank=True, null=True)
     foto_frente = models.ImageField(upload_to='alunos/foto_frente',blank=True, null=True)
     foto_lado = models.ImageField(upload_to='alunos/foto_lado',blank=True, null=True)
     foto_verso = models.ImageField(upload_to='alunos/foto_verso',blank=True, null=True)
     avaliacao_fisica = models.ImageField(upload_to='alunos/avaliacao_fisica',blank=True, null=True) 
     exame_sangue = models.ImageField(upload_to='alunos/exame_sangue',blank=True, null=True)
     pago = models.BooleanField(default=False)
-    plano = models.CharField(max_length=155, blank=True, null=True)
+    plano = models.PositiveSmallIntegerField(choices=CHOICE, null=True, blank=True)
+    mensalidade = models.DecimalField(max_digits=5, decimal_places=2,blank=True, null=True)
     vencimento_plano = models.DateField(blank=True, null=True)
     cadastrado_em = models.DateTimeField(auto_now=True)
     atualizado_em = models.DateTimeField(auto_now_add=True)
@@ -84,6 +101,7 @@ class Feedback(models.Model):
     coach = models.ForeignKey(Coach, related_name='coach', on_delete=models.SET_NULL, null=True)
     aluno = models.ForeignKey(Aluno, related_name='aluno', on_delete=models.SET_NULL, null=True)
     protocolo = models.ForeignKey(Protocolo, related_name='protocolo_feedback', on_delete=models.SET_NULL, null=True)
+    retorno = models.ForeignKey('Retorno', related_name='retorno_feedback', on_delete=models.SET_NULL, null=True)
 
     peso_atual = models.DecimalField(max_digits=6, decimal_places=3)
     

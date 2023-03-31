@@ -1,19 +1,39 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
-{% if user.aluno %}
-<form action="{% url 'edit_profile' %}" method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">ok</button>
-</form>
-{% elif user.coach %}
-<form action="{% url 'edit_profile' %}" method="POST">
-    {% csrf_token %}
-    {{form2.as_p}}
-    <button type="submit">ok</button>
-</form>
+<div class="container">
+    <div class="row">
+        <div class="col mt-4">
+            <h3>Editar Perfil</h3><hr>
+            {% if user.aluno %}
+            <form action="{% url 'edit_profile' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                    {% if field.name == 'peso' and field.value %}
+                        {{ field.as_hidden }}
+                    {% else %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <br>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            
+            {% elif user.coach %}
+            <form action="{% url 'edit_profile' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form2.as_p}}
+                <button type="submit" class="btn btn-primary">Submit</button>                <button type="submit">ok</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
 {% endif %}
 
 {% endblock %}

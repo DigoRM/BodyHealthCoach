@@ -2,42 +2,52 @@
 
 {% block content %}
 
-<div class="container my-4">
-    {% if feedbacks_aluno %}
-    <h2>Meus Feedbacks ({{feedbacks_aluno.count}}) </h2>
-    <div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
-        <table class="table table-striped table-bordered">
-            <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
+{% if feedbacks_aluno %}
+<h2>Meus Feedbacks ({{feedbacks_aluno.count}}) </h2>
+<div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
+    <table class="table table-striped table-bordered">
+        <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
+            <tr>
+                <th>Cadastro</th>
+                <th>Aluno</th>
+                <th>Peso Inicial</th>
+                <th>Peso Atual</th>
+                <th>Objetivo</th>
+                <th>Dieta</th>
+                <th>Suplemento</th>
+                <th>Treino</th>
+                <th>Aerobico</th>
+                <th>Comprometimento</th>
+                <th>Protocolo</th>
+                <th>Retorno</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for feedback in feedbacks_aluno %}
                 <tr>
-                    <th>Cadastro</th>
-                    <th>Aluno</th>
-                    <th>Peso</th>
-                    <th>Dieta</th>
-                    <th>Suplemento</th>
-                    <th>Treino</th>
-                    <th>Aerobico</th>
-                    <th>Comprometimento</th>
+                        <td><a href="{% url 'feedback_detail' feedback.id %}">{{feedback.cadastrado_em|date:"d/m/Y"}}</a> </td>
+                        <td><a href="{% url 'perfil_aluno' feedback.aluno.id %} ">{{ feedback.aluno.nome }} {{feedback.aluno.sobrenome}}</a> </td>
+                        <td>{{feedback.aluno.peso}}</td>
+                        <td>{{ feedback.peso_atual }}</td>
+                        <td>{{feedback.aluno.objetivo_curto}}</td>
+                        <td>{{ feedback.get_dieta_display }}</td>
+                        <td>{{ feedback.get_suplemento_display }}</td>
+                        <td>{{ feedback.get_treino_display }}</td>
+                        <td>{{ feedback.get_aerobico_display }}</td>
+                        <td>{{ feedback.comprometimento }}</td>
+                        <td><a href="{% url 'feedbacks_protocolo' feedback.protocolo.id %}"><button class="btn-info btn-sm">Ver</button></a> </td>
+                        {% if feedback.retorno %}
+                        <td><a href="{% url 'retorno_detail' feedback.retorno.id %}"><button class="btn-success">NOVO</button> </a> </td>
+                        {% else %}
+                        <td>Sem Retorno</td>
+                        {% endif %}
 
                     </tr>
-                </thead>
-                <tbody>
-                    {% for feedback in feedbacks_aluno %}
-                        <tr>
-                            <td><a href="{% url 'feedback_detail' pk=feedback.id %}">{{feedback.cadastrado_em|date:"d/m/Y"}}</a> </td>
-                            <td>{{ feedback.nome }}{{feedback.sobrenome}} </td>
-                            <td>{{ feedback.peso_atual }}</td>
-                            <td>{{ feedback.get_dieta_display }}</td>
-                            <td>{{ feedback.get_suplemento_display }}</td>
-                            <td>{{ feedback.get_treino_display }}</td>
-                            <td>{{ feedback.get_aerobico_display }}</td>
-                            <td>{{ feedback.comprometimento }}</td>
-
-
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     {% elif feedbacks_coach %}
     <h2>Meus Feedbacks ({{feedbacks_coach.count}}) </h2>
@@ -46,31 +56,40 @@
             <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
                 <tr>
                     <th>Cadastro</th>
-                    <th>Atualizado</th>
                     <th>Aluno</th>
-                    <th>Peso</th>
+                    <th>Peso Inicial</th>
+                    <th>Peso Atual</th>
+                    <th>Objetivo</th>
                     <th>Dieta</th>
                     <th>Suplemento</th>
                     <th>Treino</th>
                     <th>Aerobico</th>
                     <th>Comprometimento</th>
-
+                    <th>Protocolo</th>
+                    <th>Novo Retorno</th>
+    
                     </tr>
                 </thead>
                 <tbody>
-                    {% for feedback in feedbacks_aluno %}
+                    {% for feedback in feedbacks %}
                         <tr>
-                            <td>{{feedback.cadastrado_em|date:"d/m/Y"}} </td>
-                            <td>{{feedback.atualizado_em|date:"d/m/Y"}} </td>
-                            <td>{{ feedback.nome }}{{feedback.sobrenome}} </td>
+                            <td><a href="{% url 'feedback_detail' feedback.id %}">{{feedback.cadastrado_em|date:"d/m/Y"}}</a> </td>
+                            <td><a href="{% url 'perfil_aluno' feedback.aluno.id %} ">{{ feedback.aluno.nome }} {{feedback.aluno.sobrenome}}</a> </td>
+                            <td>{{feedback.aluno.peso}}</td>
                             <td>{{ feedback.peso_atual }}</td>
-                            <td>{{ feedback.dieta }}</td>
-                            <td>{{ feedback.suplemento }}</td>
-                            <td>{{ feedback.treino }}</td>
-                            <td>{{ feedback.aerobico }}</td>
+                            <td>{{feedback.aluno.objetivo_curto}}</td>
+                            <td>{{ feedback.get_dieta_display }}</td>
+                            <td>{{ feedback.get_suplemento_display }}</td>
+                            <td>{{ feedback.get_treino_display }}</td>
+                            <td>{{ feedback.get_aerobico_display }}</td>
                             <td>{{ feedback.comprometimento }}</td>
-
-
+                            <td><a href="{% url 'feedbacks_protocolo' feedback.protocolo.id %}"><button class="btn-info btn-sm">Ver</button></a> </td>
+                            {% if feedback.retorno %}
+                            <td><a href="{% url 'retorno_detail' feedback.retorno.id %} ">Visualizar</a></td>
+                            {% else %}
+                            <td><a href="{% url 'novo_retorno' feedback.id %}"><button class="btn-success">NOVO</button> </a> </td>
+                            {% endif %}
+    
                         </tr>
                     {% endfor %}
                 </tbody>

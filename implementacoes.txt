@@ -5,6 +5,8 @@ Feedbacks_protocolo:
     * Cada Retorno poderá ter 2 Réplicas
 
 
+
+
 Construir a home page:
     * Aluno:
         - Objetivos do Aluno -> mindset
@@ -16,4 +18,11 @@ Construir a home page:
         - Informações do Perfil
         - Quantidade de alunos ativos, inativos, por plano, receita bruta estimada do mês
         - Gráficos de alunos por mês, por plano, receita bruta estimada
+
+
+Criar a view aluno/id/perfil e disponibilizar o link nas telas:
+    * novos_alunos
+    * todos_alunos
+    * meus_alunos
+
  

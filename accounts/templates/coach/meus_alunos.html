@@ -14,6 +14,7 @@
                                 <th>Celular</th>
                                 <th>Gerenciar Aluno</th>
                                 <th>Plano</th>
+                                <th>Mensalidade</th>
                                 <th>Vencimento do Plano</th>
                                 <th>Novo Protocolo</th>
 
@@ -22,11 +23,12 @@
                         <tbody>
                                 <tr>
                                     <td>{{ativo.cadastrado_em|date:"d/m/Y"}} </td>
-                                    <td>{{ ativo.nome }} {{ativo.sobrenome}}</td>
+                                    <td><a href="{% url 'perfil_aluno' ativo.pk %} ">{{ ativo.nome }} {{ativo.sobrenome}}</a></td>
                                     <td>{{ ativo.email }}</td>
                                     <td>{{ ativo.celular }}</td>
                                     <td><button class="btn-warning"><a href="{% url 'gerenciar_aluno' ativo.pk %}">Gerenciar</a></button></td>
                                     <td style="vertical-align:middle">{{ativo.plano}} </td>                                    
+                                    <td>R$ {{ativo.mensalidade}} </td>
                                     <td>{{ ativo.vencimento_plano }}</td>
                                     <td><a href="{% url 'novo_protocolo' pk=ativo.pk %}"><button class="btn-success">Criar</button></a>
                                     </td>

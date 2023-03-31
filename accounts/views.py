@@ -81,22 +81,119 @@ def register(request):
         
         return render(request, 'registration/register.html', context)
 
-
+from datetime import timedelta
+from django.utils import timezone
 def home(request):
-    alunos_ativos = Aluno.objects.filter(pago=True).order_by('-atualizado_em')
-    alunos_inativos = Aluno.objects.filter(pago=False).order_by('-atualizado_em')
-    
-    context = {
-        'alunos_ativos':alunos_ativos,
-        'alunos_inativos':alunos_inativos,
-    }
+    if request.user.is_authenticated:
+        user = request.user
+        if hasattr(user, 'coach'):
+            coach = user.coach
+            todos_alunos = Aluno.objects.filter(coach=coach).order_by('-cadastrado_em')
+            alunos_ativos = Aluno.objects.filter(pago=True,coach=coach).order_by('-cadastrado_em')
+            alunos_inativos = Aluno.objects.filter(pago=False,coach=coach).order_by('-cadastrado_em')
+            alunos_novos = Aluno.objects.filter(coach__isnull=True).order_by('-cadastrado_em')
+            
+            today = date.today()
+            vencimento = today + timedelta(days=7)
+            alunos_expirando = Aluno.objects.filter(
+                pago=True,
+                coach=coach,
+                vencimento_plano__range=[today, vencimento]
+            ).order_by('-vencimento_plano')
 
-    return render(request, 'home.html', context)
+
+
+            basic = Aluno.objects.filter(pago=True,coach=coach,plano=1).order_by('-cadastrado_em')
+            silver = Aluno.objects.filter(pago=True,coach=coach,plano=2).order_by('-cadastrado_em')
+            gold = Aluno.objects.filter(pago=True,coach=coach,plano=3).order_by('-cadastrado_em')
+            atleta = Aluno.objects.filter(pago=True,coach=coach,plano=4).order_by('-cadastrado_em')
+
+
+            feedbacks = Feedback.objects.filter(coach=coach, atendido=False)
+
+            # Sum the mensalidade field of all active students
+            receita = alunos_ativos.aggregate(Sum('mensalidade'))['mensalidade__sum'] or 0
+
+            context = {
+                'alunos_ativos':alunos_ativos,
+                'alunos_inativos':alunos_inativos,
+                'alunos_novos':alunos_novos,
+                'user':user,
+                'feedbacks':feedbacks,
+                'todos_alunos':todos_alunos,
+                'basic':basic,
+                'silver':silver,
+                'gold':gold,
+                'atleta':atleta,
+                'receita':receita,
+                'alunos_expirando':alunos_expirando,
+            }
+            return render(request, 'home.html', context)
+
+        elif hasattr(user, 'aluno'):
+            aluno = user.aluno
+            protocolos = Protocolo.objects.filter(aluno=aluno).order_by('-cadastrado_em')
+
+            if protocolos.exists():
+                protocolo_atual = protocolos[0]
+            else:
+                protocolo_atual = None
+
+            # ultimo feedback
+            feedbacks_atual = Feedback.objects.filter(protocolo=protocolo_atual).order_by('-cadastrado_em')
+            if feedbacks_atual.exists():
+                ultimo_feedback = feedbacks_atual[0]
+            else:
+                ultimo_feedback = None
+
+            # ultimo retorno
+            ultimo_retornos = Retorno.objects.filter(protocolo=protocolo_atual).order_by('-cadastrado_em')
+            if ultimo_retornos.exists():
+                ultimo_retorno = ultimo_retornos[0]
+            else:
+                ultimo_retorno = None
+                
+            feedbacks=[]
+            for protocolo in protocolos:
+                feedbacks += list(Protocolo.objects.filter(protocolo=protocolo))
+            retornos = []
+            for feedback in feedbacks:
+                retornos += list(Retorno.objects.filter(feedback=feedback))
+
+            today = timezone.now()
+            next_feedback_date = None
+            show_button = False
+            if ultimo_feedback:
+                next_feedback_date = ultimo_feedback.cadastrado_em + timedelta(days=1)
+                show_button = next_feedback_date <= today
+            elif protocolo_atual and ultimo_feedback is None:
+                next_feedback_date = protocolo_atual.cadastrado_em + timedelta(days=1)
+                show_button = next_feedback_date <= today
+
+
+
+
+            context = {
+                'user':user,
+                'protocolos':protocolos,
+                'feedbacks':feedbacks,
+                'retornos':retornos,
+                'aluno':aluno,
+                'protocolo_atual':protocolo_atual,
+                'ultimo_feedback':ultimo_feedback,
+                'ultimo_retorno':ultimo_retorno,
+                'next_feedback_date': next_feedback_date,
+                'show_button':show_button,
+
+            }
+            return render(request, 'home.html', context)
+    return render(request, 'home.html')
+
 
 @staff_required
 def todos_alunos(request):
-    alunos_ativos = Aluno.objects.filter(pago=True).order_by('-atualizado_em')
-    alunos_inativos = Aluno.objects.filter(pago=False).order_by('-atualizado_em')
+    alunos_ativos = Aluno.objects.filter(pago=True).order_by('cadastrado_em')
+    alunos_inativos = Aluno.objects.filter(pago=False).order_by('cadastrado_em')
     
     context = {
         'alunos_ativos':alunos_ativos,
@@ -160,6 +257,42 @@ def edit_profile(request, pk=None):
     
     return render(request, 'alunos/edit_profile.html', context)
 
+@staff_required
+def perfil_aluno(request, pk):
+    aluno = get_object_or_404(Aluno, pk=pk)
+    protocolos = Protocolo.objects.filter(aluno=aluno).order_by('-cadastrado_em')
+
+    if protocolos.exists():
+        protocolo_atual = protocolos[0]
+    else:
+        protocolo_atual = None
+    # ultimo feedback
+    feedbacks_atual = Feedback.objects.filter(protocolo=protocolo_atual).order_by('-cadastrado_em')
+    if feedbacks_atual.exists():
+        ultimo_feedback = feedbacks_atual[0]
+    else:
+        ultimo_feedback = None
+    # ultimo retorno
+    ultimo_retornos = Retorno.objects.filter(protocolo=protocolo_atual).order_by('-cadastrado_em')
+    if ultimo_retornos.exists():
+        ultimo_retorno = ultimo_retornos[0]
+    else:
+        ultimo_retorno = None
+        
+    feedbacks=[]
+    for protocolo in protocolos:
+        feedbacks += list(Protocolo.objects.filter(protocolo=protocolo))
+    retornos = []
+    for feedback in feedbacks:
+        retornos += list(Retorno.objects.filter(feedback=feedback))
+
+    context = {
+        'aluno':aluno,
+        'protocolos':protocolos,
+        'ultimo_feedback':ultimo_feedback,
+        }
+
+    return render(request, 'coach/perfil_aluno.html', context)
 
 #Feedback
 @login_required(login_url='login')
@@ -176,7 +309,7 @@ def novo_feedback(request):
             feedback.coach = aluno.coach
             feedback.save()
             messages.success(request, 'Feedback Enviado!')
-            return redirect('meus_feedbacks')
+            return redirect('home')
         else:
             print(form.errors)
     else:
@@ -203,6 +336,8 @@ def novo_feedbackV1(request, pk):
             feedback.coach = aluno.coach
             feedback.protocolo = protocolo
             feedback.save()
+            aluno.peso_atual = feedback.peso_atual
+            aluno.save()
             messages.success(request, 'Feedback Enviado!')
             return redirect('meus_feedbacks')
         else:
@@ -235,7 +370,6 @@ def meus_feedbacks(request):
     return render(request, 'alunos/meus_feedbacks.html', context)
 
 @staff_required
-@login_required
 def feedbacks_pendentes(request):
     user = request.user
     coach = user.coach
@@ -265,6 +399,7 @@ def feedback_detail(request, pk=None):
     return render(request, 'alunos/feedback_detail.html', context)
 
 # Coach
+@staff_required
 def meus_alunos(request):
     user = request.user
     coach = user.coach
@@ -277,10 +412,33 @@ def meus_alunos(request):
 
     return render(request, 'coach/meus_alunos.html', context)
 
+
+from datetime import date, timedelta
+
+@staff_required
+def alunos_expirando(request):
+    user = request.user
+    coach = user.coach
+    today = date.today()
+    vencimento = today + timedelta(days=7)
+    alunos_expirando = Aluno.objects.filter(
+        pago=True,
+        coach=coach,
+        vencimento_plano__range=[today, vencimento]
+    ).order_by('-vencimento_plano')
+
+    context = {
+        'alunos_expirando': alunos_expirando,
+        'user': user,
+    }
+
+    return render(request, 'coach/alunos_expirando.html', context)
+
+@staff_required
 def novos_alunos(request):
     user = request.user
     novos_alunos = Aluno.objects.filter(coach__isnull=True).order_by('cadastrado_em')
-    
+
     context = {
         'novos_alunos':novos_alunos,
         'user':user,
@@ -288,7 +446,8 @@ def novos_alunos(request):
 
     return render(request, 'coach/novos_alunos.html', context)
 
-@login_required(login_url='login')
+
+@staff_required
 def gerenciar_aluno(request, pk=None):
     user = request.user
     aluno = get_object_or_404(Aluno, pk=pk)
@@ -376,6 +535,7 @@ def novo_retorno(request, pk):
             retorno.protocolo = feedback.protocolo
             retorno.save()
             feedback.atendido = True
+            feedback.retorno = retorno
             feedback.save()
 
             messages.success(request, 'Retorno finalizado!')

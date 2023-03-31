@@ -19,8 +19,10 @@ urlpatterns = [
     
     path('todos_alunos/', views.todos_alunos, name='todos_alunos'),
     path('meus_alunos/', views.meus_alunos, name='meus_alunos'),
-    path('novos_alunos/', views.novos_alunos, name='novos_alunos'),
+    path('alunos_expirando/', views.alunos_expirando, name='alunos_expirando'),
 
+    path('novos_alunos/', views.novos_alunos, name='novos_alunos'),
+    path('aluno/<int:pk>/perfil', views.perfil_aluno, name='perfil_aluno'),
 
     path('aluno/<int:pk>/aluno_pagou/', views.marcar_pago, name='marcar_pago'),
     path('aluno/<int:pk>/aluno_nao_pagou/', views.desmarcar_pago, name='desmarcar_pago'),

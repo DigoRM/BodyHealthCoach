@@ -12,19 +12,20 @@
                                 <th>Aluno</th>
                                 <th>Email</th>
                                 <th>Celular</th>
-                                <th>Nascimento</th>
+                                <th>Plano</th>
+                                <th>Vencimento do Plano</th>
                                 <th>Pago?</th>
-                                <th>Última Atualização</th>
 
                             </tr>
                         </thead>
                         <tbody>
                                 <tr>
                                     <td>{{ativo.cadastrado_em|date:"d/m/Y"}} </td>
-                                    <td>{{ ativo.nome }} {{aluno.sobrenome}}</td>
+                                    <td><a href="{% url 'perfil_aluno' ativo.pk %} ">{{ ativo.nome }} {{ativo.sobrenome}}</a></td>
                                     <td>{{ ativo.email }}</td>
                                     <td>{{ ativo.celular }}</td>
-                                    <td>{{ ativo.nascimento }}</td>
+                                    <td>{{ativo.get_plano_display}} </td>
+                                    <td>{{ ativo.vencimento_plano|date:'d/m/Y' }}</td>
                                     <td style="vertical-align:middle">
                                         {% if ativo.pago %}
                                             <form method="post" action="{% url 'desmarcar_pago' ativo.pk %}">
@@ -35,7 +36,6 @@
                                             <span class="text-warning">Não Pago!</span>
                                         {% endif %}
                                     </td>                                    
-                                    <td>{{ ativo.atualizado_em }}</td>
                                 </tr>
                         </tbody>
                     </table>
@@ -59,6 +59,7 @@
                                 <th>Email</th>
                                 <th>Celular</th>
                                 <th>Gerenciar Aluno</th>
+                                <th>Coach</th>
                                 <th>Plano</th>
                                 <th>Vencimento do Plano</th>
 
@@ -67,10 +68,15 @@
                         <tbody>
                                 <tr>
                                     <td>{{inativo.cadastrado_em|date:"d/m/Y"}} </td>
-                                    <td>{{ inativo.nome }} {{aluno.sobrenome}}</td>
+                                    <td><a href="{% url 'perfil_aluno' inativo.pk %} ">{{ inativo.nome }} {{inativo.sobrenome}}</a></td>
                                     <td>{{ inativo.email }}</td>
                                     <td>{{ inativo.celular }}</td>
                                     <td><button class="btn-warning"><a href="{% url 'gerenciar_aluno' inativo.pk %}">Gerenciar</a></button></td>
+                                    {% if aluno.coach %}
+                                    <td>{{aluno.coach}} </td>
+                                    {% else %}
+                                    <td>ALUNO NOVO</td>
+                                    {% endif %}
                                     <td style="vertical-align:middle">{{inativo.plano}} </td>                                    
                                     <td>{{ inativo.vencimento_plano|date:"d/m/Y" }}</td>
                                 </tr>

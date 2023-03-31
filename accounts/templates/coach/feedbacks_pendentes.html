@@ -10,12 +10,14 @@
             <tr>
                 <th>Cadastro</th>
                 <th>Aluno</th>
-                <th>Peso</th>
+                <th>Peso: Inicial > Atual</th>
                 <th>Dieta</th>
                 <th>Suplemento</th>
                 <th>Treino</th>
                 <th>Aerobico</th>
-                <th>Comprometimento</th>
+                <th>Dedicação</th>
+                <th>Protocolo</th>
+                <th>Protocolo Enviado</th>
                 <th>Novo Retorno</th>
 
                 </tr>
@@ -24,13 +26,15 @@
                 {% for feedback in feedbacks %}
                     <tr>
                         <td><a href="{% url 'feedback_detail' feedback.id %}">{{feedback.cadastrado_em|date:"d/m/Y"}}</a> </td>
-                        <td>{{ feedback.aluno.nome }}{{feedback.aluno.sobrenome}} </td>
-                        <td>{{ feedback.peso_atual }}</td>
-                        <td>{{ feedback.dieta }}</td>
-                        <td>{{ feedback.suplemento }}</td>
-                        <td>{{ feedback.treino }}</td>
-                        <td>{{ feedback.aerobico }}</td>
+                        <td><a href="{% url 'perfil_aluno' feedback.aluno.id %} ">{{ feedback.aluno.nome }} {{feedback.aluno.sobrenome}}</a> </td>
+                        <td>{{feedback.aluno.peso}} > {{ feedback.peso_atual }}</td>
+                        <td>{{ feedback.get_dieta_display }}</td>
+                        <td>{{ feedback.get_suplemento_display }}</td>
+                        <td>{{ feedback.get_treino_display }}</td>
+                        <td>{{ feedback.get_aerobico_display }}</td>
                         <td>{{ feedback.comprometimento }}</td>
+                        <td><a href="{% url 'feedbacks_protocolo' feedback.protocolo.id %}"><button class="btn-info btn-sm">Ver</button></a> </td>
+                        <td>{{ feedback.protocolo.cadastrado_em|date:"d/m/Y" }}</td>
                         <td><a href="{% url 'novo_retorno' feedback.id %}"><button class="btn-success">NOVO</button> </a> </td>
 
 

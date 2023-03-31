@@ -18,7 +18,11 @@
             <tbody>
                     <tr>
                         <td>{{ protocolo.aluno.nome }}{{protocolo.aluno.sobrenome}} </td>
-                        <td>{{ protocolo.protocolo }}</td>
+                        {% if protocolo.protocolo %}
+                        <td style="text-align: center;"><a href="{{ protocolo.protocolo.url }}"><i class="fas fa-file-pdf"></i></a></td>
+                        {% else %}
+                        <td>Sem arquivo</td>
+                        {% endif %}                    
                         <td>{{ protocolo.carbo }}</td>
                         <td>{{ protocolo.prot }}</td>
                         <td>{{ protocolo.fat }}</td>
@@ -28,7 +32,7 @@
         </table>
     </div>
 <br><hr><br>
-<h3>Feedbacks deste Protocolo {% if user.aluno %} <a href="{% url 'novo_feedbackV1' protocolo.id %}"><button class="btn-warning btn-sm mb-3">Novo Feedback</button></a>{% endif %} </h3>
+<h3>Feedbacks deste Protocolo {% if user.aluno %}<a href="{% url 'novo_feedbackV1' protocolo.id %}"><button class="btn-danger btn-sm mb-3">Novo Feedback</button></a>{% endif %} </h3>
 {% if feedbacks %}
 <div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
     <table class="table table-striped table-bordered">
@@ -62,9 +66,7 @@
                         {% elif request.user.aluno and not feedback.atendido %}
                         <td>Sem Retorno</td>
                         {% elif feedback.atendido %}
-                        {% for retorno in retornos %}
-                        <td><a href="{% url 'retorno_detail' retorno.id %}"><button class="btn-warning">ABRIR</button></a></td>
-                        {% endfor %}
+                        <td><a href="{% url 'retorno_detail' feedback.retorno.id %}"><button class="btn-warning">ABRIR</button></a></td>
                         {% endif %}
 
 
