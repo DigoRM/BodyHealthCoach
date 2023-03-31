@@ -78,30 +78,21 @@
                         {% endif %}
                         {% elif protocolo_atual and not protocolo_atual.aluno.pago %}
                         <p class="card-text">Consultoria pausada, para reiniciar realize o pagamento do plano com o Coach.</h6>
-                        {% else %}
+                        {% elif not protocolo_atual and aluno.pago %}
                         <p class="card-text">Protocolo pendente de envio, por gentileza aguarde o contato do coach.</h6>
-                            
+                        {% else %}    
+                        <p class="card-text">Pagamento Pendente</h6>
+
                         {% endif %}
                         </div>
                     
                 </div>
             </div><br>
         </div>
-        {% if aluno.pago %}
-        <div class="card-footer" style="text-align:center; background-color:rgb(40, 253, 218);">
-            <h6>Aluno com o pagamento em dia!</h6>
-            <span>Plano {{aluno.get_plano_display}} | Vencimento: {{aluno.vencimento_plano}} </span>
-        </div>
-            {% else %}
-            <div class="card-footer" style="text-align:center; background-color:rgba(236, 28, 0, 0.904);">
-                <h6>Aluno com plano vencido!</h6>
-            </div>
-            {% endif %}
-        </div>
-
     </div>
-</div>
+
 <br>
+
 <div class="hero">
     <div class="card">
         <div class="card-body">

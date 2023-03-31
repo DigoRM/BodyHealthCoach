@@ -26,6 +26,7 @@
                     <p class="card-text"><strong>Objetivo Longo Prazo:</strong>  {{aluno.objetivo_longo}} </p>
                     <hr>
                 </div><br>
+                <div class="card-body">
                     {% if protocolos %}
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
@@ -70,6 +71,8 @@
 
                     </div>
                 </div>
+                </div>
+
                 {% if aluno.pago %}
                 <div class="card-footer" style="text-align:center; background-color:rgb(40, 253, 218);">
                     <h6>Aluno com o pagamento em dia!</h6>
@@ -98,7 +101,11 @@
                     <br>
                     <div class="row">
                         <div class="col">
+                            {% if aluno.foto_frente %}
                             <img class="img-fluid" src="{{aluno.foto_frente.url}}" alt=""> 
+                            {% else %} 
+                            <h6>Aluno precisa atualizar o perfil.</h6>
+                            {% endif %}
                         </div>
                         <div class="col">
                             {% if ultimo_feedback_aluno.foto_frente %}
@@ -119,7 +126,10 @@
                     <br>
                     <div class="row">
                         <div class="col">
+                            {% if aluno.foto_frente %}
                             <img class="img-fluid" src="{{aluno.foto_lado.url}}" alt=""> 
+                            <h6>Aluno precisa atualizar o perfil.</h6>
+                            {% endif %}
                         </div>
                         <div class="col">
                             {% if ultimo_feedback_aluno.foto_lado %}
@@ -139,7 +149,10 @@
                     <br>
                     <div class="row">
                         <div class="col">
+                            {% if aluno.foto_frente %}
                             <img class="img-fluid" src="{{aluno.foto_verso.url}}" alt=""> 
+                            <h6>Aluno precisa atualizar o perfil.</h6>
+                            {% endif %}
                         </div>
                         <div class="col">
                             {% if ultimo_feedback_aluno.foto_verso %}
