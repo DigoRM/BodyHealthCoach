@@ -133,6 +133,11 @@ def home(request):
         elif hasattr(user, 'aluno'):
             aluno = user.aluno
             protocolos = Protocolo.objects.filter(aluno=aluno).order_by('-cadastrado_em')
+            feedbacks_aluno = Feedback.objects.filter(aluno=aluno).order_by('-cadastrado_em')
+            if feedbacks_aluno.exists():
+                ultimo_feedback_aluno = feedbacks_aluno[0]
+            else:
+                ultimo_feedback_aluno = None
 
             if protocolos.exists():
                 protocolo_atual = protocolos[0]
@@ -184,6 +189,7 @@ def home(request):
                 'ultimo_retorno':ultimo_retorno,
                 'next_feedback_date': next_feedback_date,
                 'show_button':show_button,
+                'ultimo_feedback_aluno':ultimo_feedback_aluno,
 
             }
             return render(request, 'home.html', context)
@@ -261,11 +267,17 @@ def edit_profile(request, pk=None):
 def perfil_aluno(request, pk):
     aluno = get_object_or_404(Aluno, pk=pk)
     protocolos = Protocolo.objects.filter(aluno=aluno).order_by('-cadastrado_em')
+    feedbacks = Feedback.objects.filter(aluno=aluno).order_by('-cadastrado_em')
 
     if protocolos.exists():
         protocolo_atual = protocolos[0]
     else:
         protocolo_atual = None
+
+    if feedbacks.exists():
+        ultimo_feedback_aluno = feedbacks[0]
+    else:
+        ultimo_feedback_aluno = None
     # ultimo feedback
     feedbacks_atual = Feedback.objects.filter(protocolo=protocolo_atual).order_by('-cadastrado_em')
     if feedbacks_atual.exists():
@@ -290,6 +302,7 @@ def perfil_aluno(request, pk):
         'aluno':aluno,
         'protocolos':protocolos,
         'ultimo_feedback':ultimo_feedback,
+        'ultimo_feedback_aluno':ultimo_feedback_aluno,
         }
 
     return render(request, 'coach/perfil_aluno.html', context)

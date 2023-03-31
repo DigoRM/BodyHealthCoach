@@ -7,7 +7,7 @@
     <hr>
     <div class="row">
         <div class="col">
-            <form action="{% url 'novo_protocolo' aluno.id %}" method="POST">
+            <form action="{% url 'novo_protocolo' aluno.id %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{form.as_p}}
             
