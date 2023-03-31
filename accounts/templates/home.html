@@ -112,7 +112,11 @@
                     <br>
                     <div class="row">
                         <div class="col">
-                            <img class="img-fluid" src="{{aluno.foto_frente.url}}" alt=""> 
+                            {% if aluno.foto_frente %}
+                            <img class="img-fluid" src="{{aluno.foto_frente.url}}" alt="">
+                            {% else %} 
+                            <h6>Atualize o perfil com as fotos.</h6>
+                            {% endif %}
                         </div>
                         <div class="col">
                             {% if ultimo_feedback.foto_frente %}
@@ -131,7 +135,11 @@
                     <br>
                     <div class="row">
                         <div class="col">
+                            {% if aluno.foto_lado %}
                             <img class="img-fluid" src="{{aluno.foto_lado.url}}" alt=""> 
+                            {% else %} 
+                            <h6>Atualize o perfil com as fotos.</h6>
+                            {% endif %}
                         </div>
                         <div class="col">
                             {% if ultimo_feedback.foto_lado %}
@@ -149,7 +157,11 @@
                     <br>
                     <div class="row">
                         <div class="col">
+                            {% if aluno.foto_verso %}
                             <img class="img-fluid" src="{{aluno.foto_verso.url}}" alt=""> 
+                            {% else %} 
+                            <h6>Atualize o perfil com as fotos.</h6>
+                            {% endif %}
                         </div>
                         <div class="col">
                             {% if ultimo_feedback.foto_verso %}
