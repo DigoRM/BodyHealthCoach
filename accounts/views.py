@@ -249,8 +249,7 @@ def edit_profile(request, pk=None):
         if form and form.is_valid() or form2 and form2.is_valid():
             form.save() if form else form2.save()
             messages.success(request, 'Perfil Atualizado!')
-            redirect_url = request.META.get('HTTP_REFERER', 'my_tasks')
-            return redirect(redirect_url)
+            return redirect('home')
         else:
             print(form.errors if form else form2.errors)
             
