@@ -28,17 +28,20 @@
         <div class="col">
             <h5>Peso Atual:    {{feedback.peso_atual}} kg</h5>
             <h5>Foto Frente:</h5>
-            <img src="{{feedback.foto_frente}}" alt="">
-    
+            {% if feedback.foto_frente %}
+            <img src="{{feedback.foto_frente.url}}" alt="">
+            {% endif %}
             <h5>Foto Lado:</h5>
-            <img src="{{feedback.foto_lado}}" alt="">
-        
+            {% if feedback.foto_lado %}
+            <img src="{{feedback.foto_lado.url}}" alt="">
+            {% endif %}
             <h5>Foto Verso:</h5>
-            <img src="{{feedback.foto_verso}}" alt="">
-        
+            {% if feedback.foto_verso %}
+            <img src="{{feedback.foto_verso.url}}" alt="">
+            {% endif %}
             {% if feedback.video %}
             <h5>Vídeo</h5>
-            <p><a href="{{feedback.video}}">{{feedback.video}} </a></p>
+            <p><a href="{{feedback.video.url}}">{{feedback.video}} </a></p>
             {% endif %}
 
             <h5>Comprometimento: {{feedback.comprometimento}}</h5>
