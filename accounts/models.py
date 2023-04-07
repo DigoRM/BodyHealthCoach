@@ -18,7 +18,7 @@ class Coach(models.Model):
     altura = models.DecimalField(max_digits=2, decimal_places=2,blank=True, null=True)
     peso = models.DecimalField(max_digits=3, decimal_places=2,blank=True, null=True)
     conquistas = models.TextField(blank=True, null=True)
-    foto_perfil = models.ImageField(upload_to='coach/foto_perfil',blank=True, null=True)
+    avatar = models.ImageField(upload_to='coach/foto_perfil',blank=True, null=True)
     foto_certificado = models.ImageField(upload_to='coach/certificado',blank=True, null=True)
 
 
@@ -42,7 +42,7 @@ class Aluno(models.Model):
 
     )
 
-    user = models.OneToOneField(User, related_name='aluno', on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='aluno', on_delete=models.CASCADE, blank=True,null=True)
     coach = models.ForeignKey(Coach, related_name='aluno_coach', on_delete=models.CASCADE, blank=True,null=True)
     nome = models.CharField(max_length=255,blank=True, null=True)
     sobrenome = models.CharField(max_length=255,blank=True, null=True)

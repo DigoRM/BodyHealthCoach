@@ -230,6 +230,31 @@ def desmarcar_pago(request, pk):
 
 
 # Perfil Aluno e Coach 
+from io import BytesIO
+from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
+
+MAX_SIZE = 550
+
+
+
+def resize_image(image):
+    if not image:
+        return None
+    with Image.open(BytesIO(image.read())) as img:
+        max_size = max(img.width, img.height)
+        if max_size <= MAX_SIZE:
+            # Image is already small enough, no need to resize
+            return image
+        img.thumbnail((MAX_SIZE, MAX_SIZE))
+        image_io = BytesIO()
+        img.save(image_io, format='JPEG', quality=85)
+        image_file = InMemoryUploadedFile(image_io, None, image.name, 'image/jpeg',
+                                          image_io.getbuffer().nbytes, None)
+        return image_file
+
+
 @login_required(login_url='login')
 def edit_profile(request, pk=None):
     user = request.user
@@ -244,22 +269,37 @@ def edit_profile(request, pk=None):
         form2 = PerfilCoach(request.POST or None, request.FILES or None, instance=coach)
     else:
         raise Http404("This user is not an 'aluno' or a 'coach'.")
-        
+    
+    # Image fields to be resized
+    image_fields = ['avatar', 'foto_frente', 'foto_lado', 'foto_verso']
+    
     if request.method == 'POST':
         if form and form.is_valid() or form2 and form2.is_valid():
+            # Loop through image fields and resize uploaded images
+            for field in image_fields:
+                if request.FILES.get(field):
+                    image = request.FILES[field]
+                    img = Image.open(BytesIO(image.read()))
+                    img = resize_image(img)
+                    image_io = BytesIO()
+                    img.save(image_io, format='JPEG', quality=85)
+                    image_file = InMemoryUploadedFile(image_io, None, image.name, 'image/jpeg',
+                                                    image_io.getbuffer().nbytes, None)
+                    setattr(form.instance, field, image_file)
+                    
             form.save() if form else form2.save()
             messages.success(request, 'Perfil Atualizado!')
             return redirect('home')
         else:
-            print(form.errors if form else form2.errors)
+            messages.warning(request, form.errors if form else form2.errors)
             
     context = {
         'form': form,
         'form2': form2,
-
     }
     
     return render(request, 'alunos/edit_profile.html', context)
+
 
 @staff_required
 def perfil_aluno(request, pk):
@@ -307,32 +347,6 @@ def perfil_aluno(request, pk):
 
 #Feedback
 @login_required(login_url='login')
-def novo_feedback(request):
-    user = request.user
-    aluno = user.aluno
-
-    if request.method == 'POST':
-        form = NovoFeedback(request.POST, request.FILES)
-
-        if form.is_valid():
-            feedback = form.save(commit=False)
-            feedback.aluno = aluno
-            feedback.coach = aluno.coach
-            feedback.save()
-            messages.success(request, 'Feedback Enviado!')
-            return redirect('home')
-        else:
-            print(form.errors)
-    else:
-        form = NovoFeedback()
-
-    context = {
-        'form': form,
-        'aluno': aluno,
-    }
-    return render(request, 'alunos/novo_feedback.html', context)
-
-@login_required(login_url='login')
 def novo_feedbackV1(request, pk):
     user = request.user
     aluno = user.aluno
@@ -345,8 +359,15 @@ def novo_feedbackV1(request, pk):
             feedback = form.save(commit=False)
             feedback.aluno = aluno
             feedback.coach = aluno.coach
+
+            # Resize the images before saving them
+            feedback.foto_frente = resize_image(feedback.foto_frente)
+            feedback.foto_lado = resize_image(feedback.foto_lado)
+            feedback.foto_verso = resize_image(feedback.foto_verso)
+
             feedback.protocolo = protocolo
             feedback.save()
+
             aluno.peso_atual = feedback.peso_atual
             aluno.save()
             messages.success(request, 'Feedback Enviado!')
@@ -362,6 +383,7 @@ def novo_feedbackV1(request, pk):
         'protocolo':protocolo,
     }
     return render(request, 'alunos/novo_feedback.html', context)
+
 
 
 @login_required

@@ -26,7 +26,6 @@ urlpatterns = [
 
     path('aluno/<int:pk>/aluno_pagou/', views.marcar_pago, name='marcar_pago'),
     path('aluno/<int:pk>/aluno_nao_pagou/', views.desmarcar_pago, name='desmarcar_pago'),
-    path('novo_feedback/', views.novo_feedback, name='novo_feedback'),
     path('novo/<int:pk>/feedback/', views.novo_feedbackV1, name='novo_feedbackV1'),
 
     path('meus_feedbacks/', views.meus_feedbacks, name='meus_feedbacks'),
