@@ -1,11 +1,5 @@
 {% extends 'base.html' %}
-<style>
-    .image-container {
-        width: 200px;
-        height: 200px;
-        object-fit: cover; /* This ensures the image fills the container without distortion */
-    }
-</style>
+
 {% block content %}
 {% if user.coach %}
 <div class="container">
@@ -195,14 +189,14 @@
                     <div class="row">
                         <div class="col">
                             {% if aluno.foto_frente %}
-                            <img class="img-fluid image-container"  src="{{aluno.foto_frente.url}}" alt="">
+                            <img class="img-fluid"  src="{{aluno.foto_frente.url}}" alt="">
                             {% else %} 
                             <h6>Atualize o perfil com as fotos.</h6>
                             {% endif %}
                         </div>
                         <div class="col">
                             {% if ultimo_feedback.foto_frente %}
-                            <img class="img-fluid image-container"  src="{{ultimo_feedback.foto_frente.url}}" alt=""> 
+                            <img class="img-fluid"  src="{{ultimo_feedback.foto_frente.url}}" alt=""> 
                             {% else %}
                             <h6>Aguardando novo Feedback!</h6>
                             {% endif %}
@@ -218,14 +212,14 @@
                     <div class="row">
                         <div class="col">
                             {% if aluno.foto_lado %}
-                            <img class="img-fluid image-container" src="{{aluno.foto_lado.url}}" alt=""> 
+                            <img class="img-fluid" src="{{aluno.foto_lado.url}}" alt=""> 
                             {% else %} 
                             <h6>Atualize o perfil com as fotos.</h6>
                             {% endif %}
                         </div>
                         <div class="col">
                             {% if ultimo_feedback.foto_lado %}
-                            <img class="img-fluid image-container" src="{{ultimo_feedback.foto_lado.url}}" alt=""> 
+                            <img class="img-fluid" src="{{ultimo_feedback.foto_lado.url}}" alt=""> 
                             {% else %}
                             <h6>Aguardando novo Feedback!</h6>
                             {% endif %}
@@ -240,14 +234,14 @@
                     <div class="row">
                         <div class="col">
                             {% if aluno.foto_verso %}
-                            <img class="img-fluid image-container" src="{{aluno.foto_verso.url}}" alt=""> 
+                            <img class="img-fluid" src="{{aluno.foto_verso.url}}" alt=""> 
                             {% else %} 
                             <h6>Atualize o perfil com as fotos.</h6>
                             {% endif %}
                         </div>
                         <div class="col">
                             {% if ultimo_feedback.foto_verso %}
-                            <img class="img-fluid image-container" src="{{ultimo_feedback.foto_verso.url}}" alt=""> 
+                            <img class="img-fluid" src="{{ultimo_feedback.foto_verso.url}}" alt=""> 
                             {% else %}
                             <h6>Aguardando novo Feedback!</h6>
                             {% endif %}
