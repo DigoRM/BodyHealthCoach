@@ -42,7 +42,6 @@ urlpatterns = [
 
     path('meus_retornos/', views.meus_retornos, name='meus_retornos'),
     path('retorno/<int:pk>/detail/', views.retorno_detail, name='retorno_detail'),
-    path('replica/<int:pk>/nova/', views.nova_replica, name='nova_replica'),
 
 
 ]

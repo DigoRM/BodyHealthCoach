@@ -616,10 +616,28 @@ def meus_retornos(request):
 def retorno_detail(request, pk=None):
     retorno = get_object_or_404(Retorno, pk=pk)
     replicas = Replica.objects.filter(retorno=retorno)
+    limite_replicas = replicas.count() < 2
     user = request.user
+
+    if request.method == "POST":
+        form = NovaReplica(request.POST, request.FILES)
+        
+        if form.is_valid():
+
+            replica = form.save()
+            replica.author = user
+            replica.retorno=retorno
+
+            replica.save()
+
+            messages.success(request, 'Réplica enviada!')
+            redirect_url = request.META.get('HTTP_REFERER', 'my_tasks')
+            return redirect(redirect_url)
+    else:
+        form = NovaReplica()
     
         
-    context = {'replicas':replicas, 'retorno':retorno, 'user':user}
+    context = {'replicas':replicas, 'retorno':retorno, 'user':user ,'form':form, 'limite_replicas':limite_replicas,}
     
     return render(request, 'alunos/retorno_detail.html', context)
 

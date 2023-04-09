@@ -162,7 +162,7 @@ class Retorno(models.Model):
     
     
 class Replica(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     retorno = models.ForeignKey(Retorno, related_name='retorno', on_delete=models.SET_NULL, null=True)
     dieta = models.TextField(null=True, blank=True)
     suplemento = models.TextField(null=True, blank=True)

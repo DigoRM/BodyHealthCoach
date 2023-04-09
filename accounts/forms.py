@@ -144,4 +144,15 @@ class NovaReplica(forms.ModelForm):
     class Meta:
         model = Replica
         fields="__all__"
-        exclude = ['atualizado_em','cadastrado_em',]
+        exclude = ['atualizado_em','cadastrado_em','author','retorno',]
+        widgets = {
+            'dieta' : forms.TextInput(attrs={'class':'form-control'} ),
+            'treino' : forms.TextInput(attrs={'class':'form-control'}),
+            'suplemento' : forms.TextInput(attrs={'class':'form-control'} ),
+            'aerobico' : forms.TextInput(attrs={'class':'form-control'} ),
+            'demais_assuntos' : forms.TextInput(attrs={'class':'form-control'} ),
+            'pode_melhorar' : forms.TextInput(attrs={'class':'form-control'} ),
+            'comprometimento' : forms.NumberInput(attrs={'class': 'form-control', 'min': '1', 'max': '10'}),
+            'avalia_coach' : forms.NumberInput(attrs={'class': 'form-control', 'min': '1', 'max': '10'}),
+            'sugestoes' : forms.Textarea(attrs={'class':'form-control'})
+        }

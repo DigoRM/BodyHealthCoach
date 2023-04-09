@@ -4,121 +4,187 @@
 
 {% block content %}
 
-<h2>Retorno {{retorno.feedback.aluno.nome}} | Coach: {{retorno.feedback.coach.nome}} </h2>
-<h6>Enviado: {{retorno.cadastrado_em|date:"d/m/Y"}} </h6>
-<hr>
 <div class="container">
     <div class="row">
         <div class="col">
+            <h3>Feedback do Aluno {{retorno.protocolo.aluno.nome}} {{retorno.protocolo.aluno.sobrenome}}</h3>
+            <h6>Enviado: {{retorno.feedback.cadastrado_em|date:"d/m/Y"}} </h6>
+            <hr>
+            <p>Peso: {{retorno.feedback.peso_atual}} kg </p>
+            <p>Dieta: {{retorno.feedback.get_dieta_display }}</p>
 
-            <h5>Dieta: {{retorno.feedback.get_dieta_display }}</h5>
-            <p>Comentário: {{retorno.dieta_comentario}}</p>
-
-            <h5>Suplemento: {{retorno.feedback.get_suplemento_display }}</h5>
-            <p>Comentário: {{retorno.suplemento_comentario}}</p>
+            <p>Suplemento: {{retorno.feedback.get_suplemento_display }}</p>
         
-            <h5>Treino: {{retorno.feedback.get_treino_display}}</h5>
-            <p>Comentário: {{retorno.treino_comentario}}</p>
+            <p>Treino: {{retorno.feedback.get_treino_display}}</p>
         
-            <h5>Aeróbico: {{retorno.feedback.get_aerobico_display}}</h5>
-            <p>Comentário: {{retorno.aerobico_comentario}}</p>
+            <p>Aeróbico: {{retorno.feedback.get_aerobico_display}}</p>
         
-            <h5>O que melhorou:</h5>
+            <p>O que melhorou:</p>
             <p>{{retorno.feedback.melhorou}}</p>
-            <h5>Ainda pode melhorar:</h5>
+            <p>Ainda pode melhorar:</p>
             <p>{{retorno.feedback.pode_melhorar}}</p>
-            <h5>Comentário: {{retorno.melhorias_comentario}}</h5>
+            <p>Comprometimento: {{retorno.feedback.comprometimento}}</p>
 
-            <h5>Sugestões: {{retorno.feedback.sugestoes}}</h5>
-            <p>Comentário: {{retorno.sugestoes_comentario}}</p>
+            <p>Avaliação Coach: {{retorno.feedback.avalia_coach}}</p>
+        
+            <p>Sugestões: {{retorno.feedback.sugestoes}}</p>
 
-            <h5>Orientações e Comentários Finais:</h5>
-            <p>{{retorno.comentarios_finais}} </p>
+
+
+
         </div>
     
         <div class="col">
-            <h5>Peso Atual: {{retorno.feedback.peso_atual}}</h5>
-            <p>Comentário: {{retorno.peso_comentario}}</p>            
+            <h3>Retorno do Coach {{retorno.protocolo.coach.nome}} {{retorno.protocolo.coach.sobrenome}} </h3>
+            <h6>Enviado: {{retorno.cadastrado_em|date:"d/m/Y"}} </h6>
+            <hr>
+            <p>
+            <h5>Peso: {{retorno.peso_comentario}}</h5>
+            </p>
+            <p>
+            <h5>Dieta: {{retorno.dieta_comentario}}</h5>
+            </p>
             
-            <h5>Foto Frente:</h5>
-            {% if retorno.feedback.foto_frente %}
-            <img src="{{retorno.feedback.foto_frente.url}}" alt="">
-            {% else %}
-            <p>Sem foto</p>
-            {% endif %}
-    
-            <h5>Foto Lado:</h5>
-            {% if retorno.feedback.foto_lado %}
-            <img src="{{retorno.feedback.foto_lado.url}}" alt="">
-            {% else %}
-            <p>Sem foto</p>
-            {% endif %}
 
-            <h5>Foto Verso:</h5>
-            {% if retorno.feedback.foto_verso %}
-            <img src="{{retorno.feedback.foto_verso.url}}" alt="">
-            {% else %}
-            <p>Sem foto</p>
-            {% endif %}
+            <p>
+            <h5>Suplemento: {{retorno.suplemento_comentario}}</h5>
+            </p>
+            
 
-            <p>Comentário: {{retorno.fotos_comentario}}</p>            
+            <p>
+            <h5>Treino: {{retorno.treino_comentario}}</h5>
+            </p>
+            
 
-            {% if retorno.feedback.video %}
-            <h5>Vídeo</h5>
-            <p><a href="{{retorno.feedback.video}}">{{retorno.feedback.video}} </a></p>
-            <p>Comentário: {{retorno.video_comentario}}</p>            
+            <p>
+            <h5>Aerobico: {{retorno.aerobico_comentario}}</h5>
+            </p>
+            
 
-            {% endif %}
+            <p>
+            <h5>Melhorias: {{retorno.melhorias_comentario}}</h5>
+            </p>
+            
 
-            <h5>Comprometimento: {{retorno.feedback.comprometimento}}</h5>
+            <p>
+            <h5>Sugestões: {{retorno.sugestoes_comentario}}</h5>
+            </p>
+            
 
-            <h5>Avaliação Coach: {{retorno.feedback.avalia_coach}}</h5>
-        
-            <h5>Sugestões: {{retorno.feedback.sugestoes}}</h5>
+            <p>
+            <h5>Comentários Finais: {{retorno.comentarios_finais}} </h5>
+            </p>
+
+           
+
+ 
+
         </div>
         <br><br>
     </div>
 
 </div>
 <hr><br>
-<div class="row">
-    <div class="col" style="text-align: center;">
-        <h3>Replicas</h3>
+<div class="hero" style="text-align: center;">
+    {% if retorno.fotos_comentario %}
+    <div class="ml-4" style="text-align: justify;">
+        <h5>Comentários Fotos: {{retorno.fotos_comentario}}</h5>
+    </div>
 
+    {% endif %}
+<br>
 
+    <h5>Foto Frente:</h5>
+    {% if retorno.feedback.foto_frente %}
+    <img class="img-fluid" src="{{retorno.feedback.foto_frente.url}}" alt="">
+    {% else %}
+    <p>Sem foto</p>
+    {% endif %}
+<br>
 
-        {% if replicas %}
-        {% for replica in replicas %}
-        <div class="card">
-            <div class="card-header">
-                <h3>{{replica.author}} </h3> <span>{{replica.cadastrado_em}} </span>
-                <hr>
+    <h5>Foto Lado:</h5>
+    {% if retorno.feedback.foto_lado %}
+    <img class="img-fluid" src="{{retorno.feedback.foto_lado.url}}" alt="">
+    {% else %}
+    <p>Sem foto</p>
+    {% endif %}
+<br>
 
+    <h5>Foto Verso:</h5>
+    {% if retorno.feedback.foto_verso %}
+    <img class="img-fluid" src="{{retorno.feedback.foto_verso.url}}" alt="">
+    {% else %}
+    <p>Sem foto</p>
+    {% endif %}
+
+    {% if retorno.feedback.video %}
+    <h5>Vídeo</h5>
+    <p><a href="{{retorno.feedback.video}}">{{retorno.feedback.video}} </a></p>
+    <h5>Coach {{retorno.protocolo.coach.nome}}: {{retorno.video_comentario}}</h5>
+
+    {% endif %}
+</div>
+<hr><br>
+<div class="container">
+    <div class="row">
+        <div class="col" >
+            <div style="text-align: center;">
+                <h3>Replicas <span>({{replicas.count}}) </span></h3><br>
             </div>
-            <div class="card-body">
-                <h5>Dieta: {{replica.dieta }}</h5>
 
-                <h5>Suplemento: {{replica.suplemento }}</h5>
+            <div class="hero">
+                {% if request.user.coach and limite_replicas %}
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.as_p}}
             
-                <h5>Treino: {{replica.treino}}</h5>
+                <button type="submit" class="btn-success">Enviar</button>
+            </form>
+            {% elif request.user.aluno and limite_replicas %}
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.as_p}}
             
-                <h5>Aeróbico: {{replica.aerobico}}</h5>
+                <button type="submit" class="btn-success">Enviar</button>
+            </form>
+            {% endif %}
+   <br>
+    
+            {% if replicas %}
+            {% for replica in replicas %}
+            <div class="card">
+                <div class="card-header">
+                    <h3>{{replica.author}} </h3> <span>{{replica.cadastrado_em}} </span>
+                </div>
+                <div class="card-body">
+                    {% if replica.dieta %}
+                    <div class="card-text">Dieta: {{replica.dieta }}</div>
+                    {% endif %}
+                    {% if replica.suplemento %}
+                    <div class="card-text">Suplemento: {{replica.suplemento }}</div>
+                    {% endif %}
+                    {% if replica.treino %}
+                    <div class="card-text">Treino: {{replica.treino}}</div>
+                    {% endif %}
+                    {% if replica.aerobico %}
+                    <div class="card-text">Aeróbico: {{replica.aerobico}}</div>
+                    {% endif %}
+                    {% if replica.demais_assuntos %}
+                    <div class="card-text">Demais assuntos: {{replica.demais_assuntos}}</h5>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                {% else %}
+               <div class='card-text'>Sem replicas no momento.</div> 
+            </div>
+            {% endif %}
 
-                <h5>Demais assuntos: {{replica.demais_assuntos}}</h5>
 
             </div>
         </div>
-        {% endfor %}
-        {% else %}
-       <p>Sem replicas no momento.</p> 
-        {% endif %}
-        {% if request.user.is_staff %}
-        <button><a href="{% url 'nova_replica' retorno.id %}">Responder</a></button>
-        {% else %}
-        <button><a href="{% url 'nova_replica' retorno.id %}">Tenho Dúvida</a></button>
-        {% endif %}
-    </div>
-</div>
+    </div><br>
+</div><br>   
+
 
 
 {% endblock %}
