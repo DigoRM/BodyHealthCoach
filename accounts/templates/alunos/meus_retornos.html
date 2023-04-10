@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container my-4">
+    {% if user.aluno and retornos_aluno %}
+    <h2 style="text-align: center;">Meus retornos ({{retornos_aluno.count}}) </h2>
+    <hr>
+    <div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
+        <table class="table table-striped table-bordered">
+            <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
+                <tr>
+                    <th>Retorno</th>
+                    <th>Protocolo</th>
+                    <th>Carbohidrato</th>
+                    <th>Proteína</th>
+                    <th>Gordura</th>
+                    <th>Kcal</th>
+                    <th>Treino</th>
+                    <th>Feedback</th>
+                    <th>Peso</th>
+                    <th>Dieta</th>
+                    <th>Suplemento</th>
+                    <th>Treino</th>
+                    <th>Aerobico</th>
+                    <th>Comprometimento</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for retorno in retornos_aluno %}
+                    <tr>
+                        <td><a href="{% url 'retorno_detail' retorno.id %} "><button class="btn-info">{{retorno.cadastrado_em|date:"d/m/Y"}}</button>  </a></td>
+                        <td style="text-align: center;"><a href="{% url 'feedbacks_protocolo' retorno.protocolo.id %}">{{retorno.protocolo.cadastrado_em|date:"d/m/Y"}}</a></td>
+                        <td>{{ retorno.protocolo.carbo }}</td>
+                        <td>{{ retorno.protocolo.prot }}</td>
+                        <td>{{ retorno.protocolo.fat }}</td>
+                        <td>{{ retorno.protocolo.kcal }}</td>
+                        <td>{{ retorno.protocolo.treino }}</td>
+                        <td style="text-align: center;"><a href="{% url 'feedback_detail' retorno.feedback.id %}">{{retorno.feedback.cadastrado_em|date:"d/m/Y"}} </a></td>
+                        <td>{{ retorno.feedback.peso_atual }}</td>
+                        <td>{{ retorno.feedback.get_dieta_display }}</td>
+                        <td>{{ retorno.feedback.get_suplemento_display }}</td>
+                        <td>{{ retorno.feedback.get_treino_display }}</td>
+                        <td>{{ retorno.feedback.get_aerobico_display }}</td>
+                        <td>{{ retorno.feedback.comprometimento }}</td>
+    
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    {% elif retornos_coach %}
+    <h2 style="text-align: center;">Retornos Enviados ({{retornos_coach|length}}) </h2>
+    <hr>
+    {% for item in retornos_coach %}
+    <br><h3>{{ item.aluno.nome }} ({{ item.retornos_aluno.all|length }}) </h3>
+    <div style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
+        <table class="table table-striped table-bordered">
+            <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
+                <tr>
+                    <th>Retorno</th>
+                    <th>Protocolo</th>
+                    <th>Carbohidrato</th>
+                    <th>Proteína</th>
+                    <th>Gordura</th>
+                    <th>Kcal</th>
+                    <th>Treino</th>
+                    <th>Feedback</th>
+                    <th>Peso</th>
+                    <th>Dieta</th>
+                    <th>Suplemento</th>
+                    <th>Treino</th>
+                    <th>Aerobico</th>
+                    <th>Comprometimento</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for retorno in item.retornos_aluno %}
+                <tr>
+                    <td><a href="{% url 'retorno_detail' retorno.id %} "><button class="btn-info">{{retorno.cadastrado_em|date:"d/m/Y"}}</button>  </a></td>
+                    <td style="text-align: center;"><a href="{% url 'feedbacks_protocolo' retorno.protocolo.id %}">{{retorno.protocolo.cadastrado_em|date:"d/m/Y"}}</a></td>
+                    <td>{{ retorno.protocolo.carbo }}</td>
+                    <td>{{ retorno.protocolo.prot }}</td>
+                    <td>{{ retorno.protocolo.fat }}</td>
+                    <td>{{ retorno.protocolo.kcal }}</td>
+                    <td>{{ retorno.protocolo.treino }}</td>
+                    <td style="text-align: center;"><a href="{% url 'feedback_detail' retorno.feedback.id %}">{{retorno.feedback.cadastrado_em|date:"d/m/Y"}} </a></td>
+                    <td>{{ retorno.feedback.peso_atual }}</td>
+                    <td>{{ retorno.feedback.get_dieta_display }}</td>
+                    <td>{{ retorno.feedback.get_suplemento_display }}</td>
+                    <td>{{ retorno.feedback.get_treino_display }}</td>
+                    <td>{{ retorno.feedback.get_aerobico_display }}</td>
+                    <td>{{ retorno.feedback.comprometimento }}</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
+    
+    
+    
+    
+    {% else %}
+    <h5>Sem retornos Cadastrados</h5>
+    {% endif %}
+        <br><br>
+
+
+</div>
+
+{% endblock %}

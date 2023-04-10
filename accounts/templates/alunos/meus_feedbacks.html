@@ -34,9 +34,9 @@
                         <td>{{ feedback.get_treino_display }}</td>
                         <td>{{ feedback.get_aerobico_display }}</td>
                         <td>{{ feedback.comprometimento }}</td>
-                        <td><a href="{% url 'feedbacks_protocolo' feedback.protocolo.id %}"><button class="btn-info btn-sm">Ver</button></a> </td>
+                        <td><a href="{% url 'feedbacks_protocolo' feedback.protocolo.id %}"><button class="btn-info btn-sm">{{feedback.protocolo.cadastrado_em|date:"d/m/Y"}}</button></a> </td>
                         {% if feedback.retorno %}
-                        <td><a href="{% url 'retorno_detail' feedback.retorno.id %}"><button class="btn-success">NOVO</button> </a> </td>
+                        <td><a href="{% url 'retorno_detail' feedback.retorno.id %}"><button class="btn-warning">{{feedback.retorno.cadastrado_em|date:"d/m/Y"}} </button> </a> </td>
                         {% else %}
                         <td>Sem Retorno</td>
                         {% endif %}

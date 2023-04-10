@@ -82,6 +82,7 @@ class Protocolo(models.Model):
     carbo = models.IntegerField(blank=True, null=True)
     prot = models.IntegerField(blank=True, null=True)
     fat = models.IntegerField(blank=True, null=True)
+    kcal = models.IntegerField(blank=True, null=True)
     treino = models.CharField(max_length=155, blank=True, null=True)
     cadastrado_em = models.DateTimeField(auto_now=True)
     atualizado_em = models.DateTimeField(auto_now_add=True, null=True, blank=True)
@@ -142,16 +143,18 @@ class Feedback(models.Model):
     
    
 class Retorno(models.Model):
-
+    aluno = models.ForeignKey(Aluno, related_name='retorno_aluno', on_delete=models.SET_NULL, null=True,blank=True)
+    coach = models.ForeignKey(Coach, related_name='retorno_coach', on_delete=models.SET_NULL, null=True,blank=True)
     feedback = models.OneToOneField(Feedback, related_name='feedback', on_delete=models.SET_NULL, null=True)
     protocolo = models.ForeignKey(Protocolo, related_name='retorno_protocolo', on_delete=models.SET_NULL, null=True,blank=True)
-    peso_comentario = models.CharField(max_length=255)
+    replica = models.ForeignKey("Replica", related_name='replica', on_delete=models.SET_NULL, null=True,blank=True)
+    peso_comentario = models.CharField(max_length=255,blank=True, null=True)
     dieta_comentario = models.TextField(blank=True, null=True)
     suplemento_comentario = models.TextField(blank=True, null=True)
     treino_comentario = models.TextField(blank=True, null=True) 
     aerobico_comentario = models.TextField(blank=True, null=True)
     melhorias_comentario = models.TextField(blank=True, null=True)
-    fotos_comentario = models.TextField(max_length=255)
+    fotos_comentario = models.TextField(max_length=255, blank=True, null=True)
     video_comentario = models.TextField(max_length=255, blank=True, null=True) 
     sugestoes_comentario = models.TextField(blank=True, null=True)
     comentarios_finais = models.TextField(null=True, blank=True)
@@ -173,4 +176,4 @@ class Replica(models.Model):
     atualizado_em = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     
     def __str__(self):
-        return self.aluno.email
+        return self.author.email

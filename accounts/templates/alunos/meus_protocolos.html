@@ -3,8 +3,9 @@
 {% block content %}
 
 <div class="container my-4">
-    {% if protocolos_aluno %}
-    <h2>Meus Protocolos ({{protocolos_aluno.count}}) </h2>
+    {% if user.aluno and protocolos_aluno %}
+    <h2 style="text-align: center;">Meus Protocolos ({{protocolos_aluno.count}}) </h2>
+    <hr>
     <div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
         <table class="table table-striped table-bordered">
             <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
@@ -15,6 +16,7 @@
                     <th>Carbohidrato</th>
                     <th>Proteína</th>
                     <th>Gordura</th>
+                    <th>Kcal</th>
                     <th>Treino</th>
                     </tr>
                 </thead>
@@ -31,6 +33,7 @@
                             <td>{{ protocolo.carbo }}</td>
                             <td>{{ protocolo.prot }}</td>
                             <td>{{ protocolo.fat }}</td>
+                            <td>{{ protocolo.kcal }}</td>
                             <td>{{ protocolo.treino }}</td>
 
                         </tr>
@@ -40,8 +43,11 @@
         </div>
 
     {% elif protocolos_coach %}
-    <h2>Meus Protocolos ({{protocolos_coach.count}}) </h2>
-    <div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
+    <h2 style="text-align: center;">Protocolos do Coach ({{protocolos_coach|length}}) </h2>
+    <hr>
+    {% for item in protocolos_coach %}
+    <br><h3>{{ item.aluno.nome }} ({{ item.protocolos_aluno.all|length }}) </h3>
+    <div style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
         <table class="table table-striped table-bordered">
             <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
                 <tr>
@@ -51,28 +57,37 @@
                     <th>Carbohidrato</th>
                     <th>Proteína</th>
                     <th>Gordura</th>
+                    <th>kcal</th>
                     <th>Treino</th>
+                    <th>Editar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for protocolo in item.protocolos_aluno %}
+                    <tr>
+                        <td><a href="{% url 'feedbacks_protocolo' protocolo.id %} ">{{protocolo.cadastrado_em|date:"d/m/Y"}} </a></td>
+                        <td><a href="{% url 'perfil_aluno' protocolo.aluno.id %} ">{{ protocolo.aluno.nome }} {{protocolo.aluno.sobrenome}} </a></td>
+                        {% if protocolo.protocolo %}
+                        <td style="text-align: center;"><a href="{{ protocolo.protocolo.url }}"><i class="fas fa-file-pdf"></i></a></td>
+                        {% else %}
+                        <td>Sem arquivo</td>
+                        {% endif %}   
+                        <td>{{ protocolo.carbo }}</td>
+                        <td>{{ protocolo.prot }}</td>
+                        <td>{{ protocolo.fat }}</td>
+                        <td>{{ protocolo.kcal }}</td>
+                        <td>{{ protocolo.treino }}</td>
+                        <td>Fazer o link para editar</td>
                     </tr>
-                </thead>
-                <tbody>
-                    {% for protocolo in protocolos_coach %}
-                        <tr>
-                            <td><a href="{% url 'feedbacks_protocolo' protocolo.id %} ">{{protocolo.cadastrado_em|date:"d/m/Y"}} </a></td>
-                            <td><a href="{% url 'perfil_aluno' protocolo.aluno.id %} ">{{ protocolo.aluno.nome }} {{protocolo.aluno.sobrenome}} </a></td>
-                            {% if protocolo.protocolo %}
-                            <td style="text-align: center;"><a href="{{ protocolo.protocolo.url }}"><i class="fas fa-file-pdf"></i></a></td>
-                            {% else %}
-                            <td>Sem arquivo</td>
-                            {% endif %}   
-                            <td>{{ protocolo.carbo }}</td>
-                            <td>{{ protocolo.prot }}</td>
-                            <td>{{ protocolo.fat }}</td>
-                            <td>{{ protocolo.treino }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
+    
+    
+    
+    
     {% else %}
     <h5>Sem Protocolos Cadastrados</h5>
     {% endif %}

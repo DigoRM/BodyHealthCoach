@@ -1,4 +1,6 @@
+{% extends 'base.html' %}
 
+{% block content %}
 
 <div class="container">
     <div class="card">
@@ -7,7 +9,7 @@
             <div class="row">
                 <div class="col">
                     <div class="card-img-top">
-                        {% if user.coach.foto_perfil %}                        
+                        {% if user.coach.avatar %}                        
                         <img style='max-height:300px;max-width: 300px;margin: 0 auto;border-radius: 50%;' src="{{user.coach.foto_perfil.url}}" alt="">
                         {% endif %}
                     </div><br>
@@ -51,20 +53,21 @@
                                 </thead>
                                 <tbody>
                                         <tr>
-                                            <td>{{ feedback.aluno.nome }}{{feedback.aluno.sobrenome}} </td>
-                                            <td>{{ feedback.peso_atual }}</td>
-                                            <td>{{ feedback.dieta }}</td>
-                                            <td>{{ feedback.aluno.nome }}{{feedback.aluno.sobrenome}} </td>
-                                            <td>{{ feedback.peso_atual }}</td>
+                                            <td>{{ basic.count}} </td>
+                                            <td>{{ silver.count }}</td>
+                                            <td>{{ gold.count }}</td>
+                                            <td>{{ atleta.count }} </td>
+                                            <td>{{receita}} </td>
                                         </tr>
                                 </tbody>
                             </table><br>
                             <div class="card-footer">
                                 <div class="card-text">Feedbacks pendentes de Retorno: <a href="{% url 'feedbacks_pendentes' %}"><strong>{{feedbacks.count}}</strong></a>  </h6>
                                 <div class="card-text">Alunos Novos: <a href="{% url 'novos_alunos' %}"><strong>{{alunos_novos.count}}</strong></a>  </h6>
-                                <div class="card-text">Planos prestes a vencer: <a href="#"><strong>Estudar como fazer!</strong></a>  </h6>
+                                <div class="card-text">Planos prestes a vencer: <a href="{% url 'alunos_expirando' %} "><strong>{{alunos_expirando.count}}</strong></a>  </h6>
         
                             </div>
+                                </div></div>
                             
 
                 </div>
@@ -75,3 +78,5 @@
 
     </div>
 </div>
+
+{% endblock %}

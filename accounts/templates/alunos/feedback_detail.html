@@ -3,10 +3,43 @@
 
 
 {% block content %}
-
-<h2>Feedback {{feedback.aluno.nome}} </h2>
-<h6>{{feedback.cadastrado_em}} </h6>
+<div class="hero">
+            <h2>Protocolo {{feedback.protocolo.cadastrado_em|date:"d/m/Y"}}  </h2>
+            <div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
+                <table class="table table-striped table-bordered">
+                    <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
+                        <tr>
+                            <th>Aluno</th>
+                            <th>Protocolo</th>
+                            <th>Carbohidrato (g)</th>
+                            <th>Proteína (g)</th>
+                            <th>Gordura (g)</th>
+                            <th>Kcal</th>
+                            <th>Treino</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr>
+                                    <td>{{ feedback.protocolo.aluno.nome }} {{feedback.protocolo.aluno.sobrenome}} </td>
+                                    {% if feedback.protocolo.protocolo %}
+                                    <td style="text-align: center;"><a href="{{ protocolo.protocolo.url }}"><i class="fas fa-file-pdf"></i></a></td>
+                                    {% else %}
+                                    <td>Sem arquivo</td>
+                                    {% endif %}                    
+                                    <td>{{ feedback.protocolo.carbo }}</td>
+                                    <td>{{ feedback.protocolo.prot }}</td>
+                                    <td>{{ feedback.protocolo.fat }}</td>
+                                    <td>{{ feedback.protocolo.kcal }} </td>
+                                    <td>{{ feedback.protocolo.treino }}</td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+            <br><hr><br></div>
+</div>
 <div class="container">
+    <h2>Feedback {{feedback.aluno.nome}} </h2>
+    <h6>{{feedback.cadastrado_em}} </h6><hr>
     <div class="row">
         <div class="col">
             <h5>Dieta: {{feedback.get_dieta_display}}</h5>
@@ -53,44 +86,35 @@
         
 
     </div>
-
-</div>
-<hr><br>
-{% if retorno %}
-<h3>Retorno</h3>
-<div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
-    <table class="table table-striped table-bordered">
-        <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
-            <tr>
-                <th>Cadastro</th>
-                <th>Aluno</th>
-                <th>Protocolo</th>
-                <th>Carbohidrato</th>
-                <th>Proteína</th>
-                <th>Gordura</th>
-                <th>Treino</th>
-                <th>Atualizado</th>
-                </tr>
-            </thead>
-            <tbody>
-                    <tr>
-                        <td><a href="{% url 'retorno_detail' retorno.id %}">{{retorno.cadastrado_em|date:"d/m/Y"}}</a> </td>
-                        <td>{{ retorno.feedback.aluno.nome }}{{feedback.aluno.sobrenome}} </td>
-                        <td>{{ retorno.feedback.protocolo.protocolo }}</td>
-                        <td>{{ retorno.feedback.protocolo.carbo }}</td>
-                        <td>{{ retorno.feedback.protocolo.prot }}</td>
-                        <td>{{ retorno.feedback.protocolo.fat }}</td>
-                        <td>{{ retorno.feedback.protocolo.treino }}</td>
+    <hr><br>
+    {% if retorno %}
+    <h5 style="text-align: center;">Feedback com Retorno do Coach {{retorno.coach.nome}}!</h3>
+    <div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
+        <table class="table table-striped table-bordered">
+            <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
+                <tr>
+                    <th style="text-align: center;">Coach</th>
+                    <th style="text-align: center;">Retorno</th>
 
                     </tr>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td style="text-align: center;">{% if retorno.coach.avatar %} <img class="img-fluid" style="max-width:150px;max-width:150px;" src="{{retorno.coach.avatar.url}} " alt=""> {% endif %} <h6>{{ retorno.feedback.coach.nome }} {{feedback.coach.sobrenome}}</h6>  </td>
+
+                            <td style="text-align: center; vertical-align: middle;"><a href="{% url 'retorno_detail' retorno.id %}"><button class="btn-info btn-lg">{{retorno.cadastrado_em|date:"d/m/Y"}}</button></a> </td>
+    
+                        </tr>
+                </tbody>
+            </table>
+    </div>
+    {% else %}
+    <p style="text-align: center;">Ainda sem Retorno para esse feedback.</p>
+    {% if request.user.coach %}
+    <button style="text-align: center;" class="btn-info" ><a href="{% url 'novo_retorno' feedback.id %}">Novo Retorno</a> </button>
+    {% endif %}
+    {% endif %}
 </div>
-{% else %}
-<p style="text-align: center;">Ainda sem Retorno para esse feedback.</p>
-{% if request.user.coach %}
-<button class="btn-info" ><a href="{% url 'novo_retorno' feedback.id %}">Novo Retorno</a> </button>
-{% endif %}
-{% endif %}
+
 
 {% endblock %}

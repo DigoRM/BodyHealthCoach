@@ -10,7 +10,7 @@
                 <div class="col">
                     <div class="card-img-top">
                         {% if user.coach.avatar %}                        
-                        <img style='max-height:300px;max-width: 300px;margin: 0 auto;border-radius: 50%;' src="{{user.coach.foto_perfil.url}}" alt="">
+                        <img style='max-height:300px;max-width: 300px;margin: 0 auto;border-radius: 50%;' src="{{user.coach.avatar.url}}" alt="">
                         {% endif %}
                     </div><br>
                     <h5 class="card-title">Coach: {{user.coach.nome}} {{user.coach.sobrenome}} </h6>
@@ -67,6 +67,7 @@
                                 <div class="card-text">Planos prestes a vencer: <a href="{% url 'alunos_expirando' %} "><strong>{{alunos_expirando.count}}</strong></a>  </h6>
         
                             </div>
+                                </div></div>
                             
 
                 </div>
@@ -91,7 +92,7 @@
                         {% endif %}
                     </div><br>
                     <h5 class="card-title">{{aluno.nome}} {{aluno.sobrenome}} </h6>
-                    <p class="card-text">Altura: {{user.coach.altura}} </p>
+                    <p class="card-text">Altura: {{aluno.altura}} </p>
                     <p class="card-text">Peso: {{aluno.peso}} > {{aluno.peso_atual}} </p>
                     <p class="card-text">Data de nascimento: {{aluno.data_nascimento|date:'d/m/Y'}} </p>
 
@@ -110,6 +111,7 @@
                                 <th>Carbohidrato</th>
                                 <th>Proteína</th>
                                 <th>Gordura</th>
+                                <th>Kcal</th>
                                 <th>Treino</th>
                                 <th>Arquivo</th>
 
@@ -123,6 +125,7 @@
                                         <td>{{ protocolo_atual.carbo }}</td>
                                         <td>{{ protocolo_atual.prot }}</td>
                                         <td>{{ protocolo_atual.fat }}</td>
+                                        <td>{{ protocolo_atual.kcal }} </td>
                                         <td>{{ protocolo_atual.treino }}</td>
                                         {% if protocolo_atual.protocolo %}
                                         <td style="text-align: center;"><a href="{{ protocolo_atual.protocolo.url }}"><i class="fas fa-file-pdf"></i></a></td>
@@ -137,14 +140,12 @@
                         </table><br>
                         <div class="card-text">
                         {% if ultimo_feedback %}
-                            <p class="card-text"><strong>Último Feedback enviado:</strong>  {{ultimo_feedback.cadastrado_em|date:"Y-m-d"}} </p>
+                            <p class="card-text"><strong>Último Feedback enviado:</strong>  <a href="{% url 'feedback_detail' ultimo_feedback.id  %} ">{{ultimo_feedback.cadastrado_em|date:"Y-m-d"}}</a> </p>
                             <p class="card-text">
                                 {% if ultimo_retorno %}
-                                <strong>Último Retorno do Coach: </strong>{{ultimo_retorno.cadastrado_em|date:"Y-m-d"}} 
+                                <strong>Último Retorno do Coach: </strong><a href="{% url 'retorno_detail' ultimo_retorno.id %} "><span>{{ultimo_retorno.cadastrado_em|date:"Y-m-d"}} </span></a>
                                 {% endif %}
-                                {% if ultimo_retorno.cadastrado_em >= ultimo_feedback.cadastrado_em %}
-                                <a href="{% url 'retorno_detail' ultimo_retorno.id %} "><span>Retorno Recebido!</span></a>
-                                {% endif %}
+
                             </p>
                         {% endif %}
                         {% if show_button %}
@@ -153,30 +154,34 @@
                             <p class="card-text"><strong>Enviar Próximo Feedback em: </strong>{{ next_feedback_date|date:"Y-m-d" }}</p>
                         {% endif %}
                         {% elif protocolo_atual and not protocolo_atual.aluno.pago %}
-                        <p class="card-text">Consultoria pausada, para reiniciar realize o pagamento do plano com o Coach.</h6>
+                        <p class="card-text">Consultoria pausada, para reiniciar realize o pagamento do plano com o Coach.</p>
                         {% elif not protocolo_atual and aluno.pago %}
-                        <p class="card-text">Protocolo pendente de envio, por gentileza aguarde o contato do coach.</h6>
+                        <p class="card-text">Protocolo pendente de envio, por gentileza aguarde o contato do coach.</p>
                         {% else %}    
-                        <p class="card-text">Pagamento Pendente</h6>
+                        <p class="card-text">Pagamento Pendente</p>
 
                         {% endif %}
                         </div>
-                    
+                </div>
                 </div>
             </div><br>
         </div>
-    </div>
-    {% if aluno.pago %}
-    <div class="card-footer" style="text-align:center; background-color:rgb(40, 253, 218);">
-        <h6>Aluno com o pagamento em dia!</h6>
-        <span>Plano {{aluno.get_plano_display}} | Vencimento: {{aluno.vencimento_plano}} </span>
-    </div>
-        {% else %}
-        <div class="card-footer" style="text-align:center; background-color:rgba(236, 28, 0, 0.904);">
-            <h6>Aluno com plano vencido!</h6>
+        {% if aluno.pago %}
+        <div class="card-footer" style="text-align:center; background-color:rgb(40, 253, 218);">
+            <h6>Pagamento em dia!</h6>
+            <span>Plano {{aluno.get_plano_display}} | Vencimento: {{aluno.vencimento_plano}} </span>
         </div>
-        {% endif %}
-    </div></div>
+            {% else %}
+            <div class="card-footer" style="text-align:center; background-color:rgba(236, 28, 0, 0.904);">
+                <h6>Plano vencido! Para continuar com a consultoria contate o Coach {{aluno.coach.nome}}, por esses contatos:</h6>
+                <p>Whatsapp: {{aluno.coach.celular}} </p>
+                <p>Email: {{aluno.coach.email}} </p>
+
+            </div>
+            {% endif %}
+        </div></div>
+    </div>
+
 <br>
 <div class="hero">
     <div class="card">

@@ -3,7 +3,6 @@
     <div class="container my-4">
         <h2>Alunos Ativos</h2>
         {% if alunos_ativos %}
-            {% for ativo in alunos_ativos %}
                 <div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
                     <table class="table table-striped table-bordered">
                         <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
@@ -12,6 +11,7 @@
                                 <th>Aluno</th>
                                 <th>Email</th>
                                 <th>Celular</th>
+                                <th>Gerenciar Aluno</th>
                                 <th>Plano</th>
                                 <th>Vencimento do Plano</th>
                                 <th>Pago?</th>
@@ -19,11 +19,13 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for ativo in alunos_ativos %}
                                 <tr>
                                     <td>{{ativo.cadastrado_em|date:"d/m/Y"}} </td>
                                     <td><a href="{% url 'perfil_aluno' ativo.pk %} ">{{ ativo.nome }} {{ativo.sobrenome}}</a></td>
                                     <td>{{ ativo.email }}</td>
                                     <td>{{ ativo.celular }}</td>
+                                    <td><button class="btn-warning"><a href="{% url 'gerenciar_aluno' ativo.pk %}">Gerenciar</a></button></td>
                                     <td>{{ativo.get_plano_display}} </td>
                                     <td>{{ ativo.vencimento_plano|date:'d/m/Y' }}</td>
                                     <td style="vertical-align:middle">
@@ -37,11 +39,12 @@
                                         {% endif %}
                                     </td>                                    
                                 </tr>
+                                {% endfor %}
+
                         </tbody>
                     </table>
                 </div>
-                <br><br>
-            {% endfor %}
+                <br><hr><br>
         {% else %}
             <p>Sem alunos ativos.</p>
         {% endif %}
@@ -49,7 +52,6 @@
     <div class="container my-4">
         <h2>Alunos Inativos</h2>
         {% if alunos_inativos %}
-            {% for inativo in alunos_inativos %}
                 <div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
                     <table class="table table-striped table-bordered">
                         <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
@@ -66,6 +68,8 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for inativo in alunos_inativos %}
+
                                 <tr>
                                     <td>{{inativo.cadastrado_em|date:"d/m/Y"}} </td>
                                     <td><a href="{% url 'perfil_aluno' inativo.pk %} ">{{ inativo.nome }} {{inativo.sobrenome}}</a></td>
@@ -80,11 +84,12 @@
                                     <td style="vertical-align:middle">{{inativo.plano}} </td>                                    
                                     <td>{{ inativo.vencimento_plano|date:"d/m/Y" }}</td>
                                 </tr>
+                            {% endfor %}
+
                         </tbody>
                     </table>
                 </div>
                 <br><br>
-            {% endfor %}
         {% else %}
             <p>Sem alunos inativos.</p>
         {% endif %}

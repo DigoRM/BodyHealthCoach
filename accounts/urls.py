@@ -16,6 +16,9 @@ urlpatterns = [
     path('accounts/logout/', views.logoutUser, name='logout'),
     path('edit_profile/', views.edit_profile, name='edit_profile'),
     path("", views.home, name='home'),
+
+
+
     
     path('todos_alunos/', views.todos_alunos, name='todos_alunos'),
     path('meus_alunos/', views.meus_alunos, name='meus_alunos'),
@@ -42,6 +45,8 @@ urlpatterns = [
 
     path('meus_retornos/', views.meus_retornos, name='meus_retornos'),
     path('retorno/<int:pk>/detail/', views.retorno_detail, name='retorno_detail'),
+
+    path('retornos_com_replica/', views.retornos_com_replica, name='retornos_com_replica'),
 
 
 ]

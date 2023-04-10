@@ -68,7 +68,23 @@
                   {% endif %}
 
               </li>
-            
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Retornos
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  {% if request.user.coach %}
+                  <a class="dropdown-item" href="{% url 'meus_retornos' %}">Retornos Enviados</a>
+                  <a class="dropdown-item" href="{% url 'retornos_com_replica' %}">Retornos com Réplica (retornos_com_replica.html) </a>
+                  {% elif request.user.aluno %}
+                  <a class="dropdown-item" href="{% url 'meus_retornos' %}">Retornos Recebidos</a>
+
+                  {% endif %}
+
+              </li>
+
+
             {% if request.user.coach %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -123,7 +139,7 @@
 </body>
 <br><br>
 <!-- Footer Start -->
-<footer id="footer" class="footer-style-2"style="display: flex; justify-content: center; align-items: center;">
+<footer style="display: flex; justify-content: center; align-items: center;">
     <div class="copyright-sec">
         <div class="container">
             <div class="row">

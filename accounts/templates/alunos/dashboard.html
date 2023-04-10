@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
 
 <div class="container">
     <div class="card">
@@ -31,6 +34,7 @@
                                 <th>Proteína</th>
                                 <th>Gordura</th>
                                 <th>Treino</th>
+                                <th>Arquivo</th>
 
 
 
@@ -43,13 +47,18 @@
                                         <td>{{ protocolo_atual.prot }}</td>
                                         <td>{{ protocolo_atual.fat }}</td>
                                         <td>{{ protocolo_atual.treino }}</td>
+                                        {% if protocolo_atual.protocolo %}
+                                        <td style="text-align: center;"><a href="{{ protocolo_atual.protocolo.url }}"><i class="fas fa-file-pdf"></i></a></td>
+                                        {% else %}
+                                        <td>Sem arquivo</td>
+                                        {% endif %}
 
 
                                     </tr>
                             </tbody>
 
                         </table><br>
-                        <div class="card-footer">
+                        <div class="card-text">
                         {% if ultimo_feedback %}
                             <p class="card-text"><strong>Último Feedback enviado:</strong>  {{ultimo_feedback.cadastrado_em|date:"Y-m-d"}} </p>
                             <p class="card-text">
@@ -68,17 +77,104 @@
                         {% endif %}
                         {% elif protocolo_atual and not protocolo_atual.aluno.pago %}
                         <p class="card-text">Consultoria pausada, para reiniciar realize o pagamento do plano com o Coach.</h6>
-                        {% else %}
+                        {% elif not protocolo_atual and aluno.pago %}
                         <p class="card-text">Protocolo pendente de envio, por gentileza aguarde o contato do coach.</h6>
-                            
+                        {% else %}    
+                        <p class="card-text">Pagamento Pendente</h6>
+
                         {% endif %}
                         </div>
-                    
                 </div>
-            </div>
-
-
+                </div>
+            </div><br>
         </div>
+    </div>
+    {% if aluno.pago %}
+    <div class="card-footer" style="text-align:center; background-color:rgb(40, 253, 218);">
+        <h6>Aluno com o pagamento em dia!</h6>
+        <span>Plano {{aluno.get_plano_display}} | Vencimento: {{aluno.vencimento_plano}} </span>
+    </div>
+        {% else %}
+        <div class="card-footer" style="text-align:center; background-color:rgba(236, 28, 0, 0.904);">
+            <h6>Aluno com plano vencido!</h6>
+        </div>
+        {% endif %}
+    </div></div>
+<br>
+<div class="hero">
+    <div class="card">
+        <div class="card-body">
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="card-title">Foto Frente</h3>
+                    <br>
+                    <div class="row">
+                        <div class="col">
+                            {% if aluno.foto_frente %}
+                            <img class="img-fluid"  src="{{aluno.foto_frente.url}}" alt="">
+                            {% else %} 
+                            <h6>Atualize o perfil com as fotos.</h6>
+                            {% endif %}
+                        </div>
+                        <div class="col">
+                            {% if ultimo_feedback.foto_frente %}
+                            <img class="img-fluid"  src="{{ultimo_feedback.foto_frente.url}}" alt=""> 
+                            {% else %}
+                            <h6>Aguardando novo Feedback!</h6>
+                            {% endif %}
+                        </div>
 
+                    </div>
+
+                </div>
+                <div class="col-md-12">
+                    <hr>
+                    <h3 class="card-title">Fotos Lado</h3>
+                    <br>
+                    <div class="row">
+                        <div class="col">
+                            {% if aluno.foto_lado %}
+                            <img class="img-fluid" src="{{aluno.foto_lado.url}}" alt=""> 
+                            {% else %} 
+                            <h6>Atualize o perfil com as fotos.</h6>
+                            {% endif %}
+                        </div>
+                        <div class="col">
+                            {% if ultimo_feedback.foto_lado %}
+                            <img class="img-fluid" src="{{ultimo_feedback.foto_lado.url}}" alt=""> 
+                            {% else %}
+                            <h6>Aguardando novo Feedback!</h6>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <hr>
+                    <h3 class="card-title">Fotos Verso</h3>
+                    <br>
+                    <div class="row">
+                        <div class="col">
+                            {% if aluno.foto_verso %}
+                            <img class="img-fluid" src="{{aluno.foto_verso.url}}" alt=""> 
+                            {% else %} 
+                            <h6>Atualize o perfil com as fotos.</h6>
+                            {% endif %}
+                        </div>
+                        <div class="col">
+                            {% if ultimo_feedback.foto_verso %}
+                            <img class="img-fluid" src="{{ultimo_feedback.foto_verso.url}}" alt=""> 
+                            {% else %}
+                            <h6>Aguardando novo Feedback!</h6>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+                
+            </div>
+        </div>
     </div>
 </div>
+{% endblock %}

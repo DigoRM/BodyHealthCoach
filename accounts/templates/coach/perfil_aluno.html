@@ -30,7 +30,7 @@
                     {% if protocolos %}
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
-                            <h6>Protocolos: </h6>
+                            <h6>Protocolos: <a href="{% url 'novo_protocolo' aluno.id %} "><button class="btn-success btn-sm">Novo Protocolo</button></a> </h6><br>
                             <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
                                 <tr>
                                     <th>Detalhes</th>
@@ -38,6 +38,7 @@
                                     <th>Carbohidrato</th>
                                     <th>Proteína</th>
                                     <th>Gordura</th>
+                                    <th>kcal</th>
                                     <th>Treino</th>
                                     <th>Arquivo</th>
                                 </tr>
@@ -51,6 +52,7 @@
                                     <td>{{ protocolo.carbo }}</td>
                                     <td>{{ protocolo.prot }}</td>
                                     <td>{{ protocolo.fat }}</td>
+                                    <td>{{ protocolo.kcal }}</td>
                                     <td>{{ protocolo.treino }}</td>
                                     {% if protocolo.protocolo %}
                                     <td style="text-align: center;"><a href="{{ protocolo.protocolo.url }}"><i class="fas fa-file-pdf"></i></a></td>

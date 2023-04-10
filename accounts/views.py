@@ -8,6 +8,8 @@ from decimal import Decimal
 from django.db.models.functions import ExtractWeekDay, ExtractMonth, ExtractDay, ExtractWeek
 from datetime import datetime
 from django.http import Http404
+
+from accounts.utils import detectUser
 from .decorators import staff_required
 
 
@@ -196,6 +198,111 @@ def home(request):
 
 
 @staff_required
+def dashboard_coach(request):
+    user= request.user
+    coach = user.coach
+    todos_alunos = Aluno.objects.filter(coach=coach).order_by('-cadastrado_em')
+    alunos_ativos = Aluno.objects.filter(pago=True,coach=coach).order_by('-cadastrado_em')
+    alunos_inativos = Aluno.objects.filter(pago=False,coach=coach).order_by('-cadastrado_em')
+    alunos_novos = Aluno.objects.filter(coach__isnull=True).order_by('-cadastrado_em')
+    
+    today = date.today()
+    vencimento = today + timedelta(days=7)
+    alunos_expirando = Aluno.objects.filter(
+        pago=True,
+        coach=coach,
+        vencimento_plano__range=[today, vencimento]
+    ).order_by('-vencimento_plano')
+    basic = Aluno.objects.filter(pago=True,coach=coach,plano=1).order_by('-cadastrado_em')
+    silver = Aluno.objects.filter(pago=True,coach=coach,plano=2).order_by('-cadastrado_em')
+    gold = Aluno.objects.filter(pago=True,coach=coach,plano=3).order_by('-cadastrado_em')
+    atleta = Aluno.objects.filter(pago=True,coach=coach,plano=4).order_by('-cadastrado_em')
+    feedbacks = Feedback.objects.filter(coach=coach, atendido=False)
+    # Sum the mensalidade field of all active students
+    receita = alunos_ativos.aggregate(Sum('mensalidade'))['mensalidade__sum'] or 0
+    context = {
+        'alunos_ativos':alunos_ativos,
+        'alunos_inativos':alunos_inativos,
+        'alunos_novos':alunos_novos,
+        'user':user,
+        'feedbacks':feedbacks,
+        'todos_alunos':todos_alunos,
+        'basic':basic,
+        'silver':silver,
+        'gold':gold,
+        'atleta':atleta,
+        'receita':receita,
+        'alunos_expirando':alunos_expirando,
+    }
+    return render(request, 'coach/dashboard.html', context)
+
+@staff_required
+def dashboard_aluno(request):
+    user= request.user
+    aluno = user.aluno
+    protocolos = Protocolo.objects.filter(aluno=aluno).order_by('-cadastrado_em')
+    feedbacks_aluno = Feedback.objects.filter(aluno=aluno).order_by('-cadastrado_em')
+    if feedbacks_aluno.exists():
+        ultimo_feedback_aluno = feedbacks_aluno[0]
+    else:
+        ultimo_feedback_aluno = None
+    if protocolos.exists():
+        protocolo_atual = protocolos[0]
+    else:
+        protocolo_atual = None
+    # ultimo feedback
+    feedbacks_atual = Feedback.objects.filter(protocolo=protocolo_atual).order_by('-cadastrado_em')
+    if feedbacks_atual.exists():
+        ultimo_feedback = feedbacks_atual[0]
+    else:
+        ultimo_feedback = None
+    # ultimo retorno
+    ultimo_retornos = Retorno.objects.filter(protocolo=protocolo_atual).order_by('-cadastrado_em')
+    if ultimo_retornos.exists():
+        ultimo_retorno = ultimo_retornos[0]
+    else:
+        ultimo_retorno = None
+        
+    feedbacks=[]
+    for protocolo in protocolos:
+        feedbacks += list(Protocolo.objects.filter(protocolo=protocolo))
+    retornos = []
+    for feedback in feedbacks:
+        retornos += list(Retorno.objects.filter(feedback=feedback))
+    today = timezone.now()
+    next_feedback_date = None
+    show_button = False
+    if ultimo_feedback:
+        next_feedback_date = ultimo_feedback.cadastrado_em + timedelta(days=1)
+        show_button = next_feedback_date <= today
+    elif protocolo_atual and ultimo_feedback is None:
+        next_feedback_date = protocolo_atual.cadastrado_em + timedelta(days=1)
+        show_button = next_feedback_date <= today
+    context = {
+        'user':user,
+        'protocolos':protocolos,
+        'feedbacks':feedbacks,
+        'retornos':retornos,
+        'aluno':aluno,
+        'protocolo_atual':protocolo_atual,
+        'ultimo_feedback':ultimo_feedback,
+        'ultimo_retorno':ultimo_retorno,
+        'next_feedback_date': next_feedback_date,
+        'show_button':show_button,
+        'ultimo_feedback_aluno':ultimo_feedback_aluno,
+    }
+    return render(request, 'alunos/dashboard.html', context)
+
+@login_required(login_url='login')
+def myAccount(request):
+    user = request.user
+    if user.is_authenticated:
+        redirectUrl = detectUser(user)
+        return redirect(redirectUrl)
+    else:
+        return redirect('login') # or whatever login url you have set up
+
+@staff_required
 def todos_alunos(request):
     alunos_ativos = Aluno.objects.filter(pago=True).order_by('cadastrado_em')
     alunos_inativos = Aluno.objects.filter(pago=False).order_by('cadastrado_em')
@@ -288,10 +395,12 @@ def edit_profile(request, pk=None):
         aluno = user.aluno
         form = PerfilAluno(request.POST or None, request.FILES or None, instance=aluno)
         form2 = None
+        instance = aluno  # set instance to aluno if user is an 'aluno'
     elif hasattr(user, 'coach'):
         coach = user.coach
         form = None
         form2 = PerfilCoach(request.POST or None, request.FILES or None, instance=coach)
+        instance = coach  # set instance to coach if user is a 'coach'
     else:
         raise Http404("This user is not an 'aluno' or a 'coach'.")
         
@@ -304,10 +413,13 @@ def edit_profile(request, pk=None):
                 if request.FILES.get(field):
                     image = request.FILES[field]
                     image_file = resize_image(image)
-                    setattr(form.instance, field, image_file)
+                    setattr(instance, field, image_file)
             
             # Save the form
-            form.save() if form else form2.save()
+            if form is not None:
+                form.save()
+            elif form2 is not None:
+                form2.save()
             
             messages.success(request, 'Perfil Atualizado!')
             return redirect('home')
@@ -317,10 +429,10 @@ def edit_profile(request, pk=None):
     context = {
         'form': form,
         'form2': form2,
-
     }
     
     return render(request, 'alunos/edit_profile.html', context)
+
 
 @staff_required
 def perfil_aluno(request, pk):
@@ -459,7 +571,7 @@ def meus_alunos(request):
     user = request.user
     coach = user.coach
     alunos_ativos = Aluno.objects.filter(pago=True, coach=coach).order_by('-atualizado_em')
-    
+
     context = {
         'alunos_ativos':alunos_ativos,
         'user':user,
@@ -537,6 +649,7 @@ def novo_protocolo(request, pk):
             protocolo = form.save()
             protocolo.coach = user.coach
             protocolo.aluno = aluno
+            protocolo.kcal = (protocolo.prot*4)+(protocolo.carbo*4)+(protocolo.fat*9)
             protocolo.save()
             messages.success(request, 'Protocolo criado!')
             return redirect('meus_protocolos')
@@ -551,14 +664,21 @@ def meus_protocolos(request):
     protocolos_coach = Protocolo.objects.none()
 
     if hasattr(user, 'aluno'):
-        protocolos_aluno = Protocolo.objects.filter(aluno=user.aluno)
-    
-    if hasattr(user, 'coach'):
-        protocolos_coach = Protocolo.objects.filter(coach=user.coach)
+        protocolos_aluno = Protocolo.objects.filter(aluno=user.aluno).order_by('-cadastrado_em')
 
-    context = {'user': user,'protocolos_coach':protocolos_coach, 'protocolos_aluno':protocolos_aluno}
+    if hasattr(user, 'coach'):
+        alunos = Aluno.objects.filter(coach=user.coach,pago=True).order_by('nome')
+        protocolos_coach = []
+        for aluno in alunos:
+            protocolos_aluno = Protocolo.objects.filter(aluno=aluno).order_by('-cadastrado_em')
+            protocolos_coach.append({'aluno': aluno, 'protocolos_aluno': protocolos_aluno})
+
+        print(protocolos_coach)
+
+    context = {'user': user,'protocolos_coach':protocolos_coach, 'protocolos_aluno':protocolos_aluno,}
     
     return render(request, 'alunos/meus_protocolos.html', context)
+
 
 
 @login_required
@@ -588,6 +708,8 @@ def novo_retorno(request, pk):
             retorno = form2.save()
             retorno.feedback = feedback
             retorno.protocolo = feedback.protocolo
+            retorno.aluno = feedback.aluno
+            retorno.coach = feedback.coach
             retorno.save()
             feedback.atendido = True
             feedback.retorno = retorno
@@ -602,15 +724,44 @@ def novo_retorno(request, pk):
     return render(request, 'coach/novo_retorno.html', context)
 
 
+@login_required
 def meus_retornos(request):
     user = request.user
-    retornos_aluno = Retorno.objects.filter(aluno=user.aluno)
-    retornos_coach = Retorno.objects.filter(coach=user.coach)
+    retornos_aluno = Retorno.objects.none()
+    retornos_coach = Retorno.objects.none()
+
+    if hasattr(user, 'aluno'):
+        retornos_aluno = Retorno.objects.filter(aluno=user.aluno).order_by('-cadastrado_em')
+
+    if hasattr(user, 'coach'):
+        alunos = Aluno.objects.filter(coach=user.coach,pago=True).order_by('nome')
+        retornos_coach = []
+        for aluno in alunos:
+            retornos_aluno = Retorno.objects.filter(aluno=aluno).order_by('-cadastrado_em')
+            retornos_coach.append({'aluno': aluno, 'retornos_aluno': retornos_aluno})
+
 
     
     context = {'user': user,'retornos_coach':retornos_coach, 'retornos_aluno':retornos_aluno}
     
     return render(request, 'alunos/meus_retornos.html', context)
+
+
+
+from django.db.models import Count
+
+@staff_required
+def retornos_com_replica(request):
+    user = request.user
+    coach = user.coach
+    retornos = Retorno.objects.filter(coach=coach).annotate(num_replicas=Count('replica'))
+    retornos_com_replica = retornos.filter(num_replicas=1)
+    
+
+    context = {'user': user, 'retornos_com_replica': retornos_com_replica}
+    return render(request, 'coach/retornos_com_replica.html', context)
+
+
 
 @login_required
 def retorno_detail(request, pk=None):
@@ -627,8 +778,9 @@ def retorno_detail(request, pk=None):
             replica = form.save()
             replica.author = user
             replica.retorno=retorno
-
             replica.save()
+            retorno.replica = replica
+            retorno.save()
 
             messages.success(request, 'Réplica enviada!')
             redirect_url = request.META.get('HTTP_REFERER', 'my_tasks')
@@ -654,6 +806,8 @@ def nova_replica(request, pk=None):
             replica = form.save(commit=False)
             replica.author = user
             replica.save()
+            retorno.replica = replica
+            retorno.save()
             messages.success(request, 'Enviado!')
             return redirect('feedbacks_pendentes')
         else:

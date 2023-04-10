@@ -3,7 +3,40 @@
 
 
 {% block content %}
-
+<div class="hero">
+    <h2>Protocolo {{retorno.protocolo.cadastrado_em|date:"d/m/Y"}}  </h2>
+    <div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
+        <table class="table table-striped table-bordered">
+            <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
+                <tr>
+                    <th>Aluno</th>
+                    <th>Protocolo</th>
+                    <th>Carbohidrato (g)</th>
+                    <th>Proteína (g)</th>
+                    <th>Gordura (g)</th>
+                    <th>Kcal</th>
+                    <th>Treino</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td>{{ retorno.protocolo.aluno.nome }} {{retorno.protocolo.aluno.sobrenome}} </td>
+                            {% if retorno.protocolo.protocolo %}
+                            <td style="text-align: center;"><a href="{{ protocolo.protocolo.url }}"><i class="fas fa-file-pdf"></i></a></td>
+                            {% else %}
+                            <td>Sem arquivo</td>
+                            {% endif %}                    
+                            <td>{{ retorno.protocolo.carbo }}</td>
+                            <td>{{ retorno.protocolo.prot }}</td>
+                            <td>{{ retorno.protocolo.fat }}</td>
+                            <td>{{ retorno.protocolo.kcal }} </td>
+                            <td>{{ retorno.protocolo.treino }}</td>
+                        </tr>
+                </tbody>
+            </table>
+        </div>
+    <br><hr><br></div>
+</div>
 <div class="container">
     <div class="row">
         <div class="col">
@@ -153,25 +186,45 @@
             {% if replicas %}
             {% for replica in replicas %}
             <div class="card">
-                <div class="card-header">
-                    <h3>{{replica.author}} </h3> <span>{{replica.cadastrado_em}} </span>
-                </div>
                 <div class="card-body">
-                    {% if replica.dieta %}
-                    <div class="card-text">Dieta: {{replica.dieta }}</div>
-                    {% endif %}
-                    {% if replica.suplemento %}
-                    <div class="card-text">Suplemento: {{replica.suplemento }}</div>
-                    {% endif %}
-                    {% if replica.treino %}
-                    <div class="card-text">Treino: {{replica.treino}}</div>
-                    {% endif %}
-                    {% if replica.aerobico %}
-                    <div class="card-text">Aeróbico: {{replica.aerobico}}</div>
-                    {% endif %}
-                    {% if replica.demais_assuntos %}
-                    <div class="card-text">Demais assuntos: {{replica.demais_assuntos}}</h5>
-                    {% endif %}
+                    <div class="row">
+                        <div class="col-3">
+                            {% if replica.author.coach.avatar %} <img class="img-fluid" style="max-width:150px;max-width:150px;" src="{{replica.author.coach.avatar.url}} " alt=""> {% elif replica.author.aluno.avatar %} <img class="img-fluid" style="max-width:150px;max-width:150px;" src="{{replica.author.aluno.avatar.url}} " alt=""> {% endif %}
+                            <h3>{{replica.author}} </h3> <span>{{replica.cadastrado_em}} </span>        
+
+                        </div>
+                        <div class="col-6" >
+                            <div class="card-text mt-4" style="vertical-align: middle;text-align: justify;">
+                            <p>
+                                {% if replica.dieta %}
+                                Dieta: {{replica.dieta }}
+                                {% endif %}
+                            </p>
+                            <p>
+                                {% if replica.suplemento %}
+                                Suplemento: {{replica.suplemento }}
+                                {% endif %}
+                            </p>
+                            <p>
+                                {% if replica.treino %}
+                                Treino: {{replica.treino}}
+                                {% endif %}
+                            </p>
+                            <p>
+                                {% if replica.aerobico %}
+                                Aeróbico: {{replica.aerobico}}
+                                {% endif %}
+                            </p>
+                            <p>
+                                {% if replica.demais_assuntos %}
+                                Demais assuntos: {{replica.demais_assuntos}}</h5>
+                                {% endif %}
+                            </p>
+
+                            </div> 
+                        </div>
+                    </div>
+                    
                 </div>
                 {% endfor %}
                 {% else %}
@@ -179,7 +232,7 @@
             </div>
             {% endif %}
 
-
+</div>
             </div>
         </div>
     </div><br>

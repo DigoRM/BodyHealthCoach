@@ -95,7 +95,7 @@ class NovoProtocolo(forms.ModelForm):
     class Meta:
         model = Protocolo
         fields="__all__"
-        exclude = ['coach','aluno','atualizado_em','cadastrado_em',]
+        exclude = ['coach','aluno','atualizado_em','cadastrado_em','kcal',]
         widgets = {
             'protocolo' : forms.ClearableFileInput(attrs={'class':'form-control'}),
             'carbo' : forms.TextInput(attrs={'class':'form-control'} ),
@@ -137,7 +137,7 @@ class NovoRetorno(forms.ModelForm):
     class Meta:
         model = Retorno
         fields="__all__"
-        exclude = ['atualizado_em','cadastrado_em','feedback','protocolo']
+        exclude = ['atualizado_em','cadastrado_em','feedback','protocolo','aluno','coach','replica']
         
 class NovaReplica(forms.ModelForm):
 
