@@ -57,7 +57,7 @@
                         <tbody>
                             {% for feedback in feedbacks %}
                                 <tr>
-                                    <td><a href="{% url 'feedback_detail' feedback.id %}">{{feedback.cadastrado_em|date:"d/m/Y"}}</a> </td>
+                                    <td><a href="{% url 'feedback_detail' feedback.id %}"><button class="btn-info">{{feedback.cadastrado_em|date:"d/m/Y"}}</button></a> </td>
                                     <td>{{ feedback.aluno.nome }}{{feedback.aluno.sobrenome}} </td>
                                     <td>{{ feedback.peso_atual }}</td>
                                     <td>{{ feedback.get_dieta_display }}</td>
@@ -70,7 +70,7 @@
                                     {% elif request.user.aluno and not feedback.atendido %}
                                     <td>Sem Retorno</td>
                                     {% elif feedback.atendido %}
-                                    <td><a href="{% url 'retorno_detail' feedback.retorno.id %}"><button class="btn-warning">ABRIR</button></a></td>
+                                    <td><a href="{% url 'retorno_detail' feedback.retorno.id %}"><button class="btn-warning">{{feedback.retorno.cadastrado_em|date:"d/m/Y"}}</button></a></td>
                                     {% endif %}
             
             

@@ -23,7 +23,7 @@
                 <tbody>
                     {% for protocolo in protocolos_aluno %}
                         <tr>
-                            <td><a href="{% url 'feedbacks_protocolo' protocolo.id %} ">{{protocolo.cadastrado_em|date:"d/m/Y"}} </a></td>
+                            <td><a href="{% url 'feedbacks_protocolo' protocolo.id %} "><button class="btn-info">{{protocolo.cadastrado_em|date:"d/m/Y"}}</button></a></td>
                             <td>{{ protocolo.aluno.nome }} {{protocolo.aluno.sobrenome}} </td>
                             {% if protocolo.protocolo %}
                             <td style="text-align: center;"><a href="{{ protocolo.protocolo.url }}"><i class="fas fa-file-pdf"></i></a></td>
@@ -65,7 +65,7 @@
             <tbody>
                 {% for protocolo in item.protocolos_aluno %}
                     <tr>
-                        <td><a href="{% url 'feedbacks_protocolo' protocolo.id %} ">{{protocolo.cadastrado_em|date:"d/m/Y"}} </a></td>
+                        <td><a href="{% url 'feedbacks_protocolo' protocolo.id %} "><button class="btn-info">{{protocolo.cadastrado_em|date:"d/m/Y"}}</button> </a></td>
                         <td><a href="{% url 'perfil_aluno' protocolo.aluno.id %} ">{{ protocolo.aluno.nome }} {{protocolo.aluno.sobrenome}} </a></td>
                         {% if protocolo.protocolo %}
                         <td style="text-align: center;"><a href="{{ protocolo.protocolo.url }}"><i class="fas fa-file-pdf"></i></a></td>
