@@ -76,7 +76,7 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                   {% if request.user.coach %}
                   <a class="dropdown-item" href="{% url 'meus_retornos' %}">Retornos Enviados</a>
-                  <a class="dropdown-item" href="{% url 'retornos_com_replica' %}">Retornos com Réplica (retornos_com_replica.html) </a>
+                  <a class="dropdown-item" href="{% url 'retornos_com_replica' %}">Réplicas</a>
                   {% elif request.user.aluno %}
                   <a class="dropdown-item" href="{% url 'meus_retornos' %}">Retornos Recebidos</a>
 
@@ -93,8 +93,10 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="{% url 'meus_alunos' %}">Ativos</a>
                 <a class="dropdown-item" href="{% url 'novos_alunos' %}">Novos</a>
-                <a class="dropdown-item" href="{% url 'todos_alunos' %}">Todos Alunos</a>
-                <a class="dropdown-item" href="{% url 'alunos_expirando' %}">Alunos Expirando</a>
+                <a class="dropdown-item" href="{% url 'alunos_expirando' %}">Planos a Vencer</a>
+                <a class="dropdown-item" href="{% url 'planos_expirados' %}">Planos Expirados</a>
+                <a class="dropdown-item" href="{% url 'todos_alunos' %}">Todos</a>
+
 
             </div>
         </li>

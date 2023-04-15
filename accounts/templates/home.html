@@ -140,18 +140,18 @@
                         </table><br>
                         <div class="card-text">
                         {% if ultimo_feedback %}
-                            <p class="card-text"><strong>Último Feedback enviado:</strong>  <a href="{% url 'feedback_detail' ultimo_feedback.id  %} ">{{ultimo_feedback.cadastrado_em|date:"Y-m-d"}}</a> </p>
+                            <p class="card-text"><strong>Último Feedback enviado:</strong>  <a href="{% url 'feedback_detail' ultimo_feedback.id  %} ">{{ultimo_feedback.cadastrado_em|date:"d/m/Y"}}</a> </p>
                             <p class="card-text">
                                 {% if ultimo_retorno %}
-                                <strong>Último Retorno do Coach: </strong><a href="{% url 'retorno_detail' ultimo_retorno.id %} "><span>{{ultimo_retorno.cadastrado_em|date:"Y-m-d"}} </span></a>
+                                <strong>Último Retorno do Coach: </strong><a href="{% url 'retorno_detail' ultimo_retorno.id %} "><button class="btn-success">{{ultimo_retorno.cadastrado_em|date:"d/m/Y"}} </button></a>
                                 {% endif %}
 
                             </p>
                         {% endif %}
                         {% if show_button %}
-                            <a href="{% url 'novo_feedbackV1' protocolo_atual.id %}"><button class="btn-danger">Novo Feedback</button></a>
+                            <p><strong>Enviar Feedback: </strong><a href="{% url 'novo_feedbackV1' protocolo_atual.id %}"><button class="btn-danger">Novo Feedback</button></a></p> 
                         {% else %}
-                            <p class="card-text"><strong>Enviar Próximo Feedback em: </strong>{{ next_feedback_date|date:"Y-m-d" }}</p>
+                            <p class="card-text"><strong>Enviar Próximo Feedback em: </strong>{{ next_feedback_date|date:"d/m/Y" }}</p>
                         {% endif %}
                         {% elif protocolo_atual and not protocolo_atual.aluno.pago %}
                         <p class="card-text">Consultoria pausada, para reiniciar realize o pagamento do plano com o Coach.</p>

@@ -170,13 +170,11 @@ def home(request):
             next_feedback_date = None
             show_button = False
             if ultimo_feedback:
-                next_feedback_date = ultimo_feedback.cadastrado_em + timedelta(days=1)
+                next_feedback_date = ultimo_feedback.cadastrado_em + timedelta(days=14)
                 show_button = next_feedback_date <= today
             elif protocolo_atual and ultimo_feedback is None:
-                next_feedback_date = protocolo_atual.cadastrado_em + timedelta(days=1)
+                next_feedback_date = protocolo_atual.cadastrado_em + timedelta(days=14)
                 show_button = next_feedback_date <= today
-
-
 
 
             context = {
@@ -601,6 +599,27 @@ def alunos_expirando(request):
 
     return render(request, 'coach/alunos_expirando.html', context)
 
+
+@staff_required
+def planos_expirados(request):
+    user = request.user
+    coach = user.coach
+    today = date.today()
+    planos_expirados = Aluno.objects.filter(
+        pago=True,
+        coach=coach,
+        vencimento_plano__lt=today
+    ).order_by('-vencimento_plano')
+
+    context = {
+        'planos_expirados': planos_expirados,
+        'user': user,
+    }
+
+    return render(request, 'coach/planos_expirados.html', context)
+
+
+
 @staff_required
 def novos_alunos(request):
     user = request.user
@@ -617,11 +636,15 @@ def novos_alunos(request):
 @staff_required
 def gerenciar_aluno(request, pk=None):
     user = request.user
+    coach = user.coach
     aluno = get_object_or_404(Aluno, pk=pk)
     if request.method == 'POST':
         form = GerenciarAluno(request.POST, instance=aluno)
         if form.is_valid():
-            form.save()
+            aluno = form.save()
+            aluno.coach = coach
+            aluno.pago = True
+            aluno.save()
             messages.success(request, 'Aluno atualizado!')
             return redirect('home')
         else:

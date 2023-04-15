@@ -74,7 +74,7 @@ class GerenciarAluno(forms.ModelForm):
 
     class Meta:
         model = Aluno
-        fields=['coach', 'plano','mensalidade', 'vencimento_plano','pago',]
+        fields=['plano','mensalidade', 'vencimento_plano',]
         
         # add a DateInput widget to data_nascimento field
     vencimento_plano = forms.DateField(widget=DateInput(attrs={'type': 'date'}))    
@@ -151,8 +151,5 @@ class NovaReplica(forms.ModelForm):
             'suplemento' : forms.TextInput(attrs={'class':'form-control'} ),
             'aerobico' : forms.TextInput(attrs={'class':'form-control'} ),
             'demais_assuntos' : forms.TextInput(attrs={'class':'form-control'} ),
-            'pode_melhorar' : forms.TextInput(attrs={'class':'form-control'} ),
-            'comprometimento' : forms.NumberInput(attrs={'class': 'form-control', 'min': '1', 'max': '10'}),
-            'avalia_coach' : forms.NumberInput(attrs={'class': 'form-control', 'min': '1', 'max': '10'}),
-            'sugestoes' : forms.Textarea(attrs={'class':'form-control'})
+
         }

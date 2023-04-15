@@ -187,35 +187,42 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-3">
-                            {% if replica.author.coach.avatar %} <img class="img-fluid" style="max-width:150px;max-width:150px;" src="{{replica.author.coach.avatar.url}} " alt=""> {% elif replica.author.aluno.avatar %} <img class="img-fluid" style="max-width:150px;max-width:150px;" src="{{replica.author.aluno.avatar.url}} " alt=""> {% endif %}
-                            <h3>{{replica.author}} </h3> <span>{{replica.cadastrado_em}} </span>        
+                            {% if replica.author.coach.avatar %} 
+                            <img class="img-fluid" style="max-width:150px;max-width:150px;" src="{{replica.author.coach.avatar.url}} " alt=""> 
+                            <h3>{{replica.author.coach.nome}} {{replica.author.coach.sobrenome}}</h3> <span>{{replica.cadastrado_em}} </span>        
+
+                            {% elif replica.author.aluno.avatar %} 
+                            <img class="img-fluid" style="max-width:150px;max-width:150px;" src="{{replica.author.aluno.avatar.url}} " alt=""> 
+                            <h3>{{replica.author.aluno.nome}} {{replica.author.aluno.sobrenome}}</h3> <span>{{replica.cadastrado_em}} </span>        
+
+                            {% endif %}
 
                         </div>
                         <div class="col-6" >
                             <div class="card-text mt-4" style="vertical-align: middle;text-align: justify;">
                             <p>
                                 {% if replica.dieta %}
-                                Dieta: {{replica.dieta }}
+                                <strong>Dieta: </strong> {{replica.dieta }}
                                 {% endif %}
                             </p>
                             <p>
                                 {% if replica.suplemento %}
-                                Suplemento: {{replica.suplemento }}
+                                <strong>Suplemento:</strong>  {{replica.suplemento }}
                                 {% endif %}
                             </p>
                             <p>
                                 {% if replica.treino %}
-                                Treino: {{replica.treino}}
+                                <strong>Treino:</strong>  {{replica.treino}}
                                 {% endif %}
                             </p>
                             <p>
                                 {% if replica.aerobico %}
-                                Aeróbico: {{replica.aerobico}}
+                                <strong>Aeróbico:</strong>  {{replica.aerobico}}
                                 {% endif %}
                             </p>
                             <p>
                                 {% if replica.demais_assuntos %}
-                                Demais assuntos: {{replica.demais_assuntos}}</h5>
+                                <strong>Demais </strong> assuntos: {{replica.demais_assuntos}}</h5>
                                 {% endif %}
                             </p>
 

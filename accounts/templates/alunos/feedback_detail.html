@@ -42,6 +42,8 @@
     <h6>{{feedback.cadastrado_em}} </h6><hr>
     <div class="row">
         <div class="col">
+            <h5>Peso Atual:    {{feedback.peso_atual}} kg</h5>
+
             <h5>Dieta: {{feedback.get_dieta_display}}</h5>
             <p>Dificuldades: {{feedback.dificuldade_dieta}}</p>
         
@@ -54,12 +56,19 @@
             <h5>Aeróbico: {{feedback.get_aerobico_display}}</h5>
             <p>Dificuldades: {{feedback.dificuldade_aerobico}}</p>
         
-            <h5>O que melhorou: {{feedback.melhorou}}</h5>
-            <h5>O que poderia melhorar: {{feedback.pode_melhorar}}</h5>
+            <h5>O que melhorou:  </h5>
+            <p>{{feedback.melhorou}}</p>
+            <h5>O que poderia melhorar:</h5>
+            <p>{{feedback.pode_melhorar}}</p>
+            <h5>Comprometimento: {{feedback.comprometimento}}</h5>
+
+            <h5>Avaliação Coach: {{feedback.avalia_coach}}</h5>
+        
+            <h5>Sugestões: </h5>
+            <p>{{feedback.sugestoes}}</p>
         </div>
     
         <div class="col">
-            <h5>Peso Atual:    {{feedback.peso_atual}} kg</h5>
             <h5>Foto Frente:</h5>
             {% if feedback.foto_frente %}
             <img src="{{feedback.foto_frente.url}}" alt="">
@@ -77,11 +86,7 @@
             <p><a href="{{feedback.video.url}}">{{feedback.video}} </a></p>
             {% endif %}
 
-            <h5>Comprometimento: {{feedback.comprometimento}}</h5>
 
-            <h5>Avaliação Coach: {{feedback.avalia_coach}}</h5>
-        
-            <h5>Sugestões: {{feedback.sugestoes}}</h5>
         </div>
         
 
@@ -108,11 +113,13 @@
                 </tbody>
             </table>
     </div>
+    {% elif request.user.coach and not retorno %}
+    <p style="text-align: center;"> <a href="{% url 'novo_retorno' feedback.id %}"> <button  class="btn-info" >Novo Retorno</button> </a>  </p>
+    <p style="text-align: center;">Ainda sem Retorno para esse feedback.</p>
+
     {% else %}
     <p style="text-align: center;">Ainda sem Retorno para esse feedback.</p>
-    {% if request.user.coach %}
-    <button style="text-align: center;" class="btn-info" ><a href="{% url 'novo_retorno' feedback.id %}">Novo Retorno</a> </button>
-    {% endif %}
+
     {% endif %}
 </div>
 

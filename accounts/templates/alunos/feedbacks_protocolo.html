@@ -36,7 +36,7 @@
                     </table>
                 </div>
             <br><hr><br>
-            <h3>Feedbacks deste Protocolo {% if user.aluno %}<a href="{% url 'novo_feedbackV1' protocolo.id %}"><button class="btn-danger btn-sm mb-3">Novo Feedback</button></a>{% endif %} </h3>
+            <h3>Feedbacks deste Protocolo</h3>
             {% if feedbacks %}
             <div  style=" max-height: 1000px; overflow-x:auto;overflow-y:auto;">
                 <table class="table table-striped table-bordered">
@@ -58,7 +58,7 @@
                             {% for feedback in feedbacks %}
                                 <tr>
                                     <td><a href="{% url 'feedback_detail' feedback.id %}"><button class="btn-info">{{feedback.cadastrado_em|date:"d/m/Y"}}</button></a> </td>
-                                    <td>{{ feedback.aluno.nome }}{{feedback.aluno.sobrenome}} </td>
+                                    <td>{{ feedback.aluno.nome }} {{feedback.aluno.sobrenome}} </td>
                                     <td>{{ feedback.peso_atual }}</td>
                                     <td>{{ feedback.get_dieta_display }}</td>
                                     <td>{{ feedback.get_suplemento_display }}</td>
@@ -81,7 +81,8 @@
                     </table>
                 </div>
             {% else %}
-            <h5>Sem Feedbacks no momento</h5>
+            <br>
+            <h5 style="text-align: center;">Sem Feedbacks no momento</h5>
             {% endif %}
         </div>
     </div>

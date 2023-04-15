@@ -10,6 +10,7 @@
             <thead style="position: sticky;top: 0;background-color: #fff; z-index: 1;">
                 <tr>
                     <th>Retorno</th>
+                    <th>Aluno</th>
                     <th>Protocolo</th>
                     <th>Carbohidrato</th>
                     <th>Proteína</th>
@@ -30,6 +31,7 @@
                 {% if retorno.num_replicas == 1 %}
                     <tr>
                         <td><a href="{% url 'retorno_detail' retorno.id %}"><button class="btn-info">{{retorno.cadastrado_em|date:"d/m/Y"}}</button></a></td>
+                        <td> <a href="{% url 'perfil_aluno' retorno.protocolo.aluno.id %} ">{{ retorno.protocolo.aluno.nome }} {{ retorno.protocolo.aluno.sobrenome }}</a> </td>
                         <td style="text-align: center;"><a href="{% url 'feedbacks_protocolo' retorno.protocolo.id %}">{{retorno.protocolo.cadastrado_em|date:"d/m/Y"}}</a></td>
                         <td>{{ retorno.protocolo.carbo }}</td>
                         <td>{{ retorno.protocolo.prot }}</td>
