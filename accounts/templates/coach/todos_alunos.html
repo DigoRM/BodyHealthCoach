@@ -27,7 +27,7 @@
                                     <td>{{ ativo.celular }}</td>
                                     <td><button class="btn-warning"><a href="{% url 'gerenciar_aluno' ativo.pk %}">Gerenciar</a></button></td>
                                     <td>{{ativo.get_plano_display}} </td>
-                                    <td>{{ ativo.vencimento_plano|date:'d/m/Y' }}</td>
+                                    <td>{% if today > ativo.vencimento_plano %} PLANO VENCIDO {% else %} {{ ativo.vencimento_plano|date:"d/m/Y" }} {% endif %} </td>
                                     <td style="vertical-align:middle">
                                         {% if ativo.pago %}
                                             <form method="post" action="{% url 'desmarcar_pago' ativo.pk %}">
@@ -82,7 +82,7 @@
                                     <td>ALUNO NOVO</td>
                                     {% endif %}
                                     <td style="vertical-align:middle">{{inativo.plano}} </td>                                    
-                                    <td>{{ inativo.vencimento_plano|date:"d/m/Y" }}</td>
+                                    <td>{% if today > inativo.vencimento_plano %} PLANO VENCIDO {% else %} {{ inativo.vencimento_plano|date:"d/m/Y" }} {% endif %} </td>
                                 </tr>
                             {% endfor %}
 

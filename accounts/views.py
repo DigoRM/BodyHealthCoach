@@ -22,6 +22,8 @@ from django.contrib.auth import authenticate, login, logout
 from accounts.forms import CreateUserForm
 from .models import Aluno, Coach, Protocolo, Feedback, Retorno, Replica
 from .forms import PerfilAluno, GerenciarAluno, NovoFeedback, NovoProtocolo, NovoRetorno, PerfilCoach, NovaReplica
+from django.core.mail import send_mail
+from django.conf import settings
 
 # Create Aluno or Coach Model based on Users Attribute:
 def create_user_and_associated_object(username, password, is_staff, **kwargs):
@@ -291,23 +293,19 @@ def dashboard_aluno(request):
     }
     return render(request, 'alunos/dashboard.html', context)
 
-@login_required(login_url='login')
-def myAccount(request):
-    user = request.user
-    if user.is_authenticated:
-        redirectUrl = detectUser(user)
-        return redirect(redirectUrl)
-    else:
-        return redirect('login') # or whatever login url you have set up
+
 
 @staff_required
 def todos_alunos(request):
-    alunos_ativos = Aluno.objects.filter(pago=True).order_by('cadastrado_em')
-    alunos_inativos = Aluno.objects.filter(pago=False).order_by('cadastrado_em')
+    alunos_ativos = Aluno.objects.filter(pago=True).order_by('vencimento_plano')
+    alunos_inativos = Aluno.objects.filter(pago=False).order_by('vencimento_plano')
+    today = date.today()
+    
     
     context = {
         'alunos_ativos':alunos_ativos,
         'alunos_inativos':alunos_inativos,
+        'today':today,
     }
 
     return render(request, 'coach/todos_alunos.html', context)
@@ -503,6 +501,13 @@ def novo_feedbackV1(request, pk):
             feedback.save()
             aluno.peso_atual = feedback.peso_atual
             aluno.save()
+
+            subject = 'Novo Feedback Recebido'
+            message = f'Olá {feedback.coach.nome},\n\nUm feedback foi enviado para você! https://sennateam.up.railway.app/feedbacks_pendentes/'
+            from_email = 'rmarcolino.consultoria@gmail.com'
+            recipient_list = [feedback.coach.email]
+            send_mail(subject, message, from_email, recipient_list)
+            
             messages.success(request, 'Feedback Enviado!')
             return redirect('meus_feedbacks')
         else:
@@ -661,7 +666,6 @@ def gerenciar_aluno(request, pk=None):
 
 # Protocolo
 @staff_required
-@login_required(login_url='login')
 def novo_protocolo(request, pk):
     aluno = get_object_or_404(Aluno, pk=pk)
     user = request.user    
@@ -674,6 +678,13 @@ def novo_protocolo(request, pk):
             protocolo.aluno = aluno
             protocolo.kcal = (protocolo.prot*4)+(protocolo.carbo*4)+(protocolo.fat*9)
             protocolo.save()
+            subject = 'Novo Protocolo Recebido'
+            message = f'Olá {aluno.nome},\n\nUm protocolo foi enviado para você! https://sennateam.up.railway.app/'
+            from_email = 'rmarcolino.consultoria@gmail.com'
+            recipient_list = [aluno.email]
+            send_mail(subject, message, from_email, recipient_list)
+
+
             messages.success(request, 'Protocolo criado!')
             return redirect('meus_protocolos')
     else:
@@ -737,6 +748,12 @@ def novo_retorno(request, pk):
             feedback.atendido = True
             feedback.retorno = retorno
             feedback.save()
+
+            subject = 'Novo Retorno Recebido'
+            message = f'Olá {retorno.aluno.nome},\n\nUm retorno foi enviado para você! https://sennateam.up.railway.app/'
+            from_email = 'rmarcolino.consultoria@gmail.com'
+            recipient_list = [retorno.aluno.email]
+            send_mail(subject, message, from_email, recipient_list)
 
             messages.success(request, 'Retorno finalizado!')
             return redirect('feedbacks_pendentes')
@@ -805,6 +822,12 @@ def retorno_detail(request, pk=None):
             retorno.replica = replica
             retorno.save()
 
+            subject = 'Nova Réplica Recebida'
+            message = f'Olá {replica.author.username},\n\nUma réplica foi enviada para você! https://sennateam.up.railway.app/'
+            from_email = 'rmarcolino.consultoria@gmail.com'
+            recipient_list = [replica.author.email]
+            send_mail(subject, message, from_email, recipient_list)
+
             messages.success(request, 'Réplica enviada!')
             redirect_url = request.META.get('HTTP_REFERER', 'my_tasks')
             return redirect(redirect_url)
@@ -831,6 +854,13 @@ def nova_replica(request, pk=None):
             replica.save()
             retorno.replica = replica
             retorno.save()
+
+            subject = 'Nova Réplica Recebida'
+            message = f'Olá {replica.author.username},\n\nUma réplica foi enviada para você! https://sennateam.up.railway.app/'
+            from_email = 'rmarcolino.consultoria@gmail.com'
+            recipient_list = [replica.author.email]
+            send_mail(subject, message, from_email, recipient_list)
+
             messages.success(request, 'Enviado!')
             return redirect('feedbacks_pendentes')
         else:
