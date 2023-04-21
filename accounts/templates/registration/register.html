@@ -41,7 +41,7 @@
 
     .login_btn {
         width: 100%;
-        background: #33ccff ;
+        background: #ff3333 ;
         color: white ;
     }
     .login_btn:focus {
@@ -76,14 +76,14 @@
         <div class="col-md-4">
             <div class="card bg-dark text-white">
                 <div class="card-header">
-                    <h4 class="text-center mb-0">REGISTER ACCOUNT</h4>
+                    <h4 class="text-center mb-0">REGISTRAR CONTA</h4>
                 </div>
                 <div class="card-body " style="display: flex;justify-content: center;align-items: center; text-align: center;">
                     <form method="POST" action="{% url 'register'%}">
                         {% csrf_token %}
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text bg-primary text-white">
+                            <span class="input-group-text bg-danger text-white">
                                 <i class="fas fa-user"></i>
                             </span>
                         </div>
@@ -91,7 +91,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text bg-primary text-white">
+                            <span class="input-group-text bg-danger text-white">
                                 <i class="fas fa-envelope-square"></i>
                             </span>
                         </div>
@@ -99,7 +99,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text bg-primary text-white">
+                            <span class="input-group-text bg-danger text-white">
                                 <i class="fas fa-key"></i>
                             </span>
                         </div>
@@ -107,7 +107,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text bg-primary text-white">
+                            <span class="input-group-text bg-danger text-white">
                                 <i class="fas fa-key"></i>
                             </span>
                         </div>
@@ -115,7 +115,7 @@
                     </div>
 
                     <div class="d-grid gap-2 mt-4">
-                        <button class="btn btn-primary" type="submit" value="Register Account">
+                        <button class="btn btn-danger" type="submit" value="Register Account">
                             <strong>OK</strong>
                         </button>
                     </div>

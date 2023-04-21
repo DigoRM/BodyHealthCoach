@@ -117,7 +117,7 @@
             {% else %}
                 <ul class="navbar-nav">
                     <li>
-                        <a class="nav-link" href="{% url 'register' %}"><div class="tag is-warning">Register</div> </a>
+                        <a class="nav-link" href="{% url 'register' %}"><div class="tag is-warning">Registrar</div> </a>
                     </li>
                     <li>
                       <li>
@@ -149,11 +149,16 @@
                     <div class="copyright-inner">
                         <div class="copy-right">
                             <p>© 2023 SennaTeam. All Rights Reserved. Developed By Rodrigo Rodrigues Marcolino</p>
+                            <a href="https://www.linkedin.com/in/rodrigo-rodrigues-marcolino-aa1a3617a/">
+                              <img style="height: 30px; width: 30px;" src="{{ MEDIA_URL }}sennalogo.png" >
+                          </a>
                             <p style="text-align: center;"><a href="https://www.instagram.com/digo.marcolino/">
-                              <img style="height: 40px; width: 40px;" src="media/intalogo.jpg" >
+                              <img style="height: 30px; width: 30px;" src="{{ MEDIA_URL }}intalogo.jpg" >
                               <a href="https://www.linkedin.com/in/rodrigo-rodrigues-marcolino-aa1a3617a/">
-                                <img style="height: 40px; width: 40px;" src="media/logo-linkedin.png" >
-                            </a></p>
+                                <img style="height: 30px; width: 30px;" src="{{ MEDIA_URL }}logo-linkedin.png" >
+                            </a>
+
+                          </p>
                         </div>
                     </div>
                 </div>
