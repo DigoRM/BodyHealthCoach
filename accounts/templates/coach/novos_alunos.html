@@ -31,8 +31,16 @@
                                     <td>{{ aluno.peso }}</td>
                                     <td>{{ aluno.objetivo_curto }}</td>
                                     <td>{{ aluno.objetivo_longo }}</td>
-                                    <td>{{aluno.avaliacao_fisica}} </td>
-                                    <td>{{aluno.exame_sangue}} </td>                                    
+                                    {% if aluno.avaliacao_fisica %}
+                                    <td style="text-align: center;"><a href="{{ aluno.avaliacao_fisica.url }}"><i class="fas fa-file-pdf"></i></a></td>
+                                    {% else %}
+                                    <td>Sem arquivo</td>
+                                    {% endif %}                                    
+                                    {% if aluno.exame_sangue %}
+                                    <td style="text-align: center;"><a href="{{ aluno.exame_sangue.url }}"><i class="fas fa-file-pdf"></i></a></td>
+                                    {% else %}
+                                    <td>Sem arquivo</td>
+                                    {% endif %}    
                                     <td><button class="btn-warning"><a href="{% url 'gerenciar_aluno' aluno.pk %}">Gerenciar</a></button></td>
 
                                 </tr>

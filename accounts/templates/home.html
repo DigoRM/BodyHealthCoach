@@ -95,6 +95,8 @@
                     <p class="card-text">Altura: {{aluno.altura}} </p>
                     <p class="card-text">Peso: {{aluno.peso}} > {{aluno.peso_atual}} </p>
                     <p class="card-text">Data de nascimento: {{aluno.data_nascimento|date:'d/m/Y'}} </p>
+                    <p class="card-footer"><a href="{% url 'meus_exames' %}"><button class="btn-warning"><i class="fas fa-syringe is-danger"></i></button></a> | <a href="{% url 'avaliacoes_fisicas' %}"><button class="btn-warning"><i class="fas fa-dumbbell"></i></button></a> </p>
+
 
                 </div>
                 <div class="col">

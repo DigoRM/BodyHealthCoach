@@ -25,12 +25,20 @@ urlpatterns = [
     path('alunos_expirando/', views.alunos_expirando, name='alunos_expirando'),
     path('planos_expirados/', views.planos_expirados, name='planos_expirados'),
     path('novos_alunos/', views.novos_alunos, name='novos_alunos'),
-    path('aluno/<int:pk>/perfil', views.perfil_aluno, name='perfil_aluno'),
+    path('aluno/<int:pk>/perfil/', views.perfil_aluno, name='perfil_aluno'),
+
+    path('aluno/<int:pk>/exames/', views.exames_aluno, name='exames_aluno'),
+    path('meus_exames/', views.meus_exames, name='meus_exames'),
+    path('aluno/<int:pk>/avaliacoes_fisicas/', views.avaliacoes_fisicas_aluno, name='avaliacoes_fisicas_aluno'),
+    path('avaliacoes_fisicas/', views.avaliacoes_fisicas, name='avaliacoes_fisicas'),
 
     path('aluno/<int:pk>/aluno_pagou/', views.marcar_pago, name='marcar_pago'),
     path('aluno/<int:pk>/aluno_nao_pagou/', views.desmarcar_pago, name='desmarcar_pago'),
-    path('novo/<int:pk>/feedback/', views.novo_feedbackV1, name='novo_feedbackV1'),
+    path('alunos/desmarcar_pago_em_massa/', views.desmarcar_pago_em_massa, name='desmarcar_pago_em_massa'),
+    path('avisar_alunos_novo_feedback/', views.avisar_alunos_novo_feedback, name='avisar_alunos_novo_feedback'),
 
+
+    path('novo/<int:pk>/feedback/', views.novo_feedbackV1, name='novo_feedbackV1'),
     path('meus_feedbacks/', views.meus_feedbacks, name='meus_feedbacks'),
     path('feedbacks_pendentes/', views.feedbacks_pendentes, name='feedbacks_pendentes'),
     path('feedbacks/<int:pk>/protocolo/', views.feedbacks_protocolo, name='feedbacks_protocolo'),

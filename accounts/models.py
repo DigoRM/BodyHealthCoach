@@ -62,8 +62,8 @@ class Aluno(models.Model):
     foto_frente = models.ImageField(upload_to='alunos/foto_frente',blank=True, null=True)
     foto_lado = models.ImageField(upload_to='alunos/foto_lado',blank=True, null=True)
     foto_verso = models.ImageField(upload_to='alunos/foto_verso',blank=True, null=True)
-    avaliacao_fisica = models.ImageField(upload_to='alunos/avaliacao_fisica',blank=True, null=True) 
-    exame_sangue = models.ImageField(upload_to='alunos/exame_sangue',blank=True, null=True)
+    avaliacao_fisica = models.FileField(upload_to='alunos/avaliacao_fisica',blank=True, null=True) 
+    exame_sangue = models.FileField(upload_to='alunos/exame_sangue',blank=True, null=True)
     pago = models.BooleanField(default=False)
     plano = models.PositiveSmallIntegerField(choices=CHOICE, null=True, blank=True)
     mensalidade = models.DecimalField(max_digits=5, decimal_places=2,blank=True, null=True)
@@ -125,6 +125,9 @@ class Feedback(models.Model):
     foto_lado = models.ImageField(upload_to='alunos/foto_lado', blank=True, null=True)
     foto_verso = models.ImageField(upload_to='alunos/foto_verso', blank=True, null=True)
     video = models.CharField(max_length=255, blank=True, null=True)
+    exame_sangue = models.FileField(upload_to='alunos/exame_sangue',blank=True, null=True)
+    avaliacao_fisica = models.FileField(upload_to='alunos/avaliacao_fisica',blank=True, null=True) 
+
     
     comprometimento = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(10)]

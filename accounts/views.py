@@ -321,6 +321,69 @@ def marcar_pago(request, pk):
 
     return redirect(redirect_url)
 
+@staff_required
+def desmarcar_pago_em_massa(request):
+    coach = request.user.coach
+    redirect_url = request.META.get('HTTP_REFERER', 'home')
+    today = date.today()
+    expired_planos = Aluno.objects.filter(pago=True, vencimento_plano__lte=today, coach=coach)
+    count = expired_planos.count()
+    for aluno in expired_planos:
+        aluno.pago = False
+        aluno.save()
+    messages.warning(request, f'{count} alunos marcados como não pagos.')
+
+
+    return redirect(redirect_url)
+
+from django.utils import timezone
+from django.core.mail import send_mail
+from datetime import timedelta
+
+@staff_required
+def avisar_alunos_novo_feedback(request):
+    coach = request.user.coach
+    redirect_url = request.META.get('HTTP_REFERER', 'home')
+    today = timezone.now().date()
+
+    # Get all the paid students
+    alunos = Aluno.objects.filter(pago=True, coach=coach)
+
+    count = 0  # Initialize the count variable to 0
+
+    # Loop through the students
+    for aluno in alunos:
+        # Get the last protocolo of the student
+        last_protocolo = Protocolo.objects.filter(aluno=aluno).order_by('-cadastrado_em').first()
+        # Get the last feedback of the student
+        last_feedback = Feedback.objects.filter(aluno=aluno).order_by('-cadastrado_em').first()
+        
+        # If there is no feedback for this student, send an email if it has been 15 days since the last protocolo
+        if not last_feedback and last_protocolo and last_protocolo.cadastrado_em.date() <= today - timedelta(days=15):
+            subject = 'Lembrete para enviar feedback'
+            message = f'Olá {aluno.nome},\n\nVocê ainda não enviou o feedback referente ao protocolo {last_protocolo.cadastrado_em}. Por favor, envie o feedback o mais breve possível.\n\nObrigado!'
+            from_email = 'your_email@example.com'
+            recipient_list = [aluno.email]
+            send_mail(subject, message, from_email, recipient_list)
+            count += 1  # Increment the count variable
+        
+        # If there is a feedback for this student, send an email if it has been 15 days since the last feedback
+        elif last_feedback and last_feedback.cadastrado_em.date() <= today - timedelta(days=15):
+            subject = 'Lembrete para enviar feedback'
+            message = f'Olá {aluno.nome},\n\nVocê ainda não enviou o feedback referente ao protocolo {last_feedback.protocolo.cadastrado_em}. Por favor, envie o feedback o mais breve possível.\n\nObrigado!'
+            from_email = 'your_email@example.com'
+            recipient_list = [aluno.email]
+            send_mail(subject, message, from_email, recipient_list)
+            count += 1  # Increment the count variable
+
+    messages.warning(request, f'{count} emails de lembrete enviados para os alunos.')
+
+    return redirect(redirect_url)
+
+
+
+
+
 def desmarcar_pago(request, pk):
     redirect_url = request.META.get('HTTP_REFERER', 'home')
     aluno = get_object_or_404(Aluno, pk=pk)
@@ -470,9 +533,59 @@ def perfil_aluno(request, pk):
         'protocolos':protocolos,
         'ultimo_feedback':ultimo_feedback,
         'ultimo_feedback_aluno':ultimo_feedback_aluno,
+        'feedbacks':feedbacks,
         }
 
     return render(request, 'coach/perfil_aluno.html', context)
+
+@staff_required
+def exames_aluno(request, pk):
+    aluno = get_object_or_404(Aluno, pk=pk)
+    feedbacks = Feedback.objects.filter(aluno=aluno, exame_sangue__isnull=False).order_by('-cadastrado_em')
+
+    context = {
+        'aluno':aluno,
+        'feedbacks':feedbacks,
+        }
+
+    return render(request, 'coach/exames_aluno.html', context)
+
+@login_required
+def meus_exames(request):
+    aluno = request.user.aluno
+    feedbacks = Feedback.objects.filter(aluno=aluno, exame_sangue__isnull=False).order_by('-cadastrado_em')
+
+    context = {
+        'aluno':aluno,
+        'feedbacks':feedbacks,
+        }
+
+    return render(request, 'alunos/meus_exames.html', context)
+
+@staff_required
+def avaliacoes_fisicas_aluno(request, pk):
+    aluno = get_object_or_404(Aluno, pk=pk)
+    feedbacks = Feedback.objects.filter(aluno=aluno, avaliacao_fisica__isnull=False).order_by('-cadastrado_em')
+
+    context = {
+        'aluno':aluno,
+        'feedbacks':feedbacks,
+        }
+
+    return render(request, 'coach/avaliacoes_fisicas_aluno.html', context)
+
+@login_required
+def avaliacoes_fisicas(request):
+    aluno = request.user.aluno
+    feedbacks = Feedback.objects.filter(aluno=aluno, avaliacao_fisica__isnull=False).order_by('-cadastrado_em')
+
+    context = {
+        'aluno':aluno,
+        'feedbacks':feedbacks,
+        }
+
+    return render(request, 'alunos/avaliacoes_fisicas.html', context)
+
 
 
 @login_required(login_url='login')
