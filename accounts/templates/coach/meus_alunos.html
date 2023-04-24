@@ -28,7 +28,7 @@
                                     <td>{{ ativo.email }}</td>
                                     <td>{{ ativo.celular }}</td>
                                     <td><button class="btn-warning"><a href="{% url 'gerenciar_aluno' ativo.pk %}">Gerenciar</a></button></td>
-                                    <td style="vertical-align:middle">{{ativo.plano}} </td>                                    
+                                    <td style="vertical-align:middle">{{ativo.get_plano_display}} </td>                                    
                                     <td>R$ {{ativo.mensalidade}} </td>
                                     <td>{{ ativo.vencimento_plano }}</td>
                                     <td><a href="{% url 'novo_protocolo' pk=ativo.pk %}"><button class="btn-success">Criar</button></a>
