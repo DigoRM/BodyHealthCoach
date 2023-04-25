@@ -121,6 +121,7 @@
           <div class="ml-auto">
             {% if request.user.is_authenticated %}
                 <ul class="navbar-nav">
+                  
                     <li class="navbar-item">
                         <a class="nav-link">Bem vindo, {{request.user}}!</a>
                     </li>
@@ -171,6 +172,10 @@
                                 <img style="height: 30px; width: 30px;" src="{{ MEDIA_URL }}logo-linkedin.png" >
                             </a>
 
+                          </p>
+                          <p>
+                            <a href="intent:https://sennateam.up.railway.app/#Intent;scheme=http;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;package=com.android.chrome;end">Adicionar à tela inicial Android</a>
+                            <a href="javascript:if(confirm('Para adicionar esta página à tela inicial: toque em "Compartilhar", depois em "Adicionar à Tela Inicial".'))window.location='https://sennateam.up.railway.app/';void 0;">Adicionar à tela inicial Apple</a>
                           </p>
                         </div>
                     </div>
