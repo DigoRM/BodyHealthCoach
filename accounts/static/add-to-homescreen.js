@@ -30,9 +30,7 @@ button.addEventListener("click", () => {
                 element.setAttribute("href", icon);
                 element.setAttribute("title", title);
                 document.head.appendChild(element);
-                window.setTimeout(() => {
-                    alert("O aplicativo foi adicionado na sua tela inicial com sucesso.");
-                }, 500);
+                alert("O aplicativo foi adicionado na sua tela inicial com sucesso.");
             } else if (window.navigator.userAgent.match(/(Android)/i)) {
                 // Add the shortcut to the home screen on Android
                 const element = document.createElement("link");
@@ -40,9 +38,7 @@ button.addEventListener("click", () => {
                 element.setAttribute("type", "image/png");
                 element.setAttribute("href", icon);
                 document.head.appendChild(element);
-                window.setTimeout(() => {
-                    alert("O aplicativo foi adicionado na sua tela inicial com sucesso.");
-                }, 500);
+                alert("O aplicativo foi adicionado na sua tela inicial com sucesso.");
             } else {
                 // Prompt the user to manually add the shortcut to their home screen
                 alert(message);
@@ -50,7 +46,7 @@ button.addEventListener("click", () => {
         });
         document.body.appendChild(downloadButton);
         downloadButton.click();
-        document.body.removeChild(downloadButton);
+        // Don't remove the button from the document here
     }
 });
 
