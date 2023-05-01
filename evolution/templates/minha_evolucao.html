@@ -1,0 +1,30 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Minha Evolução</h1>
+
+    <div id="chart"></div>
+    <script>
+        var graphJSON = {{ graphJSON|safe }};
+        Plotly.plot('chart', graphJSON);
+    </script>
+    <br><hr>
+    <div id="chart2"></div>
+    <script>
+        var graphJSON2 = {{ graphJSON2|safe }};
+        Plotly.plot('chart2', graphJSON2);
+    </script>
+    <br><hr>
+    <div id="chart3"></div>
+    <script>
+        var graphJSON3 = {{ graphJSON3|safe }};
+        Plotly.plot('chart3', graphJSON3);
+    </script>
+
+</div>
+
+
+
+{% endblock %}

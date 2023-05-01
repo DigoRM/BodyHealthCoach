@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="e9">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +29,7 @@
 <!-- iOS -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="SennaTeam">
-<link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/sennalogo.png' %}">
+<link rel="apple-touch-icon" sizes="190x190" href="{% static 'images/sennalogo.png' %}">
 <!-- Android -->
 <link rel="icon" type="image/png" sizes="192x192" href="{% static 'images/sennalogo.png' %}">
 <meta name="application-name" content="SennaTeam">
@@ -99,6 +99,19 @@
 
               </li>
 
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Desempenho
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  {% if request.user.coach %}
+                  <a class="dropdown-item" href="{% url 'evolucao_coach' %}">Histórico</a>
+                  {% elif request.user.aluno %}
+                  <a class="dropdown-item" href="{% url 'minha_evolucao' %}">Histórico</a>
+
+                  {% endif %}
+
+              </li>
 
             {% if request.user.coach %}
           <li class="nav-item dropdown">
