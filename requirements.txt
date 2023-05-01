@@ -12,3 +12,4 @@ typing-extensions==4.1.1
 whitenoise
 psycopg2
 Pillow
+plotly
