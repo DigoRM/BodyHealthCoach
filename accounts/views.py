@@ -310,7 +310,7 @@ def todos_alunos(request):
 
     return render(request, 'coach/todos_alunos.html', context)
 
-
+@staff_required
 def marcar_pago(request, pk):
     redirect_url = request.META.get('HTTP_REFERER', 'home')
     aluno = get_object_or_404(Aluno, pk=pk)
@@ -379,9 +379,6 @@ def avisar_alunos_novo_feedback(request):
     messages.warning(request, f'{count} emails de lembrete enviados para os alunos.')
 
     return redirect(redirect_url)
-
-
-
 
 
 def desmarcar_pago(request, pk):
@@ -467,12 +464,12 @@ def edit_profile(request, pk=None):
 
     if request.method == 'POST':
         if form and form.is_valid() or form2 and form2.is_valid():
-            # Loop through image fields and resize uploaded images
-            for field in image_fields:
-                if request.FILES.get(field):
-                    image = request.FILES[field]
-                    image_file = resize_image(image)
-                    setattr(instance, field, image_file)
+            ## Loop through image fields and resize uploaded images
+            #for field in image_fields:
+            #    if request.FILES.get(field):
+            #        image = request.FILES[field]
+            #        image_file = resize_image(image)
+            #        setattr(instance, field, image_file)
             
             # Save the form
             if form is not None:
@@ -603,13 +600,13 @@ def novo_feedbackV1(request, pk):
             feedback.coach = aluno.coach
             feedback.protocolo = protocolo
 
-            # Resize images
-            if feedback.foto_frente:
-                feedback.foto_frente = resize_image(feedback.foto_frente)
-            if feedback.foto_lado:
-                feedback.foto_lado = resize_image(feedback.foto_lado)
-            if feedback.foto_verso:
-                feedback.foto_verso = resize_image(feedback.foto_verso)
+            ## Resize images
+            #if feedback.foto_frente:
+            #    feedback.foto_frente = resize_image(feedback.foto_frente)
+            #if feedback.foto_lado:
+            #    feedback.foto_lado = resize_image(feedback.foto_lado)
+            #if feedback.foto_verso:
+            #    feedback.foto_verso = resize_image(feedback.foto_verso)
 
             feedback.save()
             aluno.peso_atual = feedback.peso_atual

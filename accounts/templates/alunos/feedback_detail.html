@@ -1,6 +1,20 @@
 {% extends 'base.html' %}
 {% block title %} Feedback {% endblock %}
 
+<style>
+    .custom-image {
+        width: 600px; /* Adjust the width as per your requirement */
+        height: 600px; /* Adjust the height as per your requirement */
+        object-fit: cover;
+    }
+
+    @media (max-width: 576px) {
+        .custom-image {
+            width: 100%; /* Full width on mobile devices */
+            height: auto;
+        }
+    }
+</style>
 
 {% block content %}
 <div class="hero">
@@ -71,15 +85,15 @@
         <div class="col">
             <h5>Foto Frente:</h5>
             {% if feedback.foto_frente %}
-            <img src="{{feedback.foto_frente.url}}" alt="">
+            <img class="custom-image" src="{{feedback.foto_frente.url}}" alt="">
             {% endif %}
             <h5>Foto Lado:</h5>
             {% if feedback.foto_lado %}
-            <img src="{{feedback.foto_lado.url}}" alt="">
+            <img class="custom-image" src="{{feedback.foto_lado.url}}" alt="">
             {% endif %}
             <h5>Foto Verso:</h5>
             {% if feedback.foto_verso %}
-            <img src="{{feedback.foto_verso.url}}" alt="">
+            <img class="custom-image" src="{{feedback.foto_verso.url}}" alt="">
             {% endif %}
             {% if feedback.video %}
             <h5>Vídeo</h5>
