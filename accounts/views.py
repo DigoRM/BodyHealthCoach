@@ -600,13 +600,13 @@ def novo_feedbackV1(request, pk):
             feedback.coach = aluno.coach
             feedback.protocolo = protocolo
 
-            ## Resize images
-            #if feedback.foto_frente:
-            #    feedback.foto_frente = resize_image(feedback.foto_frente)
-            #if feedback.foto_lado:
-            #    feedback.foto_lado = resize_image(feedback.foto_lado)
-            #if feedback.foto_verso:
-            #    feedback.foto_verso = resize_image(feedback.foto_verso)
+            # Resize images
+            if feedback.foto_frente:
+                feedback.foto_frente = resize_image(feedback.foto_frente)
+            if feedback.foto_lado:
+                feedback.foto_lado = resize_image(feedback.foto_lado)
+            if feedback.foto_verso:
+                feedback.foto_verso = resize_image(feedback.foto_verso)
 
             feedback.save()
             aluno.peso_atual = feedback.peso_atual
