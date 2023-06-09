@@ -464,12 +464,12 @@ def edit_profile(request, pk=None):
 
     if request.method == 'POST':
         if form and form.is_valid() or form2 and form2.is_valid():
-            ## Loop through image fields and resize uploaded images
-            #for field in image_fields:
-            #    if request.FILES.get(field):
-            #        image = request.FILES[field]
-            #        image_file = resize_image(image)
-            #        setattr(instance, field, image_file)
+            # Loop through image fields and resize uploaded images
+            for field in image_fields:
+                if request.FILES.get(field):
+                    image = request.FILES[field]
+                    image_file = resize_image(image)
+                    setattr(instance, field, image_file)
             
             # Save the form
             if form is not None:
