@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'accounts',
     'evolution',
     'storages',
-    'background_task',
 ]
 
 MIDDLEWARE = [
