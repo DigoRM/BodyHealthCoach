@@ -1,4 +1,6 @@
 asgiref==3.4.1
+boto3==1.18.61
+botocore==1.21.61
 charset-normalizer==2.0.12
 Django==3.2.18
 gunicorn==20.1.0
@@ -9,8 +11,8 @@ pytz==2022.7.1
 requests==2.27.1
 sqlparse==0.4.3
 typing-extensions==4.1.1
-whitenoise
-psycopg2
-Pillow
-plotly
-django-storages
+whitenoise==5.3.0
+psycopg2==2.9.3
+Pillow==8.4.0
+plotly==5.14.0
+django-storages==1.11.1
