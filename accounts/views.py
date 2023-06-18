@@ -628,34 +628,12 @@ def avaliacoes_fisicas(request):
 
     return render(request, 'alunos/avaliacoes_fisicas.html', context)
 
-from background_task import background
-@background(schedule=2)
-def process_and_send_feedback(feedback_id):
-    feedback = Feedback.objects.get(id=feedback_id)
-    
-    # Resize images
-    if feedback.foto_frente:
-        feedback.foto_frente = resize_and_upload_image(feedback.foto_frente)
-    if feedback.foto_lado:
-        feedback.foto_lado = resize_and_upload_image(feedback.foto_lado)
-    if feedback.foto_verso:
-        feedback.foto_verso = resize_and_upload_image(feedback.foto_verso)
-
-    feedback.save()
-    
-    subject = 'Novo Feedback Recebido'
-    message = f'Olá {feedback.coach.nome},\n\nUm feedback foi enviado para você! https://sennateam.up.railway.app/feedbacks_pendentes/'
-    from_email = 'rmarcolino.consultoria@gmail.com'
-    recipient_list = [feedback.coach.email]
-    send_mail(subject, message, from_email, recipient_list)
-
-
 
 @login_required(login_url='login')
 def novo_feedbackV1(request, pk):
     user = request.user
     aluno = user.aluno
-    protocolo = get_object_or_404(Protocolo, pk=pk)
+    protocolo = get_object_or_404(Protocolo,pk=pk)
 
     if request.method == 'POST':
         form = NovoFeedback(request.POST, request.FILES)
@@ -666,13 +644,24 @@ def novo_feedbackV1(request, pk):
             feedback.coach = aluno.coach
             feedback.protocolo = protocolo
 
+            # Resize images
+            if feedback.foto_frente:
+                feedback.foto_frente = resize_and_upload_image(feedback.foto_frente)
+            if feedback.foto_lado:
+                feedback.foto_lado = resize_and_upload_image(feedback.foto_lado)
+            if feedback.foto_verso:
+                feedback.foto_verso = resize_and_upload_image(feedback.foto_verso)
+
             feedback.save()
             aluno.peso_atual = feedback.peso_atual
             aluno.save()
 
-            # Trigger the background task to process and send the feedback
-            process_and_send_feedback.delay(feedback.id)
-
+            subject = 'Novo Feedback Recebido'
+            message = f'Olá {feedback.coach.nome},\n\nUm feedback foi enviado para você! https://sennateam.up.railway.app/feedbacks_pendentes/'
+            from_email = 'rmarcolino.consultoria@gmail.com'
+            recipient_list = [feedback.coach.email]
+            send_mail(subject, message, from_email, recipient_list)
+            
             messages.success(request, 'Feedback Enviado!')
             return redirect('meus_feedbacks')
         else:
@@ -683,7 +672,7 @@ def novo_feedbackV1(request, pk):
     context = {
         'form': form,
         'aluno': aluno,
-        'protocolo': protocolo,
+        'protocolo':protocolo,
     }
     return render(request, 'alunos/novo_feedback.html', context)
 
