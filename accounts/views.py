@@ -410,21 +410,21 @@ def resize_and_upload_image(image):
     else:
         img = Image.open(image)
 
-    ## Get exif orientation
-    #try:
-    #    for orientation in ExifTags.TAGS.keys():
-    #        if ExifTags.TAGS[orientation] == 'Orientation':
-    #            break
-    #    exif = dict(img._getexif().items())
-    #    if exif[orientation] == 3:
-    #        img = img.rotate(180, expand=True)
-    #    elif exif[orientation] == 6:
-    #        img = img.rotate(270, expand=True)
-    #    elif exif[orientation] == 8:
-    #        img = img.rotate(90, expand=True)
-    #except (AttributeError, KeyError, IndexError):
-    #    # If there is no exif information, do nothing
-    #    pass
+    # Get exif orientation
+    try:
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation] == 'Orientation':
+                break
+        exif = dict(img._getexif().items())
+        if exif[orientation] == 3:
+            img = img.rotate(180, expand=True)
+        elif exif[orientation] == 6:
+            img = img.rotate(270, expand=True)
+        elif exif[orientation] == 8:
+            img = img.rotate(90, expand=True)
+    except (AttributeError, KeyError, IndexError):
+        # If there is no exif information, do nothing
+        pass
 
     buffer = BytesIO()
     img.save(buffer, format='JPEG', quality=90)
