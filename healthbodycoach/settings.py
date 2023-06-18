@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'accounts',
     'evolution',
     'storages',
-    'django-background-task',
+    'background_task',
 ]
 
 MIDDLEWARE = [
