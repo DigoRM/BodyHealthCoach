@@ -17,3 +17,4 @@ Pillow==8.4.0
 plotly==5.14.0
 django-storages==1.11.1
 gevent
+django-background-tasks
