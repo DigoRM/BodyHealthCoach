@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['sennateam.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://127.0.0.1:8000/']
 
 
 
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'evolution',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -135,9 +136,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'accounts', 'static')]
 
 STATICFILES_STORAGE="whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -156,3 +154,32 @@ MESSAGE_TAGS = {
     messages.INFO: '',
     50: 'critical',
 }
+
+
+# settings.py
+
+# Import necessary packages
+from storages.backends.s3boto3 import S3Boto3Storage
+
+# Set the storage backend for static and media files
+DEFAULT_FILE_STORAGE = 'accounts.storage_backends.MediaStorage'
+
+# Configure Amazon S3 settings
+AWS_ACCESS_KEY_ID = 'AKIAVB4O4OUAUY2PFXHT'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'bodyhealthimages'
+AWS_S3_REGION_NAME = 'sa-east-1'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
+AWS_QUERYSTRING_AUTH = False
+
+# Configure the media files location
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/media/'
+MEDIA_ROOT = ''
+
+
+
+# Create a custom storage backend class
+class MediaStorage(S3Boto3Storage):
+    location = 'media/media'
+    default_acl = "public-read"
+    file_overwrite = False

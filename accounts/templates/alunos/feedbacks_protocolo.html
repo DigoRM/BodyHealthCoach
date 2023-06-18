@@ -79,6 +79,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                    <br>
                 </div>
             {% else %}
             <br>
@@ -86,6 +87,8 @@
             {% endif %}
         </div>
     </div>
+    <p><strong>Enviar Feedback: </strong><a href="{% url 'novo_feedbackV1' protocolo.id %}"><button class="btn-danger">Novo Feedback</button></a></p> 
+
 </div>
 
 

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from .storage_backends import MediaStorage
+
 
 
 
@@ -18,9 +20,8 @@ class Coach(models.Model):
     altura = models.DecimalField(max_digits=2, decimal_places=2,blank=True, null=True)
     peso = models.DecimalField(max_digits=3, decimal_places=2,blank=True, null=True)
     conquistas = models.TextField(blank=True, null=True)
-    avatar = models.ImageField(upload_to='coach/foto_perfil',blank=True, null=True)
-    foto_certificado = models.ImageField(upload_to='coach/certificado',blank=True, null=True)
-
+    avatar = models.ImageField(storage=MediaStorage, upload_to='coach/foto_perfil', max_length=333, blank=True, null=True)
+    foto_certificado = models.ImageField(storage=MediaStorage, upload_to='coach/certificado', max_length=333, blank=True, null=True)
 
     def __str__(self):
         return self.email
@@ -58,12 +59,12 @@ class Aluno(models.Model):
     lesao = models.CharField(max_length=255,blank=True, null=True)
     objetivo_curto = models.CharField(max_length=155)
     objetivo_longo = models.CharField(max_length=155)
-    avatar = models.ImageField(upload_to='alunos/avatar',blank=True, null=True)
-    foto_frente = models.ImageField(upload_to='alunos/foto_frente',blank=True, null=True)
-    foto_lado = models.ImageField(upload_to='alunos/foto_lado',blank=True, null=True)
-    foto_verso = models.ImageField(upload_to='alunos/foto_verso',blank=True, null=True)
-    avaliacao_fisica = models.FileField(upload_to='alunos/avaliacao_fisica',blank=True, null=True) 
-    exame_sangue = models.FileField(upload_to='alunos/exame_sangue',blank=True, null=True)
+    avatar = models.ImageField(storage=MediaStorage,upload_to='alunos/avatar',blank=True, null=True, max_length=333)
+    foto_frente = models.ImageField(storage=MediaStorage,upload_to='alunos/foto_frente',blank=True, null=True, max_length=333)
+    foto_lado = models.ImageField(storage=MediaStorage,upload_to='alunos/foto_lado',blank=True, null=True, max_length=333)
+    foto_verso = models.ImageField(storage=MediaStorage,upload_to='alunos/foto_verso',blank=True, null=True, max_length=333)
+    avaliacao_fisica = models.FileField(storage=MediaStorage,upload_to='alunos/avaliacao_fisica',blank=True, null=True, max_length=333) 
+    exame_sangue = models.FileField(storage=MediaStorage,upload_to='alunos/exame_sangue',blank=True, null=True, max_length=333)
     pago = models.BooleanField(default=False)
     plano = models.PositiveSmallIntegerField(choices=CHOICE, null=True, blank=True)
     mensalidade = models.DecimalField(max_digits=5, decimal_places=2,blank=True, null=True)
@@ -78,7 +79,7 @@ class Aluno(models.Model):
 class Protocolo(models.Model):
     aluno = models.ForeignKey(Aluno, related_name='aluno_protocolo', on_delete=models.SET_NULL, null=True)
     coach = models.ForeignKey(Coach, related_name='coach_protocolo', on_delete=models.SET_NULL, null=True)
-    protocolo = models.FileField(upload_to='protocolo', blank=True, null=True)
+    protocolo = models.FileField(storage=MediaStorage,upload_to='protocolo', blank=True, null=True, max_length=333)
     carbo = models.IntegerField(blank=True, null=True)
     prot = models.IntegerField(blank=True, null=True)
     fat = models.IntegerField(blank=True, null=True)
@@ -121,12 +122,12 @@ class Feedback(models.Model):
     melhorou = models.TextField(blank=True, null=True)
     pode_melhorar = models.TextField(blank=True, null=True)
 
-    foto_frente = models.ImageField(upload_to='alunos/foto_frente', blank=True, null=True)
-    foto_lado = models.ImageField(upload_to='alunos/foto_lado', blank=True, null=True)
-    foto_verso = models.ImageField(upload_to='alunos/foto_verso', blank=True, null=True)
+    foto_frente = models.ImageField(storage=MediaStorage,upload_to='alunos/foto_frente', blank=True, null=True, max_length=333)
+    foto_lado = models.ImageField(storage=MediaStorage,upload_to='alunos/foto_lado', blank=True, null=True, max_length=333)
+    foto_verso = models.ImageField(storage=MediaStorage,upload_to='alunos/foto_verso', blank=True, null=True, max_length=333)
     video = models.CharField(max_length=255, blank=True, null=True)
-    exame_sangue = models.FileField(upload_to='alunos/exame_sangue',blank=True, null=True)
-    avaliacao_fisica = models.FileField(upload_to='alunos/avaliacao_fisica',blank=True, null=True) 
+    exame_sangue = models.FileField(storage=MediaStorage,upload_to='alunos/exame_sangue',blank=True, null=True,max_length=333)
+    avaliacao_fisica = models.FileField(storage=MediaStorage,upload_to='alunos/avaliacao_fisica',blank=True, null=True,max_length=333) 
 
     
     comprometimento = models.IntegerField(

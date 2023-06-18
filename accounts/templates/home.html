@@ -27,8 +27,9 @@
                 <div class="col text-center">
                     <div class="card-img-top">
                         {% if user.coach.avatar %}                        
-                        <img style='max-height:300px;max-width: 300px;margin: 0 auto;border-radius: 50%;' src="{{user.coach.avatar.url}}" alt="">
+                        <img style='max-height:300px;max-width: 300px;margin: 0 auto;border-radius: 50%;' src="{{user.coach.avatar}}" alt="">
                         {% endif %}
+  
                     </div><br>
                     <h5 class="card-title">Coach: {{user.coach.nome}} {{user.coach.sobrenome}} </h6>
                     <p class="card-text text-justify ml-4">Altura: {{user.coach.altura}} </p>
@@ -217,8 +218,8 @@
                     <div class="row">
                         <div class="col">
                             {% if aluno.foto_frente %}
-                            <a href="{{aluno.foto_frente.url}}" target="_blank">
-                                <img class="img-fluid custom-image" src="{{aluno.foto_frente.url}}" alt=""> 
+                            <a href="{{aluno.foto_frente}}" target="_blank">
+                                <img class="img-fluid custom-image" src="{{aluno.foto_frente}}" alt=""> 
                             </a>
                             {% else %} 
                             <h6>Aluno precisa atualizar o perfil.</h6>
@@ -226,12 +227,12 @@
                         </div>
                         <div class="col">
                             {% if ultimo_feedback_aluno.foto_frente %}
-                            <a href="{{ultimo_feedback_aluno.foto_frente.url}}" target="_blank">
-                                <img class="img-fluid custom-image" src="{{ultimo_feedback_aluno.foto_frente.url}}" alt=""> 
+                            <a href="{{ultimo_feedback_aluno.foto_frente}}" target="_blank">
+                                <img class="img-fluid custom-image" src="{{ultimo_feedback_aluno.foto_frente}}" alt=""> 
                             </a>
                             {% elif ultimo_feedback.foto_frente %}
-                            <a href="{{ultimo_feedback.foto_frente.url}}" target="_blank">
-                                <img src="{{ultimo_feedback.foto_frente.url}}" class="img-fluid custom-image" alt="">
+                            <a href="{{ultimo_feedback.foto_frente}}" target="_blank">
+                                <img src="{{ultimo_feedback.foto_frente}}" class="img-fluid custom-image" alt="">
                             </a>
                             {% else %}
                             <h6>Aguardando novo Feedback!</h6>
@@ -248,8 +249,8 @@
                     <div class="row">
                         <div class="col">
                             {% if aluno.foto_lado %}
-                            <a href="{{aluno.foto_lado.url}}" target="_blank">
-                                <img class="img-fluid custom-image" src="{{aluno.foto_lado.url}}" alt=""> 
+                            <a href="{{aluno.foto_lado}}" target="_blank">
+                                <img class="img-fluid custom-image" src="{{aluno.foto_lado}}" alt=""> 
                             </a>
                             {% else %}
                             <h6>Aluno precisa atualizar o perfil.</h6>
@@ -257,12 +258,12 @@
                         </div>
                         <div class="col">
                             {% if ultimo_feedback_aluno.foto_lado %}
-                            <a href="{{ultimo_feedback_aluno.foto_lado.url}}" target="_blank">
-                                <img class="img-fluid custom-image" src="{{ultimo_feedback_aluno.foto_lado.url}}" alt=""> 
+                            <a href="{{ultimo_feedback_aluno.foto_lado}}" target="_blank">
+                                <img class="img-fluid custom-image" src="{{ultimo_feedback_aluno.foto_lado}}" alt=""> 
                             </a>
                             {% elif ultimo_feedback.foto_lado %}
-                            <a href="{{ultimo_feedback.foto_lado.url}}" target="_blank">
-                                <img src="{{ultimo_feedback.foto_lado.url}}" class="img-fluid custom-image" alt="">
+                            <a href="{{ultimo_feedback.foto_lado}}" target="_blank">
+                                <img src="{{ultimo_feedback.foto_lado}}" class="img-fluid custom-image" alt="">
                             </a>
                             {% else %}
                             <h6>Aguardando novo Feedback!</h6>
@@ -278,8 +279,8 @@
                     <div class="row">
                         <div class="col">
                             {% if aluno.foto_verso %}
-                            <a href="{{aluno.foto_verso.url}}" target="_blank">
-                                <img class="img-fluid custom-image" src="{{aluno.foto_verso.url}}" alt=""> 
+                            <a href="{{aluno.foto_verso}}" target="_blank">
+                                <img class="img-fluid custom-image" src="{{aluno.foto_verso}}" alt=""> 
                             </a>
                             {% else %}
                             <h6>Aluno precisa atualizar o perfil.</h6>
@@ -287,12 +288,12 @@
                         </div>
                         <div class="col">
                             {% if ultimo_feedback_aluno.foto_verso %}
-                            <a href="{{ultimo_feedback_aluno.foto_verso.url}}" target="_blank">
-                                <img class="img-fluid custom-image" src="{{ultimo_feedback_aluno.foto_verso.url}}" alt=""> 
+                            <a href="{{ultimo_feedback_aluno.foto_verso}}" target="_blank">
+                                <img class="img-fluid custom-image" src="{{ultimo_feedback_aluno.foto_verso}}" alt=""> 
                             </a>
                             {% elif ultimo_feedback.foto_verso %}
-                            <a href="{{ultimo_feedback.foto_verso.url}}" target="_blank">
-                                <img src="{{ultimo_feedback.foto_verso.url}}" class="img-fluid custom-image" alt="">
+                            <a href="{{ultimo_feedback.foto_verso}}" target="_blank">
+                                <img src="{{ultimo_feedback.foto_verso}}" class="img-fluid custom-image" alt="">
                             </a>
                             {% else %}
                             <h6>Aguardando novo Feedback!</h6>

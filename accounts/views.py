@@ -394,6 +394,51 @@ def desmarcar_pago(request, pk):
 from PIL import Image, ExifTags
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
+import uuid
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+
+def resize_and_upload_image(image):
+    if not image:
+        return None
+
+    # Check if uploaded file is PNG
+    if image.name.endswith('.png'):
+        # Open PNG image and convert to RGB format
+        img = Image.open(image)
+        img = img.convert('RGB')
+    else:
+        img = Image.open(image)
+
+    # Get exif orientation
+    try:
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation] == 'Orientation':
+                break
+        exif = dict(img._getexif().items())
+        if exif[orientation] == 3:
+            img = img.rotate(180, expand=True)
+        elif exif[orientation] == 6:
+            img = img.rotate(270, expand=True)
+        elif exif[orientation] == 8:
+            img = img.rotate(90, expand=True)
+    except (AttributeError, KeyError, IndexError):
+        # If there is no exif information, do nothing
+        pass
+
+    buffer = BytesIO()
+    img.save(buffer, format='JPEG', quality=90)
+    buffer.seek(0)
+
+    # Generate a unique filename
+    filename = f'media/{uuid.uuid4()}.jpg'
+
+    # Upload the resized image to S3
+    default_storage.save(filename, ContentFile(buffer.read()))
+
+    # Return the URL of the uploaded image
+    return default_storage.url(filename)
+
 
 def resize_image(image):
     if not image:
@@ -468,7 +513,7 @@ def edit_profile(request, pk=None):
             for field in image_fields:
                 if request.FILES.get(field):
                     image = request.FILES[field]
-                    image_file = resize_image(image)
+                    image_file = resize_and_upload_image(image)
                     setattr(instance, field, image_file)
             
             # Save the form
@@ -602,11 +647,11 @@ def novo_feedbackV1(request, pk):
 
             # Resize images
             if feedback.foto_frente:
-                feedback.foto_frente = resize_image(feedback.foto_frente)
+                feedback.foto_frente = resize_and_upload_image(feedback.foto_frente)
             if feedback.foto_lado:
-                feedback.foto_lado = resize_image(feedback.foto_lado)
+                feedback.foto_lado = resize_and_upload_image(feedback.foto_lado)
             if feedback.foto_verso:
-                feedback.foto_verso = resize_image(feedback.foto_verso)
+                feedback.foto_verso = resize_and_upload_image(feedback.foto_verso)
 
             feedback.save()
             aluno.peso_atual = feedback.peso_atual
