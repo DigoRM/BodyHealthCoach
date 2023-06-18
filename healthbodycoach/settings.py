@@ -183,3 +183,7 @@ class MediaStorage(S3Boto3Storage):
     location = 'media/media'
     default_acl = "public-read"
     file_overwrite = False
+
+## Celery settings
+#CELERY_BROKER_URL = 'redis-12270.c91.us-east-1-3.ec2.cloud.redislabs.com:12270'  # Redis broker URL
+#CELERY_RESULT_BACKEND = 'redis-12270.c91.us-east-1-3.ec2.cloud.redislabs.com:12270'  # Redis result backend
